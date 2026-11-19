@@ -377,6 +377,8 @@ document.getElementById("bar").style.width=percent+"%";
 function saveTasks(){
 localStorage.setItem("hubTasks",JSON.stringify(tasks));
 renderTasks();
+updateStreak();
+}
 }let profileName=localStorage.getItem("hubProfile")||"";
 document.getElementById("profileName").value=profileName;
 document.getElementById("profileGreeting").textContent=
