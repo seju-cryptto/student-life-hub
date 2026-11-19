@@ -192,6 +192,21 @@ footer{text-align:center;color:var(--muted);padding:30px}
 </div>
 </section>
 
+<section class="grid">
+<div class="card">
+<h2>👤 Student Profile</h2>
+<input id="profileName" placeholder="Enter your display name">
+<button onclick="saveProfile()">Save Profile</button>
+<p id="profileGreeting">Welcome, student!</p>
+</div>
+
+<div class="card">
+<h2>🔥 Daily Streak</h2>
+<div class="stat" id="streakCount">0 days</div>
+<p class="label">Complete a study task each day to build your streak!</p>
+</div>
+</section>
+
 <section id="planner" class="card section" style="margin-top:22px">
 <h2>📚 Study Planner</h2>
 <input id="taskInput" placeholder="Add a study task...">
@@ -362,7 +377,41 @@ document.getElementById("bar").style.width=percent+"%";
 function saveTasks(){
 localStorage.setItem("hubTasks",JSON.stringify(tasks));
 renderTasks();
+}let profileName=localStorage.getItem("hubProfile")||"";
+document.getElementById("profileName").value=profileName;
+document.getElementById("profileGreeting").textContent=
+profileName?"Welcome, "+profileName+"!":"Welcome, student!";
+
+function saveProfile(){
+const name=document.getElementById("profileName").value.trim();
+localStorage.setItem("hubProfile",name);
+document.getElementById("profileGreeting").textContent=
+name?"Welcome, "+name+"!":"Welcome, student!";
 }
+
+function updateStreak(){
+const today=new Date().toLocaleDateString("en-CA");
+const last=localStorage.getItem("hubLastCompleted");
+let streak=Number(localStorage.getItem("hubStreak")||0);
+
+const completedToday=tasks.some(t=>t.done);
+
+if(completedToday && last!==today){
+if(last){
+const yesterday=new Date();
+yesterday.setDate(yesterday.getDate()-1);
+const yesterdayKey=yesterday.toLocaleDateString("en-CA");
+streak=last===yesterdayKey?streak+1:1;
+}else{
+streak=1;
+}
+localStorage.setItem("hubStreak",streak);
+localStorage.setItem("hubLastCompleted",today);
+}
+document.getElementById("streakCount").textContent=streak+" days";
+}
+
+updateStreak();
 
 function addTask(){
 const input=document.getElementById("taskInput");
