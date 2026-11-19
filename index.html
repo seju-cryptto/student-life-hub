@@ -60,6 +60,13 @@ nav a{margin:5px}
 </div>
 
 <div class="container">
+  <section class="card" style="margin:25px 7% 0">
+<h2 id="welcome">Welcome to Student Life Hub ✨</h2>
+<p id="todayDate" class="muted"></p>
+<p style="margin-top:12px">
+Every little effort you make today counts toward your future.
+</p>
+</section>
 <div class="grid">
 
 <section class="card" id="planner">
@@ -253,7 +260,22 @@ function exploreCareer(){
  };
 
  result.textContent=roadmaps[choice]||"Please select a career.";
+}function showDashboard(){
+ const hour=new Date().getHours();
+ let greeting="Good evening";
+
+ if(hour<12) greeting="Good morning";
+ else if(hour<17) greeting="Good afternoon";
+
+ document.getElementById("welcome").textContent=
+ greeting+"! Welcome to Student Life Hub ✨";
+
+ document.getElementById("todayDate").textContent=
+ new Date().toLocaleDateString("en-IN",{
+  weekday:"long",day:"numeric",month:"long",year:"numeric"
+ });
 }
+showDashboard();
 </script>
 </body>
 </html>
