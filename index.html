@@ -8,51 +8,59 @@
 <title>StudySpace</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#f7f5fc;color:#302b40}
-button,input,textarea{font:inherit}
-button{cursor:pointer;border:0;border-radius:12px;padding:12px 16px;background:#9470d8;color:white}
-button:hover{opacity:.88}
-input,textarea{border:1px solid #e5def3;border-radius:12px;padding:12px;width:100%;background:white;color:#302b40}
-h1,h2,h3{margin-top:0}
+body{margin:0;font-family:Arial,sans-serif;background:#f7f5fc;color:#302b40;transition:.2s}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer;border:0;border-radius:12px;padding:11px 15px;background:#9470d8;color:white}
+button:hover{opacity:.85}
+input,textarea,select{border:1px solid #e5def3;border-radius:12px;padding:12px;width:100%;background:var(--card);color:var(--text)}
 .hidden{display:none!important}
-.small{color:#88839a;font-size:13px}
-.card{background:white;border:1px solid #eee8f7;border-radius:20px;padding:22px;margin-bottom:18px;box-shadow:0 4px 18px rgba(90,65,130,.04)}
-.purple{color:#9470d8}
+.small{color:var(--muted);font-size:13px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:22px;margin-bottom:18px;box-shadow:0 4px 18px rgba(90,65,130,.04)}
 .secondary{background:#eee8ff;color:#6949a5}
 .danger{background:#ffe8ee;color:#a83f65}
 .row{display:flex;gap:10px;align-items:center}
 .row input{flex:1}
+h1,h2,h3{margin-top:0}
 #welcome{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
-.welcome-card{max-width:520px;width:100%;background:white;border-radius:28px;padding:40px;text-align:center;box-shadow:0 15px 60px #ded4f2}
+.welcome-card{max-width:520px;width:100%;background:var(--card);border-radius:28px;padding:40px;text-align:center;box-shadow:0 15px 60px #ded4f2}
 .welcome-card .logo{font-size:55px}
 .welcome-card h1{color:#9470d8;font-size:36px}
-.welcome-card p{color:#88839a;line-height:1.6}
+.welcome-card p{color:var(--muted);line-height:1.6}
 #app{min-height:100vh}
-.sidebar{width:230px;background:white;position:fixed;left:0;top:0;bottom:0;padding:25px;border-right:1px solid #eee8f7}
-.brand{font-size:23px;font-weight:bold;color:#9470d8;margin-bottom:35px}
-.nav button{width:100%;text-align:left;margin-bottom:10px;background:white;color:#514761}
+.sidebar{width:230px;background:var(--card);position:fixed;left:0;top:0;bottom:0;padding:25px;border-right:1px solid var(--border);overflow-y:auto}
+.brand{font-size:23px;font-weight:bold;color:#9470d8;margin-bottom:30px}
+.nav button{width:100%;text-align:left;margin-bottom:9px;background:var(--card);color:var(--text)}
 .nav button.active,.nav button:hover{background:#eee8ff;color:#6949a5}
 .main{margin-left:230px;padding:30px;max-width:1400px}
 .top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:25px}
 .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
-.stat{font-size:28px;font-weight:bold;color:#9470d8}
+.stat{font-size:28px;font-weight:bold;color:#9470d8;margin-top:10px}
 .timer{font-size:65px;text-align:center;font-weight:bold;color:#9470d8;margin:15px}
 .timer-buttons{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
-.item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px;border-bottom:1px solid #f0ebf7}
+.item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px;border-bottom:1px solid var(--border)}
 .item span{overflow-wrap:anywhere}
-.item.done span{text-decoration:line-through;color:#aaa}
 .item button{padding:8px 12px}
+.item.done span{text-decoration:line-through;color:#aaa}
 textarea{min-height:110px;resize:vertical}
 .progress-bar{height:12px;border-radius:20px;background:#eee8ff;overflow:hidden}
 .progress-fill{height:100%;width:0;background:#9470d8;transition:width .3s}
 .section{display:none}
 .section.active{display:block}
-#focusOverlay{position:fixed;inset:0;background:#f7f5fc;z-index:99;display:flex;align-items:center;justify-content:center;padding:20px}
+#focusOverlay{position:fixed;inset:0;background:var(--bg);z-index:99;display:flex;align-items:center;justify-content:center;padding:20px}
 .focusbox{max-width:500px;width:100%;text-align:center}
 #focusOverlay .timer{font-size:85px}
-footer{text-align:center;color:#aaa;font-size:12px;margin-top:30px}
+footer{text-align:center;color:var(--muted);font-size:12px;margin-top:30px}
+.quote{font-size:18px;line-height:1.6;color:#9470d8}
+.tag{background:#eee8ff;color:#6949a5;padding:5px 9px;border-radius:9px;font-size:12px}
+:root{--bg:#f7f5fc;--card:#fff;--text:#302b40;--muted:#88839a;--border:#eee8f7}
+body.dark{--bg:#191625;--card:#252136;--text:#f1eaff;--muted:#b9b0ce;--border:#39314c}
+body.dark .nav button{color:var(--text)}
+body.dark .secondary{background:#403355;color:#e8ddff}
+body.dark .danger{background:#543044;color:#ffc9df}
+body.dark .progress-bar{background:#403355}
+body.dark .welcome-card{box-shadow:0 15px 60px #100d19}
 @media(max-width:800px){
-.sidebar{position:static;width:100%;border-right:none;border-bottom:1px solid #eee8f7}
+.sidebar{position:static;width:100%;border-right:none;border-bottom:1px solid var(--border)}
 .brand{margin-bottom:15px}
 .nav{display:flex;overflow-x:auto;gap:6px}
 .nav button{width:auto;white-space:nowrap;margin:0}
@@ -90,6 +98,8 @@ footer{text-align:center;color:#aaa;font-size:12px;margin-top:30px}
    <button onclick="showSection('timerSection',this)">⏱ Focus Timer</button>
    <button onclick="showSection('notes',this)">📝 Notes</button>
    <button onclick="showSection('planner',this)">📅 Planner</button>
+   <button onclick="showSection('analytics',this)">📊 Analytics</button>
+   <button onclick="showSection('profile',this)">👤 Profile</button>
   </div>
  </aside>
 
@@ -104,14 +114,10 @@ footer{text-align:center;color:#aaa;font-size:12px;margin-top:30px}
 
   <div id="home" class="section active">
    <div class="grid">
-    <div class="card">
-     <div class="small">Today's Tasks</div>
-     <div class="stat" id="taskStat">0</div>
-    </div>
-    <div class="card">
-     <div class="small">Completed</div>
-     <div class="stat" id="doneStat">0</div>
-    </div>
+    <div class="card"><div class="small">Today's Tasks</div><div class="stat" id="taskStat">0</div></div>
+    <div class="card"><div class="small">Completed</div><div class="stat" id="doneStat">0</div></div>
+    <div class="card"><div class="small">Focus Minutes</div><div class="stat" id="todayMinutes">0</div></div>
+    <div class="card"><div class="small">Study Streak 🔥</div><div class="stat" id="streakStat">0 days</div></div>
    </div>
    <div class="card">
     <h3>Today's Progress 🌷</h3>
@@ -120,24 +126,18 @@ footer{text-align:center;color:#aaa;font-size:12px;margin-top:30px}
    </div>
    <div class="card">
     <h3>Quick Task ✨</h3>
-    <div class="row">
-     <input id="quickTask" placeholder="What do you need to do?">
-     <button onclick="addTask('quickTask')">Add</button>
-    </div>
+    <div class="row"><input id="quickTask" placeholder="What do you need to do?"><button onclick="addTask('quickTask')">Add</button></div>
    </div>
    <div class="card">
-    <h3>Daily Reminder 💜</h3>
-    Small progress is still progress. Keep going!
+    <h3>Daily Quote ✨</h3>
+    <div class="quote" id="quote"></div>
    </div>
   </div>
 
   <div id="tasks" class="section">
    <div class="card">
     <h2>My Tasks ☑</h2>
-    <div class="row">
-     <input id="taskInput" placeholder="Add a new task">
-     <button onclick="addTask('taskInput')">Add</button>
-    </div>
+    <div class="row"><input id="taskInput" placeholder="Add a new task"><button onclick="addTask('taskInput')">Add</button></div>
     <div id="taskList"></div>
    </div>
   </div>
@@ -145,13 +145,23 @@ footer{text-align:center;color:#aaa;font-size:12px;margin-top:30px}
   <div id="timerSection" class="section">
    <div class="card">
     <h2>Focus Timer ⏱</h2>
+    <select id="duration" onchange="changeDuration()">
+     <option value="25">25 minutes</option>
+     <option value="45">45 minutes</option>
+     <option value="60">60 minutes</option>
+    </select>
     <div class="timer" id="timerDisplay">25:00</div>
     <div class="timer-buttons">
      <button onclick="startTimer()">▶ Start</button>
      <button class="secondary" onclick="pauseTimer()">⏸ Pause</button>
      <button class="danger" onclick="resetTimer()">↻ Reset</button>
     </div>
-    <p class="small" style="text-align:center;margin-top:20px">Focus on one thing at a time.</p>
+    <br>
+    <div class="row" style="justify-content:center;flex-wrap:wrap">
+     <button class="secondary" onclick="toggleFocusSound()">🎵 Focus Sound</button>
+     <button class="secondary" onclick="toggleCompletionSound()">🔔 Completion Sound</button>
+    </div>
+    <p class="small" style="text-align:center" id="soundStatus">Focus sound off · Completion sound on</p>
    </div>
   </div>
 
@@ -170,12 +180,45 @@ footer{text-align:center;color:#aaa;font-size:12px;margin-top:30px}
   <div id="planner" class="section">
    <div class="card">
     <h2>Daily Planner 📅</h2>
+    <label class="small">Date</label>
+    <input type="date" id="planDate">
+    <br><br>
     <input id="planTime" placeholder="Time (e.g. 5:00 PM)">
     <br><br>
     <input id="planText" placeholder="Study session / activity">
     <br><br>
     <button onclick="addPlan()">Add Plan</button>
     <div id="planList"></div>
+   </div>
+  </div>
+
+  <div id="analytics" class="section">
+   <div class="card">
+    <h2>Study Analytics 📊</h2>
+    <div class="grid">
+     <div><div class="small">Total Focus Minutes</div><div class="stat" id="totalMinutes">0</div></div>
+     <div><div class="small">Focus Sessions</div><div class="stat" id="sessionStat">0</div></div>
+     <div><div class="small">Tasks Completed</div><div class="stat" id="totalCompleted">0</div></div>
+     <div><div class="small">Study Streak</div><div class="stat" id="analyticsStreak">0 days</div></div>
+    </div>
+   </div>
+   <div class="card">
+    <h3>Recent Study Activity</h3>
+    <div id="activityList"></div>
+   </div>
+  </div>
+
+  <div id="profile" class="section">
+   <div class="card">
+    <h2>My Profile 👤</h2>
+    <label class="small">Your name</label>
+    <input id="profileName" placeholder="Your name">
+    <br><br>
+    <button onclick="saveProfile()">Save Profile</button>
+    <br><br>
+    <button class="secondary" onclick="toggleTheme()">🌙 / ☀️ Toggle Theme</button>
+    <br><br>
+    <button class="danger" onclick="exitDashboard()">Exit to Welcome</button>
    </div>
   </div>
 
@@ -193,30 +236,54 @@ footer{text-align:center;color:#aaa;font-size:12px;margin-top:30px}
    <button class="secondary" onclick="pauseTimer()">⏸ Pause</button>
    <button class="danger" onclick="resetTimer()">↻ Reset</button>
   </div>
-  <br>
-  <button class="secondary" onclick="toggleFocus()">Exit Focus</button>
+  <br><button class="secondary" onclick="toggleFocus()">Exit Focus</button>
  </div>
 </div>
 
 <script>
 const getData=(key,def)=>{try{return JSON.parse(localStorage.getItem(key))??def}catch{return def}};
 const setData=(key,val)=>localStorage.setItem(key,JSON.stringify(val));
+const todayKey=()=>new Date().toLocaleDateString('en-CA');
 
 let tasks=getData('ss_tasks',[]);
 let notes=getData('ss_notes',[]);
 let plans=getData('ss_plans',[]);
+let sessions=getData('ss_sessions',[]);
+let studyDays=getData('ss_days',[]);
 let name=localStorage.getItem('ss_name')||'Student';
 let seconds=1500;
 let interval=null;
+let focusSound=false;
+let completionSound=true;
+let audioContext=null;
+let noiseNode=null;
+let noiseGain=null;
 
+const quotes=[
+"Small progress is still progress. Keep going! 💜",
+"Your future is built by what you do today.",
+"Believe in the effort you are making.",
+"Consistency beats perfection.",
+"Every page you study is a step forward.",
+"You don't have to be perfect to make progress.",
+"Focus on the next small step."
+];
+document.getElementById('quote').textContent=quotes[new Date().getDate()%quotes.length];
 document.getElementById('today').textContent=new Date().toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long',year:'numeric'});
 document.getElementById('greeting').textContent='Hello, '+name+'! 💜';
+document.getElementById('profileName').value=name;
+document.getElementById('planDate').value=todayKey();
+document.getElementById('studentName').value=name;
+
+if(localStorage.getItem('ss_theme')==='dark')document.body.classList.add('dark');
 
 function enterApp(){
  let n=document.getElementById('studentName').value.trim()||name;
  name=n;
  localStorage.setItem('ss_name',name);
+ localStorage.setItem('ss_entered','yes');
  document.getElementById('greeting').textContent='Hello, '+name+'! 💜';
+ document.getElementById('profileName').value=name;
  document.getElementById('welcome').classList.add('hidden');
  document.getElementById('app').classList.remove('hidden');
  renderAll();
@@ -225,7 +292,6 @@ if(localStorage.getItem('ss_entered')==='yes'){
  document.getElementById('welcome').classList.add('hidden');
  document.getElementById('app').classList.remove('hidden');
 }
-document.getElementById('studentName').value=name;
 
 function showSection(id,btn){
  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
@@ -238,7 +304,7 @@ function addTask(inputId){
  let input=document.getElementById(inputId);
  let value=input.value.trim();
  if(!value)return;
- tasks.push({text:value,done:false});
+ tasks.push({text:value,done:false,created:todayKey()});
  setData('ss_tasks',tasks);
  input.value='';
  renderTasks();
@@ -252,6 +318,8 @@ function deleteTask(i){
 }
 function toggleTask(i){
  tasks[i].done=!tasks[i].done;
+ if(tasks[i].done)tasks[i].completedDate=todayKey();
+ else tasks[i].completedDate=null;
  setData('ss_tasks',tasks);
  renderTasks();
  updateProgress();
@@ -287,6 +355,7 @@ function updateProgress(){
  document.getElementById('doneStat').textContent=done;
  document.getElementById('progressFill').style.width=percent+'%';
  document.getElementById('progressText').textContent=percent+'% completed';
+ document.getElementById('totalCompleted').textContent=done;
 }
 
 function displayTime(){
@@ -296,9 +365,14 @@ function displayTime(){
  document.getElementById('timerDisplay').textContent=txt;
  document.getElementById('focusDisplay').textContent=txt;
 }
+function changeDuration(){
+ if(interval!==null)return;
+ seconds=Number(document.getElementById('duration').value)*60;
+ displayTime();
+}
 function startTimer(){
  if(interval!==null)return;
- if(seconds<=0)seconds=1500;
+ if(seconds<=0)seconds=Number(document.getElementById('duration').value)*60;
  interval=setInterval(()=>{
   seconds--;
   displayTime();
@@ -307,6 +381,8 @@ function startTimer(){
    interval=null;
    seconds=0;
    displayTime();
+   recordSession();
+   if(completionSound)beep();
    alert('Focus session completed! Great work 💜');
   }
  },1000);
@@ -316,14 +392,43 @@ function pauseTimer(){
   clearInterval(interval);
   interval=null;
  }
+ stopNoise();
 }
 function resetTimer(){
  pauseTimer();
- seconds=1500;
+ seconds=Number(document.getElementById('duration').value)*60;
  displayTime();
 }
 function toggleFocus(){
  document.getElementById('focusOverlay').classList.toggle('hidden');
+}
+function recordSession(){
+ let mins=Number(document.getElementById('duration').value);
+ sessions.push({date:todayKey(),minutes:mins});
+ setData('ss_sessions',sessions);
+ if(!studyDays.includes(todayKey())){
+  studyDays.push(todayKey());
+  setData('ss_days',studyDays);
+ }
+ renderAnalytics();
+}
+
+function toggleTheme(){
+ document.body.classList.toggle('dark');
+ localStorage.setItem('ss_theme',document.body.classList.contains('dark')?'dark':'light');
+}
+function saveProfile(){
+ let n=document.getElementById('profileName').value.trim();
+ if(!n)return;
+ name=n;
+ localStorage.setItem('ss_name',name);
+ document.getElementById('greeting').textContent='Hello, '+name+'! 💜';
+ alert('Profile updated!');
+}
+function exitDashboard(){
+ localStorage.setItem('ss_entered','no');
+ document.getElementById('app').classList.add('hidden');
+ document.getElementById('welcome').classList.remove('hidden');
 }
 
 function saveNote(){
@@ -364,8 +469,9 @@ function renderNotes(){
 function addPlan(){
  let time=document.getElementById('planTime').value.trim();
  let text=document.getElementById('planText').value.trim();
+ let date=document.getElementById('planDate').value||todayKey();
  if(!time||!text)return;
- plans.push({time,text});
+ plans.push({date,time,text});
  setData('ss_plans',plans);
  document.getElementById('planTime').value='';
  document.getElementById('planText').value='';
@@ -379,25 +485,118 @@ function deletePlan(i){
 function renderPlans(){
  let el=document.getElementById('planList');
  el.innerHTML='';
- plans.forEach((p,i)=>{
+ let sorted=plans.map((p,i)=>({...p,index:i})).sort((a,b)=>(a.date||'').localeCompare(b.date||''));
+ sorted.forEach(p=>{
   let div=document.createElement('div');
   div.className='item';
   let span=document.createElement('span');
-  span.textContent=p.time+' — '+p.text;
+  span.textContent=(p.date||'')+' · '+p.time+' — '+p.text;
   let b=document.createElement('button');
   b.className='danger';
   b.textContent='✕';
-  b.onclick=()=>deletePlan(i);
+  b.onclick=()=>deletePlan(p.index);
   div.append(span,b);
   el.append(div);
  });
 }
+
+function getStreak(){
+ let dates=[...new Set(studyDays)].sort().reverse();
+ if(!dates.length)return 0;
+ let streak=0;
+ let d=new Date();
+ let today=todayKey();
+ let yesterday=new Date();
+ yesterday.setDate(yesterday.getDate()-1);
+ let yKey=yesterday.toLocaleDateString('en-CA');
+ if(dates[0]!==today&&dates[0]!==yKey)return 0;
+ let check=new Date(dates[0]+'T12:00:00');
+ for(let i=0;i<dates.length;i++){
+  let expected=new Date(check);
+  expected.setDate(expected.getDate()-i);
+  if(dates[i]===expected.toLocaleDateString('en-CA'))streak++;
+  else break;
+ }
+ return streak;
+}
+function renderAnalytics(){
+ let total=sessions.reduce((a,s)=>a+s.minutes,0);
+ let todayTotal=sessions.filter(s=>s.date===todayKey()).reduce((a,s)=>a+s.minutes,0);
+ document.getElementById('totalMinutes').textContent=total;
+ document.getElementById('todayMinutes').textContent=todayTotal;
+ document.getElementById('sessionStat').textContent=sessions.length;
+ let streak=getStreak();
+ document.getElementById('streakStat').textContent=streak+' days';
+ document.getElementById('analyticsStreak').textContent=streak+' days';
+ let el=document.getElementById('activityList');
+ el.innerHTML='';
+ sessions.slice().reverse().slice(0,10).forEach(s=>{
+  let div=document.createElement('div');
+  div.className='item';
+  let span=document.createElement('span');
+  span.textContent=s.date+' — '+s.minutes+' min focus';
+  div.append(span);
+  el.append(div);
+ });
+ if(!sessions.length)el.textContent='Your completed focus sessions will appear here.';
+}
+
+function beep(){
+ try{
+  audioContext=audioContext||new (window.AudioContext||window.webkitAudioContext)();
+  let osc=audioContext.createOscillator();
+  let gain=audioContext.createGain();
+  osc.connect(gain);
+  gain.connect(audioContext.destination);
+  osc.frequency.value=880;
+  gain.gain.value=.15;
+  osc.start();
+  osc.stop(audioContext.currentTime+.4);
+ }catch(e){}
+}
+
+function toggleCompletionSound(){
+ completionSound=!completionSound;
+ updateSoundStatus();
+}
+function toggleFocusSound(){
+ focusSound=!focusSound;
+ if(focusSound)startNoise();
+ else stopNoise();
+ updateSoundStatus();
+}
+function updateSoundStatus(){
+ document.getElementById('soundStatus').textContent=
+ 'Focus sound '+(focusSound?'on':'off')+' · Completion sound '+(completionSound?'on':'off');
+}
+function startNoise(){
+ try{
+  audioContext=audioContext||new (window.AudioContext||window.webkitAudioContext)();
+  let buffer=audioContext.createBuffer(1,audioContext.sampleRate*2,audioContext.sampleRate);
+  let data=buffer.getChannelData(0);
+  for(let i=0;i<data.length;i++)data[i]=Math.random()*2-1;
+  noiseNode=audioContext.createBufferSource();
+  noiseNode.buffer=buffer;
+  noiseNode.loop=true;
+  noiseGain=audioContext.createGain();
+  noiseGain.gain.value=.035;
+  noiseNode.connect(noiseGain);
+  noiseGain.connect(audioContext.destination);
+  noiseNode.start();
+ }catch(e){}
+}
+function stopNoise(){
+ try{if(noiseNode)noiseNode.stop()}catch(e){}
+ noiseNode=null;
+}
+
 function renderAll(){
  renderTasks();
  renderNotes();
  renderPlans();
  updateProgress();
  displayTime();
+ renderAnalytics();
 }
 renderAll();
 </script>
