@@ -1,0 +1,17 @@
+{
+  "name": "Student Life Hub",
+  "short_name": "Life Hub",
+  "description": "A student productivity app",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f8f5ff",
+  "theme_color": "#9470d8",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}
