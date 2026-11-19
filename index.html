@@ -1,0 +1,180 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Life Hub</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#f7f5fc;color:#25213b}
+header{background:#fff;padding:20px 7%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #eee}
+.logo{font-size:23px;font-weight:800;color:#7654c7}
+.logo span{color:#b48be9}
+nav a{color:#5f5877;text-decoration:none;margin-left:20px;font-size:14px}
+.hero{padding:55px 7% 35px;background:linear-gradient(135deg,#ede5ff,#f9f6ff)}
+.hero h1{font-size:38px;margin-bottom:12px}
+.hero h1 span{color:#7957c9}
+.hero p{color:#6b6680;line-height:1.7}
+.container{padding:30px 7%}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.card{background:white;border-radius:18px;padding:25px;box-shadow:0 4px 20px #30206008}
+.card h2{font-size:20px;margin-bottom:14px}
+.muted{color:#827b96;font-size:14px}
+input,textarea,button{font-family:inherit}
+input,textarea{padding:12px;border:1px solid #ded7ee;border-radius:10px;width:100%;margin:8px 0;outline:none}
+button{background:#8060cf;color:white;border:0;border-radius:10px;padding:11px 15px;cursor:pointer;margin-top:8px}
+button:hover{background:#6847b8}
+.task{display:flex;gap:10px;align-items:center;padding:12px 0;border-bottom:1px solid #eee}
+.task input{width:auto;margin:0}
+.task span{flex:1}
+.task.done span{text-decoration:line-through;color:#999}
+.delete{background:#eee;color:#555;padding:6px 10px}
+#timer{font-size:48px;font-weight:bold;color:#7654c7;margin:20px 0}
+.stat{background:#f2ecff;border-radius:12px;padding:15px;margin-top:12px}
+footer{text-align:center;padding:30px;color:#8a829e}
+section{scroll-margin-top:20px}
+@media(max-width:700px){
+header{flex-direction:column;gap:15px}
+nav a{margin:5px}
+.hero h1{font-size:30px}
+.grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Student Life <span>Hub</span> ✦</div>
+  <nav>
+    <a href="#planner">Planner</a>
+    <a href="#focus">Focus</a>
+    <a href="#notes">Notes</a>
+  </nav>
+</header>
+
+<div class="hero">
+  <h1>Your goals. Your pace.<br><span>Your future.</span></h1>
+  <p>Your personal space to plan, focus, learn and grow.<br>One small step at a time.</p>
+</div>
+
+<div class="container">
+<div class="grid">
+
+<section class="card" id="planner">
+<h2>✦ Today's Study Planner</h2>
+<p class="muted">Add tasks and keep track of your progress.</p>
+<input id="taskInput" placeholder="What do you need to study?">
+<button onclick="addTask()">+ Add task</button>
+<div id="tasks"></div>
+<div class="stat"><strong id="progress">0/0 completed</strong></div>
+</section>
+
+<section class="card" id="focus">
+<h2>◷ Focus Timer</h2>
+<p class="muted">Focus on one thing at a time.</p>
+<div id="timer">25:00</div>
+<button onclick="startTimer()">Start</button>
+<button onclick="pauseTimer()">Pause</button>
+<button onclick="resetTimer()" class="delete">Reset</button>
+</section>
+
+<section class="card" id="notes">
+<h2>✎ Quick Notes</h2>
+<p class="muted">Write down ideas, reminders or study notes.</p>
+<textarea id="noteInput" rows="6" placeholder="Write your notes here..."></textarea>
+<button onclick="saveNotes()">Save notes</button>
+<p id="noteStatus" class="muted"></p>
+</section>
+
+<section class="card">
+<h2>✧ Study Motivation</h2>
+<p id="quote" style="line-height:1.8;margin-top:20px">
+You don't have to be perfect. You just have to begin.
+</p>
+<button onclick="newQuote()">New motivation</button>
+</section>
+
+</div>
+</div>
+
+<footer><footer>Student Life Hub © 2026 | Built for students.</footer></footer>
+
+<script>
+let tasks=JSON.parse(localStorage.getItem("slh_tasks")||"[]");
+
+function renderTasks(){
+ const box=document.getElementById("tasks");
+ box.innerHTML="";
+ tasks.forEach((t,i)=>{
+  const div=document.createElement("div");
+  div.className="task"+(t.done?" done":"");
+  const check=document.createElement("input");
+  check.type="checkbox";
+  check.checked=t.done;
+  check.onchange=()=>{tasks[i].done=check.checked;saveTasks()};
+  const span=document.createElement("span");
+  span.textContent=t.text;
+  const del=document.createElement("button");
+  del.textContent="×";
+  del.className="delete";
+  del.onclick=()=>{tasks.splice(i,1);saveTasks()};
+  div.append(check,span,del);
+  box.appendChild(div);
+ });
+ document.getElementById("progress").textContent=
+ tasks.filter(t=>t.done).length+"/"+tasks.length+" completed";
+}
+
+function saveTasks(){
+ localStorage.setItem("slh_tasks",JSON.stringify(tasks));
+ renderTasks();
+}
+
+function addTask(){
+ const input=document.getElementById("taskInput");
+ if(!input.value.trim())return;
+ tasks.push({text:input.value.trim(),done:false});
+ input.value="";
+ saveTasks();
+}
+renderTasks();
+
+document.getElementById("noteInput").value=localStorage.getItem("slh_notes")||"";
+function saveNotes(){
+ localStorage.setItem("slh_notes",document.getElementById("noteInput").value);
+ document.getElementById("noteStatus").textContent="Notes saved on this device!";
+}
+
+let seconds=1500, interval=null;
+function updateTimer(){
+ document.getElementById("timer").textContent=
+ String(Math.floor(seconds/60)).padStart(2,"0")+":"+
+ String(seconds%60).padStart(2,"0");
+}
+function startTimer(){
+ if(interval)return;
+ interval=setInterval(()=>{
+  if(seconds>0){seconds--;updateTimer();}
+  else{pauseTimer();alert("Focus session complete!");}
+ },1000);
+}
+function pauseTimer(){clearInterval(interval);interval=null;}
+function resetTimer(){pauseTimer();seconds=1500;updateTimer();}
+updateTimer();
+
+const quotes=[
+ "You don't have to be perfect. You just have to begin.",
+ "Small progress is still progress.",
+ "Your future is built by what you do today.",
+ "Believe in your ability to learn.",
+ "Consistency beats waiting for motivation.",
+ "Every expert was once a beginner."
+];
+function newQuote(){
+ document.getElementById("quote").textContent=
+ quotes[Math.floor(Math.random()*quotes.length)];
+}
+</script>
+</body>
+</html>
