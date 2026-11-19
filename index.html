@@ -78,7 +78,27 @@ nav a{margin:5px}
 <button onclick="pauseTimer()">Pause</button>
 <button onclick="resetTimer()" class="delete">Reset</button>
 </section>
+<section class="card" id="exam">
+<h2>📅 Exam Countdown</h2>
+<p class="muted">Keep track of your upcoming exams.</p>
+<input type="date" id="examDate">
+<button onclick="calculateCountdown()">Check days left</button>
+<div class="stat" id="countdownResult">Choose your exam date.</div>
+</section>
 
+<section class="card" id="career">
+<h2>🚀 Career Explorer</h2>
+<p class="muted">Explore skills and career paths.</p>
+<select id="careerChoice">
+<option value="">Choose a career</option>
+<option value="web">Web Developer</option>
+<option value="ai">AI / Machine Learning</option>
+<option value="design">UI/UX Designer</option>
+<option value="cyber">Cybersecurity</option>
+</select>
+<button onclick="exploreCareer()">Explore roadmap</button>
+<div class="stat" id="careerResult">Choose a career to see its roadmap.</div>
+</section>
 <section class="card" id="notes">
 <h2>✎ Quick Notes</h2>
 <p class="muted">Write down ideas, reminders or study notes.</p>
@@ -174,6 +194,42 @@ const quotes=[
 function newQuote(){
  document.getElementById("quote").textContent=
  quotes[Math.floor(Math.random()*quotes.length)];
+}function calculateCountdown(){
+ const selected=document.getElementById("examDate").value;
+ const result=document.getElementById("countdownResult");
+
+ if(!selected){
+  result.textContent="Please choose an exam date.";
+  return;
+ }
+
+ const today=new Date();
+ today.setHours(0,0,0,0);
+
+ const exam=new Date(selected+"T00:00:00");
+ const days=Math.ceil((exam-today)/86400000);
+
+ if(days<0){
+  result.textContent="This exam date has already passed.";
+ }else if(days===0){
+  result.textContent="Your exam is today! Good luck!";
+ }else{
+  result.textContent=days+" days left until your exam!";
+ }
+}
+
+function exploreCareer(){
+ const choice=document.getElementById("careerChoice").value;
+ const result=document.getElementById("careerResult");
+
+ const roadmaps={
+  web:"Web Developer: HTML → CSS → JavaScript → Git & GitHub → Projects.",
+  ai:"AI / ML: Python → Maths → Data Analysis → Machine Learning → Projects.",
+  design:"UI/UX Designer: Design Principles → Figma → User Research → Prototypes → Portfolio.",
+  cyber:"Cybersecurity: Computer Basics → Networking → Linux → Security Fundamentals → Legal Practice Labs."
+ };
+
+ result.textContent=roadmaps[choice]||"Please select a career.";
 }
 </script>
 </body>
