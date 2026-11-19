@@ -3,523 +3,403 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Student Life Hub</title>
-<link rel="manifest" href="./manifest.json">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#9470d8">
-
+<title>StudySpace</title>
 <style>
-:root{
- --purple:#9470d8;
- --dark:#392958;
- --light:#f8f5ff;
- --card:#ffffff;
- --muted:#887e9c;
-}
 *{box-sizing:border-box}
-body{
- margin:0;
- font-family:Arial,sans-serif;
- background:var(--light);
- color:var(--dark);
-}
-.layout{display:flex;min-height:100vh}
-.sidebar{
- width:235px;
- background:#fff;
- padding:24px 18px;
- border-right:1px solid #eee5fa;
- position:sticky;
- top:0;
- height:100vh;
-}
-.brand{font-size:21px;font-weight:bold;color:var(--purple)}
-.brand small{display:block;font-size:12px;margin-top:6px;color:var(--muted)}
-.menu{margin-top:35px}
-.menu a{
- display:block;
- text-decoration:none;
- color:var(--dark);
- padding:13px;
- border-radius:12px;
- margin:8px 0;
-}
-.menu a:hover,.menu a.active{
- background:#eee7ff;
- color:var(--purple);
-}
-.main{flex:1;padding:30px;min-width:0}
-.topbar{
- display:flex;
- justify-content:space-between;
- align-items:center;
- gap:15px;
- flex-wrap:wrap;
-}
-.topbar h1{margin:0;font-size:28px}
-.subtitle{color:var(--muted);margin-top:8px}
-.grid{
- display:grid;
- grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
- gap:18px;
- margin-top:22px;
-}
-.card{
- background:var(--card);
- padding:22px;
- border-radius:20px;
- box-shadow:0 5px 18px rgba(94,69,139,.06);
-}
-.stat{font-size:28px;font-weight:bold;margin-top:10px}
-.label{color:var(--muted);font-size:14px}
-h2{font-size:19px}
-h3{font-size:16px}
-input,textarea,button{
- font:inherit;
- padding:12px;
- border:1px solid #e6ddf3;
- border-radius:12px;
- margin:5px 0;
-}
-input,textarea{width:100%;background:white;color:var(--dark)}
-button{
- background:var(--purple);
- color:white;
- border:none;
- cursor:pointer;
-}
+body{margin:0;font-family:Arial,sans-serif;background:#f7f5fc;color:#302b40}
+button,input,textarea{font:inherit}
+button{cursor:pointer;border:0;border-radius:12px;padding:12px 16px;background:#9470d8;color:white}
 button:hover{opacity:.88}
-.secondary{background:#eee7ff;color:var(--purple)}
-.task{
- display:flex;
- gap:10px;
- align-items:center;
- padding:12px 5px;
- border-bottom:1px solid #f0ebf8;
+input,textarea{border:1px solid #e5def3;border-radius:12px;padding:12px;width:100%;background:white;color:#302b40}
+h1,h2,h3{margin-top:0}
+.hidden{display:none!important}
+.small{color:#88839a;font-size:13px}
+.card{background:white;border:1px solid #eee8f7;border-radius:20px;padding:22px;margin-bottom:18px;box-shadow:0 4px 18px rgba(90,65,130,.04)}
+.purple{color:#9470d8}
+.secondary{background:#eee8ff;color:#6949a5}
+.danger{background:#ffe8ee;color:#a83f65}
+.row{display:flex;gap:10px;align-items:center}
+.row input{flex:1}
+#welcome{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.welcome-card{max-width:520px;width:100%;background:white;border-radius:28px;padding:40px;text-align:center;box-shadow:0 15px 60px #ded4f2}
+.welcome-card .logo{font-size:55px}
+.welcome-card h1{color:#9470d8;font-size:36px}
+.welcome-card p{color:#88839a;line-height:1.6}
+#app{min-height:100vh}
+.sidebar{width:230px;background:white;position:fixed;left:0;top:0;bottom:0;padding:25px;border-right:1px solid #eee8f7}
+.brand{font-size:23px;font-weight:bold;color:#9470d8;margin-bottom:35px}
+.nav button{width:100%;text-align:left;margin-bottom:10px;background:white;color:#514761}
+.nav button.active,.nav button:hover{background:#eee8ff;color:#6949a5}
+.main{margin-left:230px;padding:30px;max-width:1400px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:25px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.stat{font-size:28px;font-weight:bold;color:#9470d8}
+.timer{font-size:65px;text-align:center;font-weight:bold;color:#9470d8;margin:15px}
+.timer-buttons{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+.item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px;border-bottom:1px solid #f0ebf7}
+.item span{overflow-wrap:anywhere}
+.item.done span{text-decoration:line-through;color:#aaa}
+.item button{padding:8px 12px}
+textarea{min-height:110px;resize:vertical}
+.progress-bar{height:12px;border-radius:20px;background:#eee8ff;overflow:hidden}
+.progress-fill{height:100%;width:0;background:#9470d8;transition:width .3s}
+.section{display:none}
+.section.active{display:block}
+#focusOverlay{position:fixed;inset:0;background:#f7f5fc;z-index:99;display:flex;align-items:center;justify-content:center;padding:20px}
+.focusbox{max-width:500px;width:100%;text-align:center}
+#focusOverlay .timer{font-size:85px}
+footer{text-align:center;color:#aaa;font-size:12px;margin-top:30px}
+@media(max-width:800px){
+.sidebar{position:static;width:100%;border-right:none;border-bottom:1px solid #eee8f7}
+.brand{margin-bottom:15px}
+.nav{display:flex;overflow-x:auto;gap:6px}
+.nav button{width:auto;white-space:nowrap;margin:0}
+.main{margin-left:0;padding:18px}
+.grid{grid-template-columns:1fr}
+.top{flex-wrap:wrap}
 }
-.task input{width:auto}
-.task span{flex:1;overflow-wrap:anywhere}
-.task.done span{text-decoration:line-through;opacity:.6}
-.task button{padding:8px}
-.timer{
- font-size:48px;
- font-weight:bold;
- text-align:center;
- color:var(--purple);
- margin:20px 0;
-}
-.progressbar{
- background:#eee7ff;
- height:10px;
- border-radius:10px;
- overflow:hidden;
-}
-.progressbar div{
- height:100%;
- background:var(--purple);
- width:0;
- transition:width .3s;
-}
-.section{scroll-margin-top:20px}
-.resource a{
- color:var(--purple);
- text-decoration:none;
- font-weight:bold;
-}
-.resource a:hover{text-decoration:underline}
-footer{text-align:center;color:var(--muted);padding:30px}
-@media(max-width:750px){
- .layout{display:block}
- .sidebar{width:100%;height:auto;position:static}
- .menu{display:flex;flex-wrap:wrap;margin-top:15px}
- .menu a{padding:9px;margin:3px}
- .main{padding:18px}
- .topbar h1{font-size:24px}
+@media(max-width:420px){
+.welcome-card{padding:25px}
+.welcome-card h1{font-size:28px}
+.timer{font-size:50px}
 }
 </style>
 </head>
-
 <body>
-<div class="layout">
 
-<aside class="sidebar">
-<div class="brand">
-💜 Student Life Hub
-<small>Your space to grow</small>
-</div>
-
-<nav class="menu">
-<a class="active" href="#home">🏠 Home</a>
-<a href="#planner">📚 Planner</a>
-<a href="#focus">⏳ Focus</a>
-<a href="#notes">📝 Notes</a>
-<a href="#exam">📅 Countdown</a>
-<a href="#careers">🚀 Careers</a>
-<a href="#resources">🌐 Resources</a>
-</nav>
-</aside>
-
-<div class="main">
-
-<section id="home" class="section">
-<div class="topbar">
-<div>
-<h1 id="greeting">Welcome!</h1>
-<p class="subtitle" id="date"></p>
-</div>
+<div id="welcome">
+ <div class="welcome-card">
+  <div class="logo">💜</div>
+  <h1>Welcome to StudySpace</h1>
+  <p>Your little space to focus, plan, learn and grow.</p>
+  <input id="studentName" placeholder="Enter your name">
+  <br><br>
+  <button style="width:100%" onclick="enterApp()">Enter My Dashboard ✨</button>
+  <p class="small">One step at a time. You've got this!</p>
+ </div>
 </div>
 
-<div class="grid">
-<div class="card">
-<div class="label">📚 Total study tasks</div>
-<div class="stat" id="totalStat">0</div>
+<div id="app" class="hidden">
+ <aside class="sidebar">
+  <div class="brand">💜 StudySpace</div>
+  <div class="nav">
+   <button class="active" onclick="showSection('home',this)">🏠 Home</button>
+   <button onclick="showSection('tasks',this)">☑ Tasks</button>
+   <button onclick="showSection('timerSection',this)">⏱ Focus Timer</button>
+   <button onclick="showSection('notes',this)">📝 Notes</button>
+   <button onclick="showSection('planner',this)">📅 Planner</button>
+  </div>
+ </aside>
+
+ <main class="main">
+  <div class="top">
+   <div>
+    <h1 id="greeting">Hello!</h1>
+    <div class="small" id="today"></div>
+   </div>
+   <button class="secondary" onclick="toggleFocus()">🎯 Focus Mode</button>
+  </div>
+
+  <div id="home" class="section active">
+   <div class="grid">
+    <div class="card">
+     <div class="small">Today's Tasks</div>
+     <div class="stat" id="taskStat">0</div>
+    </div>
+    <div class="card">
+     <div class="small">Completed</div>
+     <div class="stat" id="doneStat">0</div>
+    </div>
+   </div>
+   <div class="card">
+    <h3>Today's Progress 🌷</h3>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <p id="progressText" class="small">0% completed</p>
+   </div>
+   <div class="card">
+    <h3>Quick Task ✨</h3>
+    <div class="row">
+     <input id="quickTask" placeholder="What do you need to do?">
+     <button onclick="addTask('quickTask')">Add</button>
+    </div>
+   </div>
+   <div class="card">
+    <h3>Daily Reminder 💜</h3>
+    Small progress is still progress. Keep going!
+   </div>
+  </div>
+
+  <div id="tasks" class="section">
+   <div class="card">
+    <h2>My Tasks ☑</h2>
+    <div class="row">
+     <input id="taskInput" placeholder="Add a new task">
+     <button onclick="addTask('taskInput')">Add</button>
+    </div>
+    <div id="taskList"></div>
+   </div>
+  </div>
+
+  <div id="timerSection" class="section">
+   <div class="card">
+    <h2>Focus Timer ⏱</h2>
+    <div class="timer" id="timerDisplay">25:00</div>
+    <div class="timer-buttons">
+     <button onclick="startTimer()">▶ Start</button>
+     <button class="secondary" onclick="pauseTimer()">⏸ Pause</button>
+     <button class="danger" onclick="resetTimer()">↻ Reset</button>
+    </div>
+    <p class="small" style="text-align:center;margin-top:20px">Focus on one thing at a time.</p>
+   </div>
+  </div>
+
+  <div id="notes" class="section">
+   <div class="card">
+    <h2>My Notes 📝</h2>
+    <input id="noteTitle" placeholder="Note title">
+    <br><br>
+    <textarea id="noteContent" placeholder="Write your notes here..."></textarea>
+    <br><br>
+    <button onclick="saveNote()">Save Note</button>
+    <div id="noteList"></div>
+   </div>
+  </div>
+
+  <div id="planner" class="section">
+   <div class="card">
+    <h2>Daily Planner 📅</h2>
+    <input id="planTime" placeholder="Time (e.g. 5:00 PM)">
+    <br><br>
+    <input id="planText" placeholder="Study session / activity">
+    <br><br>
+    <button onclick="addPlan()">Add Plan</button>
+    <div id="planList"></div>
+   </div>
+  </div>
+
+  <footer>Made with 💜 for your study journey</footer>
+ </main>
 </div>
 
-<div class="card">
-<div class="label">✅ Completed tasks</div>
-<div class="stat" id="doneStat">0</div>
-</div>
-
-<div class="card">
-<div class="label">🌟 Progress</div>
-<div class="stat" id="percentStat">0%</div>
-</div>
-</div>
-
-<div class="card" style="margin-top:20px">
-<h2>✨ Daily Motivation</h2>
-<p id="quote"></p>
-</div>
-</section>
-
-<section class="grid">
-<div class="card">
-<h2>👤 Student Profile</h2>
-<input id="profileName" placeholder="Enter your display name">
-<button onclick="saveProfile()">Save Profile</button>
-<p id="profileGreeting">Welcome, student!</p>
-</div>
-
-<div class="card">
-<h2>🔥 Daily Streak</h2>
-<div class="stat" id="streakCount">0 days</div>
-<p class="label">Complete a study task each day to build your streak!</p>
-</div>
-</section>
-
-<section class="card section" id="achievements" style="margin-top:22px">
-<h2>🏆 My Achievements</h2>
-<div class="grid">
-<div class="card">
-<h3>🌱 First Step</h3>
-<p>Complete your first study task.</p>
-<p id="badge1">🔒 Locked</p>
-</div>
-
-<div class="card">
-<h3>⭐ Consistent Learner</h3>
-<p>Complete 5 study tasks.</p>
-<p id="badge2">🔒 Locked</p>
-</div>
-
-<div class="card">
-<h3>🚀 Study Champion</h3>
-<p>Complete 10 study tasks.</p>
-<p id="badge3">🔒 Locked</p>
-</div>
-</div>
-</section>
-
-<section id="planner" class="card section" style="margin-top:22px">
-<h2>📚 Study Planner</h2>
-<input id="taskInput" placeholder="Add a study task...">
-<button onclick="addTask()">+ Add Task</button>
-<p id="progressText">0 of 0 completed</p>
-<div class="progressbar"><div id="bar"></div></div>
-<div id="taskList"></div>
-</section>
-
-<section id="focus" class="card section" style="margin-top:22px">
-<h2>⏳ Focus Room</h2>
-<p class="label">25 minute focus session</p>
-<div class="timer" id="timerDisplay">25:00</div>
-<div style="text-align:center">
-<button onclick="startTimer()">Start</button>
-<button class="secondary" onclick="pauseTimer()">Pause</button>
-<button class="secondary" onclick="resetTimer()">Reset</button>
-</div>
-</section>
-
-<section id="notes" class="card section" style="margin-top:22px">
-<h2>📝 Quick Notes</h2>
-<textarea id="notesBox" rows="7" placeholder="Write your ideas, reminders or notes..."></textarea>
-<button onclick="saveNotes()">Save Notes</button>
-<p id="noteStatus"></p>
-</section>
-
-<section id="exam" class="card section" style="margin-top:22px">
-<h2>📅 Exam Countdown</h2>
-<input type="date" id="examDate">
-<button onclick="countdown()">Calculate</button>
-<p id="countResult"></p>
-</section>
-
-<section id="careers" class="card section" style="margin-top:22px">
-<h2>🚀 Explore Careers</h2>
-<div class="grid">
-<div class="card">
-<h3>💻 Web Development</h3>
-<p>Build websites, web apps and digital products.</p>
-</div>
-<div class="card">
-<h3>🤖 AI & ML</h3>
-<p>Explore intelligent systems and machine learning.</p>
-</div>
-<div class="card">
-<h3>🎨 UI/UX Design</h3>
-<p>Design better digital experiences.</p>
-</div>
-<div class="card">
-<h3>🔐 Cybersecurity</h3>
-<p>Understand digital security and protection.</p>
-</div>
-<div class="card">
-<h3>📱 App Development</h3>
-<p>Create applications for mobile and desktop.</p>
-</div>
-<div class="card">
-<h3>📊 Data Science</h3>
-<p>Explore data, statistics and insights.</p>
-</div>
-</div>
-</section>
-
-<section id="resources" class="card section" style="margin-top:22px">
-<h2>🌐 Learning Resources</h2>
-<div class="grid">
-<div class="card resource">
-<h3>HTML & CSS</h3>
-<a href="https://www.w3schools.com" target="_blank" rel="noopener">W3Schools ↗</a>
-</div>
-<div class="card resource">
-<h3>Programming</h3>
-<a href="https://www.freecodecamp.org" target="_blank" rel="noopener">freeCodeCamp ↗</a>
-</div>
-<div class="card resource">
-<h3>Python</h3>
-<a href="https://www.python.org/about/gettingstarted/" target="_blank" rel="noopener">Python ↗</a>
-</div>
-<div class="card resource">
-<h3>School</h3>
-<a href="https://ncert.nic.in" target="_blank" rel="noopener">NCERT ↗</a>
-</div>
-<div class="card resource">
-<h3>Maths & Science</h3>
-<a href="https://www.khanacademy.org" target="_blank" rel="noopener">Khan Academy ↗</a>
-</div>
-<div class="card resource">
-<h3>Courses</h3>
-<a href="https://www.edx.org" target="_blank" rel="noopener">edX ↗</a>
-</div>
-</div>
-</section>
-
-<footer>Student Life Hub © 2026 | Built for students 💜</footer>
-
-</div>
+<div id="focusOverlay" class="hidden">
+ <div class="focusbox card">
+  <h1>Focus Mode 🎯</h1>
+  <p>One task. One session. You can do this.</p>
+  <div class="timer" id="focusDisplay">25:00</div>
+  <div class="timer-buttons">
+   <button onclick="startTimer()">▶ Start</button>
+   <button class="secondary" onclick="pauseTimer()">⏸ Pause</button>
+   <button class="danger" onclick="resetTimer()">↻ Reset</button>
+  </div>
+  <br>
+  <button class="secondary" onclick="toggleFocus()">Exit Focus</button>
+ </div>
 </div>
 
 <script>
-const now=new Date();
-const hour=now.getHours();
+const getData=(key,def)=>{try{return JSON.parse(localStorage.getItem(key))??def}catch{return def}};
+const setData=(key,val)=>localStorage.setItem(key,JSON.stringify(val));
 
-document.getElementById("greeting").textContent=
-hour<12?"Good morning! ☀️":
-hour<18?"Good afternoon! 🌷":"Good evening! 🌙";
-
-document.getElementById("date").textContent=
-now.toLocaleDateString(undefined,{
-weekday:"long",day:"numeric",month:"long",year:"numeric"
-});
-
-const quotes=[
-"Small steps lead to big results.",
-"Consistency is your superpower.",
-"Keep learning. Keep growing.",
-"Your future starts with today's effort.",
-"You can always learn something new."
-];
-
-document.getElementById("quote").textContent=
-quotes[Math.floor(Math.random()*quotes.length)];
-
-let tasks=JSON.parse(localStorage.getItem("hubTasks")||"[]");
-
-function renderTasks(){
-const list=document.getElementById("taskList");
-list.innerHTML="";
-
-tasks.forEach((task,i)=>{
-const row=document.createElement("div");
-row.className="task"+(task.done?" done":"");
-
-const checkbox=document.createElement("input");
-checkbox.type="checkbox";
-checkbox.checked=task.done;
-checkbox.onchange=()=>{
-tasks[i].done=checkbox.checked;
-saveTasks();
-};
-
-const span=document.createElement("span");
-span.textContent=task.text;
-
-const del=document.createElement("button");
-del.textContent="✕";
-del.onclick=()=>{
-tasks.splice(i,1);
-saveTasks();
-};
-
-row.append(checkbox,span,del);
-list.appendChild(row);
-});
-
-const total=tasks.length;
-const done=tasks.filter(t=>t.done).length;
-const percent=total?Math.round(done/total*100):0;
-
-document.getElementById("totalStat").textContent=total;
-document.getElementById("doneStat").textContent=done;
-document.getElementById("percentStat").textContent=percent+"%";
-document.getElementById("progressText").textContent=
-done+" of "+total+" completed";
-document.getElementById("bar").style.width=percent+"%";
-}
-
-function saveTasks(){
-localStorage.setItem("hubTasks",JSON.stringify(tasks));
-renderTasks();
-updateStreak();
-}
-}let profileName=localStorage.getItem("hubProfile")||"";
-document.getElementById("profileName").value=profileName;
-document.getElementById("profileGreeting").textContent=
-profileName?"Welcome, "+profileName+"!":"Welcome, student!";
-
-function saveProfile(){
-const name=document.getElementById("profileName").value.trim();
-localStorage.setItem("hubProfile",name);
-document.getElementById("profileGreeting").textContent=
-name?"Welcome, "+name+"!":"Welcome, student!";
-}
-
-function updateStreak(){
-const today=new Date().toLocaleDateString("en-CA");
-const last=localStorage.getItem("hubLastCompleted");
-let streak=Number(localStorage.getItem("hubStreak")||0);
-
-const completedToday=tasks.some(t=>t.done);
-
-if(completedToday && last!==today){
-if(last){
-const yesterday=new Date();
-yesterday.setDate(yesterday.getDate()-1);
-const yesterdayKey=yesterday.toLocaleDateString("en-CA");
-streak=last===yesterdayKey?streak+1:1;
-}else{
-streak=1;
-}
-localStorage.setItem("hubStreak",streak);
-localStorage.setItem("hubLastCompleted",today);
-}
-document.getElementById("streakCount").textContent=streak+" days";
-}
-
-updateStreak();
-
-function addTask(){
-const input=document.getElementById("taskInput");
-if(!input.value.trim())return;
-tasks.push({text:input.value.trim(),done:false});
-input.value="";
-saveTasks();
-}
-
-document.getElementById("taskInput").addEventListener("keydown",e=>{
-if(e.key==="Enter")addTask();
-});
-
-renderTasks();
-
+let tasks=getData('ss_tasks',[]);
+let notes=getData('ss_notes',[]);
+let plans=getData('ss_plans',[]);
+let name=localStorage.getItem('ss_name')||'Student';
 let seconds=1500;
 let interval=null;
 
-function updateTimer(){
-document.getElementById("timerDisplay").textContent=
-String(Math.floor(seconds/60)).padStart(2,"0")+":"+
-String(seconds%60).padStart(2,"0");
+document.getElementById('today').textContent=new Date().toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+document.getElementById('greeting').textContent='Hello, '+name+'! 💜';
+
+function enterApp(){
+ let n=document.getElementById('studentName').value.trim()||name;
+ name=n;
+ localStorage.setItem('ss_name',name);
+ document.getElementById('greeting').textContent='Hello, '+name+'! 💜';
+ document.getElementById('welcome').classList.add('hidden');
+ document.getElementById('app').classList.remove('hidden');
+ renderAll();
+}
+if(localStorage.getItem('ss_entered')==='yes'){
+ document.getElementById('welcome').classList.add('hidden');
+ document.getElementById('app').classList.remove('hidden');
+}
+document.getElementById('studentName').value=name;
+
+function showSection(id,btn){
+ document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+ document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+ if(btn)btn.classList.add('active');
 }
 
+function addTask(inputId){
+ let input=document.getElementById(inputId);
+ let value=input.value.trim();
+ if(!value)return;
+ tasks.push({text:value,done:false});
+ setData('ss_tasks',tasks);
+ input.value='';
+ renderTasks();
+ updateProgress();
+}
+function deleteTask(i){
+ tasks.splice(i,1);
+ setData('ss_tasks',tasks);
+ renderTasks();
+ updateProgress();
+}
+function toggleTask(i){
+ tasks[i].done=!tasks[i].done;
+ setData('ss_tasks',tasks);
+ renderTasks();
+ updateProgress();
+}
+function renderTasks(){
+ let el=document.getElementById('taskList');
+ el.innerHTML='';
+ tasks.forEach((t,i)=>{
+  let div=document.createElement('div');
+  div.className='item'+(t.done?' done':'');
+  let span=document.createElement('span');
+  span.textContent=t.text;
+  let controls=document.createElement('div');
+  controls.className='row';
+  let check=document.createElement('button');
+  check.className='secondary';
+  check.textContent=t.done?'↩':'✓';
+  check.onclick=()=>toggleTask(i);
+  let del=document.createElement('button');
+  del.className='danger';
+  del.textContent='✕';
+  del.onclick=()=>deleteTask(i);
+  controls.append(check,del);
+  div.append(span,controls);
+  el.append(div);
+ });
+}
+function updateProgress(){
+ let total=tasks.length;
+ let done=tasks.filter(t=>t.done).length;
+ let percent=total?Math.round(done/total*100):0;
+ document.getElementById('taskStat').textContent=total;
+ document.getElementById('doneStat').textContent=done;
+ document.getElementById('progressFill').style.width=percent+'%';
+ document.getElementById('progressText').textContent=percent+'% completed';
+}
+
+function displayTime(){
+ let m=Math.floor(seconds/60);
+ let s=seconds%60;
+ let txt=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+ document.getElementById('timerDisplay').textContent=txt;
+ document.getElementById('focusDisplay').textContent=txt;
+}
 function startTimer(){
-if(interval!==null)return;
-interval=setInterval(()=>{
-if(seconds>0){
-seconds--;
-updateTimer();
-}else{
-pauseTimer();
-alert("Focus session completed!");
+ if(interval!==null)return;
+ if(seconds<=0)seconds=1500;
+ interval=setInterval(()=>{
+  seconds--;
+  displayTime();
+  if(seconds<=0){
+   clearInterval(interval);
+   interval=null;
+   seconds=0;
+   displayTime();
+   alert('Focus session completed! Great work 💜');
+  }
+ },1000);
 }
-},1000);
-}
-
 function pauseTimer(){
-clearInterval(interval);
-interval=null;
+ if(interval!==null){
+  clearInterval(interval);
+  interval=null;
+ }
 }
-
 function resetTimer(){
-pauseTimer();
-seconds=1500;
-updateTimer();
+ pauseTimer();
+ seconds=1500;
+ displayTime();
+}
+function toggleFocus(){
+ document.getElementById('focusOverlay').classList.toggle('hidden');
 }
 
-updateTimer();
-
-const notesBox=document.getElementById("notesBox");
-notesBox.value=localStorage.getItem("hubNotes")||"";
-
-function saveNotes(){
-localStorage.setItem("hubNotes",notesBox.value);
-document.getElementById("noteStatus").textContent="Saved successfully! 💜";
+function saveNote(){
+ let title=document.getElementById('noteTitle').value.trim();
+ let content=document.getElementById('noteContent').value.trim();
+ if(!title&&!content)return;
+ notes.unshift({title:title||'Untitled',content});
+ setData('ss_notes',notes);
+ document.getElementById('noteTitle').value='';
+ document.getElementById('noteContent').value='';
+ renderNotes();
+}
+function deleteNote(i){
+ notes.splice(i,1);
+ setData('ss_notes',notes);
+ renderNotes();
+}
+function renderNotes(){
+ let el=document.getElementById('noteList');
+ el.innerHTML='';
+ notes.forEach((n,i)=>{
+  let div=document.createElement('div');
+  div.className='card';
+  let h=document.createElement('h3');
+  h.textContent=n.title;
+  let p=document.createElement('p');
+  p.style.whiteSpace='pre-wrap';
+  p.textContent=n.content;
+  let b=document.createElement('button');
+  b.className='danger';
+  b.textContent='Delete';
+  b.onclick=()=>deleteNote(i);
+  div.append(h,p,b);
+  el.append(div);
+ });
 }
 
-function countdown(){
-const value=document.getElementById("examDate").value;
-const result=document.getElementById("countResult");
-
-if(!value){
-result.textContent="Select your exam date first.";
-return;
+function addPlan(){
+ let time=document.getElementById('planTime').value.trim();
+ let text=document.getElementById('planText').value.trim();
+ if(!time||!text)return;
+ plans.push({time,text});
+ setData('ss_plans',plans);
+ document.getElementById('planTime').value='';
+ document.getElementById('planText').value='';
+ renderPlans();
 }
-
-const today=new Date();
-today.setHours(0,0,0,0);
-const target=new Date(value+"T00:00:00");
-const diff=Math.ceil((target-today)/86400000);
-
-result.textContent=diff<0?"Date has passed!":
-diff===0?"Your exam is today! 🎯":
-diff+" days remaining! 🌷";
+function deletePlan(i){
+ plans.splice(i,1);
+ setData('ss_plans',plans);
+ renderPlans();
 }
-
-if("serviceWorker" in navigator){
-window.addEventListener("load",()=>{
-navigator.serviceWorker.register("./service-worker.js")
-.catch(err=>console.log(err));
-});
+function renderPlans(){
+ let el=document.getElementById('planList');
+ el.innerHTML='';
+ plans.forEach((p,i)=>{
+  let div=document.createElement('div');
+  div.className='item';
+  let span=document.createElement('span');
+  span.textContent=p.time+' — '+p.text;
+  let b=document.createElement('button');
+  b.className='danger';
+  b.textContent='✕';
+  b.onclick=()=>deletePlan(i);
+  div.append(span,b);
+  el.append(div);
+ });
 }
+function renderAll(){
+ renderTasks();
+ renderNotes();
+ renderPlans();
+ updateProgress();
+ displayTime();
+}
+renderAll();
 </script>
 </body>
 </html>
