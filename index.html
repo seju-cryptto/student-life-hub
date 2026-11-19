@@ -1,604 +1,389 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#9470d8">
-<title>StudySpace</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>StudentSpace ✨</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#f7f5fc;color:#302b40;transition:.2s}
+:root{
+--bg:#f7f3ff;--card:#fff;--text:#35264b;--muted:#81758f;
+--accent:#9b78dc;--border:#e9def8;--soft:#eee5ff
+}
+body.dark{
+--bg:#171421;--card:#251e33;--text:#eee5ff;--muted:#b8aaca;
+--accent:#b794f6;--border:#40334f;--soft:#352949
+}
+body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text);transition:.2s}
 button,input,textarea,select{font:inherit}
-button{cursor:pointer;border:0;border-radius:12px;padding:11px 15px;background:#9470d8;color:white}
-button:hover{opacity:.85}
-input,textarea,select{border:1px solid #e5def3;border-radius:12px;padding:12px;width:100%;background:var(--card);color:var(--text)}
-.hidden{display:none!important}
-.small{color:var(--muted);font-size:13px}
-.card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:22px;margin-bottom:18px;box-shadow:0 4px 18px rgba(90,65,130,.04)}
-.secondary{background:#eee8ff;color:#6949a5}
-.danger{background:#ffe8ee;color:#a83f65}
-.row{display:flex;gap:10px;align-items:center}
-.row input{flex:1}
-h1,h2,h3{margin-top:0}
-#welcome{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
-.welcome-card{max-width:520px;width:100%;background:var(--card);border-radius:28px;padding:40px;text-align:center;box-shadow:0 15px 60px #ded4f2}
-.welcome-card .logo{font-size:55px}
-.welcome-card h1{color:#9470d8;font-size:36px}
-.welcome-card p{color:var(--muted);line-height:1.6}
-#app{min-height:100vh}
-.sidebar{width:230px;background:var(--card);position:fixed;left:0;top:0;bottom:0;padding:25px;border-right:1px solid var(--border);overflow-y:auto}
-.brand{font-size:23px;font-weight:bold;color:#9470d8;margin-bottom:30px}
-.nav button{width:100%;text-align:left;margin-bottom:9px;background:var(--card);color:var(--text)}
-.nav button.active,.nav button:hover{background:#eee8ff;color:#6949a5}
-.main{margin-left:230px;padding:30px;max-width:1400px}
-.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:25px}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
-.stat{font-size:28px;font-weight:bold;color:#9470d8;margin-top:10px}
-.timer{font-size:65px;text-align:center;font-weight:bold;color:#9470d8;margin:15px}
-.timer-buttons{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
-.item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px;border-bottom:1px solid var(--border)}
-.item span{overflow-wrap:anywhere}
-.item button{padding:8px 12px}
-.item.done span{text-decoration:line-through;color:#aaa}
-textarea{min-height:110px;resize:vertical}
-.progress-bar{height:12px;border-radius:20px;background:#eee8ff;overflow:hidden}
-.progress-fill{height:100%;width:0;background:#9470d8;transition:width .3s}
+button{border:0;border-radius:12px;padding:10px 14px;background:var(--accent);color:white;cursor:pointer}
+button:hover{opacity:.88}
+input,textarea,select{padding:11px;border:1px solid var(--border);border-radius:10px;background:var(--card);color:var(--text);width:100%}
+.wrap{max-width:1150px;margin:auto;padding:22px}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+h1{font-size:26px;margin:8px 0}
+h2{font-size:19px}
+small,.muted{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;margin-top:20px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:20px}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0}
+nav button{background:var(--soft);color:var(--text)}
+nav button.active{background:var(--accent);color:white}
 .section{display:none}
 .section.active{display:block}
-#focusOverlay{position:fixed;inset:0;background:var(--bg);z-index:99;display:flex;align-items:center;justify-content:center;padding:20px}
-.focusbox{max-width:500px;width:100%;text-align:center}
-#focusOverlay .timer{font-size:85px}
-footer{text-align:center;color:var(--muted);font-size:12px;margin-top:30px}
-.quote{font-size:18px;line-height:1.6;color:#9470d8}
-.tag{background:#eee8ff;color:#6949a5;padding:5px 9px;border-radius:9px;font-size:12px}
-:root{--bg:#f7f5fc;--card:#fff;--text:#302b40;--muted:#88839a;--border:#eee8f7}
-body.dark{--bg:#191625;--card:#252136;--text:#f1eaff;--muted:#b9b0ce;--border:#39314c}
-body.dark .nav button{color:var(--text)}
-body.dark .secondary{background:#403355;color:#e8ddff}
-body.dark .danger{background:#543044;color:#ffc9df}
-body.dark .progress-bar{background:#403355}
-body.dark .welcome-card{box-shadow:0 15px 60px #100d19}
-@media(max-width:800px){
-.sidebar{position:static;width:100%;border-right:none;border-bottom:1px solid var(--border)}
-.brand{margin-bottom:15px}
-.nav{display:flex;overflow-x:auto;gap:6px}
-.nav button{width:auto;white-space:nowrap;margin:0}
-.main{margin-left:0;padding:18px}
-.grid{grid-template-columns:1fr}
-.top{flex-wrap:wrap}
-}
-@media(max-width:420px){
-.welcome-card{padding:25px}
-.welcome-card h1{font-size:28px}
-.timer{font-size:50px}
-}
+.stat{font-size:28px;font-weight:bold;margin:12px 0}
+.bar{height:12px;border-radius:99px;background:var(--soft);overflow:hidden}
+.bar div{height:100%;background:var(--accent);width:0%;transition:.3s}
+.row{display:flex;gap:10px;align-items:center;margin:10px 0}
+.row input{flex:1}
+.item{padding:12px;background:var(--soft);border-radius:12px;margin:8px 0;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.item span{overflow-wrap:anywhere}
+.badge{display:inline-block;background:var(--soft);padding:12px;border-radius:16px;text-align:center;margin:6px}
+.badge.locked{opacity:.35;filter:grayscale(1)}
+#timer{font-size:60px;font-weight:bold;text-align:center;margin:20px}
+.center{text-align:center}
+.garden{font-size:45px;line-height:1.8}
+.hidden{display:none}
+.quote{font-style:italic;color:var(--muted)}
+footer{text-align:center;padding:30px;color:var(--muted)}
+@media(max-width:600px){.wrap{padding:12px}#timer{font-size:42px}}
 </style>
 </head>
 <body>
+<div class="wrap">
 
-<div id="welcome">
- <div class="welcome-card">
-  <div class="logo">💜</div>
-  <h1>Welcome to StudySpace</h1>
-  <p>Your little space to focus, plan, learn and grow.</p>
-  <input id="studentName" placeholder="Enter your name">
-  <br><br>
-  <button style="width:100%" onclick="enterApp()">Enter My Dashboard ✨</button>
-  <p class="small">One step at a time. You've got this!</p>
- </div>
+<header>
+<div>
+<h1>🌸 StudentSpace</h1>
+<small>Your little universe of learning</small>
+</div>
+<div class="row" style="flex-wrap:wrap">
+<button onclick="toggleTheme()">🌙 Theme</button>
+<button onclick="editProfile()">👤 Profile</button>
+</div>
+</header>
+
+<div class="card" style="margin-top:16px">
+<h2 id="greeting">Welcome!</h2>
+<div class="muted">Level <span id="level">1</span> · <span id="xp">0</span> XP</div>
+<div class="bar" style="margin:12px 0"><div id="xpbar"></div></div>
+<small id="xptext"></small>
 </div>
 
-<div id="app" class="hidden">
- <aside class="sidebar">
-  <div class="brand">💜 StudySpace</div>
-  <div class="nav">
-   <button class="active" onclick="showSection('home',this)">🏠 Home</button>
-   <button onclick="showSection('tasks',this)">☑ Tasks</button>
-   <button onclick="showSection('timerSection',this)">⏱ Focus Timer</button>
-   <button onclick="showSection('notes',this)">📝 Notes</button>
-   <button onclick="showSection('planner',this)">📅 Planner</button>
-   <button onclick="showSection('analytics',this)">📊 Analytics</button>
-   <button onclick="showSection('profile',this)">👤 Profile</button>
-  </div>
- </aside>
+<nav id="nav">
+<button class="active" onclick="show('home',this)">🏠 Home</button>
+<button onclick="show('tasks',this)">📝 Tasks</button>
+<button onclick="show('focus',this)">⏱️ Focus</button>
+<button onclick="show('notes',this)">📓 Notes</button>
+<button onclick="show('planner',this)">📅 Planner</button>
+<button onclick="show('garden',this)">🌱 Garden</button>
+<button onclick="show('achievements',this)">🏆 Achievements</button>
+<button onclick="show('analytics',this)">📊 Analytics</button>
+</nav>
 
- <main class="main">
-  <div class="top">
-   <div>
-    <h1 id="greeting">Hello!</h1>
-    <div class="small" id="today"></div>
-   </div>
-   <button class="secondary" onclick="toggleFocus()">🎯 Focus Mode</button>
-  </div>
-
-  <div id="home" class="section active">
-   <div class="grid">
-    <div class="card"><div class="small">Today's Tasks</div><div class="stat" id="taskStat">0</div></div>
-    <div class="card"><div class="small">Completed</div><div class="stat" id="doneStat">0</div></div>
-    <div class="card"><div class="small">Focus Minutes</div><div class="stat" id="todayMinutes">0</div></div>
-    <div class="card"><div class="small">Study Streak 🔥</div><div class="stat" id="streakStat">0 days</div></div>
-   </div>
-   <div class="card">
-    <h3>Today's Progress 🌷</h3>
-    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-    <p id="progressText" class="small">0% completed</p>
-   </div>
-   <div class="card">
-    <h3>Quick Task ✨</h3>
-    <div class="row"><input id="quickTask" placeholder="What do you need to do?"><button onclick="addTask('quickTask')">Add</button></div>
-   </div>
-   <div class="card">
-    <h3>Daily Quote ✨</h3>
-    <div class="quote" id="quote"></div>
-   </div>
-  </div>
-
-  <div id="tasks" class="section">
-   <div class="card">
-    <h2>My Tasks ☑</h2>
-    <div class="row"><input id="taskInput" placeholder="Add a new task"><button onclick="addTask('taskInput')">Add</button></div>
-    <div id="taskList"></div>
-   </div>
-  </div>
-
-  <div id="timerSection" class="section">
-   <div class="card">
-    <h2>Focus Timer ⏱</h2>
-    <select id="duration" onchange="changeDuration()">
-     <option value="25">25 minutes</option>
-     <option value="45">45 minutes</option>
-     <option value="60">60 minutes</option>
-    </select>
-    <div class="timer" id="timerDisplay">25:00</div>
-    <div class="timer-buttons">
-     <button onclick="startTimer()">▶ Start</button>
-     <button class="secondary" onclick="pauseTimer()">⏸ Pause</button>
-     <button class="danger" onclick="resetTimer()">↻ Reset</button>
-    </div>
-    <br>
-    <div class="row" style="justify-content:center;flex-wrap:wrap">
-     <button class="secondary" onclick="toggleFocusSound()">🎵 Focus Sound</button>
-     <button class="secondary" onclick="toggleCompletionSound()">🔔 Completion Sound</button>
-    </div>
-    <p class="small" style="text-align:center" id="soundStatus">Focus sound off · Completion sound on</p>
-   </div>
-  </div>
-
-  <div id="notes" class="section">
-   <div class="card">
-    <h2>My Notes 📝</h2>
-    <input id="noteTitle" placeholder="Note title">
-    <br><br>
-    <textarea id="noteContent" placeholder="Write your notes here..."></textarea>
-    <br><br>
-    <button onclick="saveNote()">Save Note</button>
-    <div id="noteList"></div>
-   </div>
-  </div>
-
-  <div id="planner" class="section">
-   <div class="card">
-    <h2>Daily Planner 📅</h2>
-    <label class="small">Date</label>
-    <input type="date" id="planDate">
-    <br><br>
-    <input id="planTime" placeholder="Time (e.g. 5:00 PM)">
-    <br><br>
-    <input id="planText" placeholder="Study session / activity">
-    <br><br>
-    <button onclick="addPlan()">Add Plan</button>
-    <div id="planList"></div>
-   </div>
-  </div>
-
-  <div id="analytics" class="section">
-   <div class="card">
-    <h2>Study Analytics 📊</h2>
-    <div class="grid">
-     <div><div class="small">Total Focus Minutes</div><div class="stat" id="totalMinutes">0</div></div>
-     <div><div class="small">Focus Sessions</div><div class="stat" id="sessionStat">0</div></div>
-     <div><div class="small">Tasks Completed</div><div class="stat" id="totalCompleted">0</div></div>
-     <div><div class="small">Study Streak</div><div class="stat" id="analyticsStreak">0 days</div></div>
-    </div>
-   </div>
-   <div class="card">
-    <h3>Recent Study Activity</h3>
-    <div id="activityList"></div>
-   </div>
-  </div>
-
-  <div id="profile" class="section">
-   <div class="card">
-    <h2>My Profile 👤</h2>
-    <label class="small">Your name</label>
-    <input id="profileName" placeholder="Your name">
-    <br><br>
-    <button onclick="saveProfile()">Save Profile</button>
-    <br><br>
-    <button class="secondary" onclick="toggleTheme()">🌙 / ☀️ Toggle Theme</button>
-    <br><br>
-    <button class="danger" onclick="exitDashboard()">Exit to Welcome</button>
-   </div>
-  </div>
-
-  <footer>Made with 💜 for your study journey</footer>
- </main>
+<section id="home" class="section active">
+<div class="grid">
+<div class="card"><small>Tasks completed</small><div class="stat" id="homeTasks">0</div></div>
+<div class="card"><small>Focus sessions</small><div class="stat" id="homeSessions">0</div></div>
+<div class="card"><small>Total XP</small><div class="stat" id="homeXP">0</div></div>
+<div class="card"><small>Study streak</small><div class="stat">🔥 <span id="streak">0</span></div></div>
 </div>
+<div class="card" style="margin-top:16px">
+<h2>✨ Today's inspiration</h2>
+<p class="quote" id="quote"></p>
+</div>
+<div class="card" style="margin-top:16px">
+<h2>🌸 Your progress</h2>
+<div class="bar"><div id="progressbar"></div></div>
+<p id="progresstext" class="muted"></p>
+</div>
+</section>
 
-<div id="focusOverlay" class="hidden">
- <div class="focusbox card">
-  <h1>Focus Mode 🎯</h1>
-  <p>One task. One session. You can do this.</p>
-  <div class="timer" id="focusDisplay">25:00</div>
-  <div class="timer-buttons">
-   <button onclick="startTimer()">▶ Start</button>
-   <button class="secondary" onclick="pauseTimer()">⏸ Pause</button>
-   <button class="danger" onclick="resetTimer()">↻ Reset</button>
-  </div>
-  <br><button class="secondary" onclick="toggleFocus()">Exit Focus</button>
- </div>
+<section id="tasks" class="section">
+<div class="card">
+<h2>📝 My Tasks</h2>
+<div class="row"><input id="taskInput" placeholder="Add a task..."><button onclick="addTask()">Add</button></div>
+<div id="taskList"></div>
+</div>
+</section>
+
+<section id="focus" class="section">
+<div class="card center">
+<h2>⏱️ Focus Timer</h2>
+<select id="duration" onchange="resetTimer()">
+<option value="25">25 minutes</option>
+<option value="45">45 minutes</option>
+<option value="60">60 minutes</option>
+</select>
+<div id="timer">25:00</div>
+<div class="row" style="justify-content:center;flex-wrap:wrap">
+<button onclick="startTimer()">▶ Start</button>
+<button onclick="pauseTimer()">⏸ Pause</button>
+<button onclick="resetTimer()">↻ Reset</button>
+</div>
+<button onclick="toggleSound()" style="margin-top:10px">🎵 Focus Sound</button>
+<p class="muted">Focus on one thing at a time.</p>
+</div>
+</section>
+
+<section id="notes" class="section">
+<div class="card">
+<h2>📓 Notes</h2>
+<input id="noteTitle" placeholder="Note title">
+<textarea id="noteText" rows="5" placeholder="Write your notes..."></textarea>
+<button onclick="saveNote()" style="margin-top:10px">Save note</button>
+<div id="noteList"></div>
+</div>
+</section>
+
+<section id="planner" class="section">
+<div class="card">
+<h2>📅 Planner</h2>
+<input id="planText" placeholder="What do you plan to do?">
+<div class="row">
+<input id="planDate" type="date">
+<input id="planTime" type="time">
+</div>
+<button onclick="addPlan()">Add plan</button>
+<div id="planList"></div>
+</div>
+</section>
+
+<section id="garden" class="section">
+<div class="card center">
+<h2>🌱 My Study Garden</h2>
+<p class="muted">Every 100 XP grows your garden!</p>
+<div class="garden" id="gardenPlants"></div>
+<div class="stat" id="gardenLevel"></div>
+<p id="gardenMessage"></p>
+</div>
+</section>
+
+<section id="achievements" class="section">
+<div class="card">
+<h2>🏆 Achievements</h2>
+<div id="badgeList"></div>
+</div>
+</section>
+
+<section id="analytics" class="section">
+<div class="grid">
+<div class="card"><small>Total XP</small><div class="stat" id="aXP">0</div></div>
+<div class="card"><small>Completed tasks</small><div class="stat" id="aTasks">0</div></div>
+<div class="card"><small>Focus sessions</small><div class="stat" id="aSessions">0</div></div>
+<div class="card"><small>Focus minutes</small><div class="stat" id="aMinutes">0</div></div>
+<div class="card"><small>Current streak</small><div class="stat" id="aStreak">0</div></div>
+</div>
+</section>
+
+<footer>Made with 💜 for your study journey</footer>
 </div>
 
 <script>
-const getData=(key,def)=>{try{return JSON.parse(localStorage.getItem(key))??def}catch{return def}};
-const setData=(key,val)=>localStorage.setItem(key,JSON.stringify(val));
-const todayKey=()=>new Date().toLocaleDateString('en-CA');
+const get=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}};
+const put=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
+let tasks=get("g_tasks",[]);
+let notes=get("g_notes",[]);
+let plans=get("g_plans",[]);
+let xp=get("g_xp",0);
+let sessions=get("g_sessions",0);
+let minutes=get("g_minutes",0);
+let streakDates=get("g_dates",[]);
+let name=localStorage.getItem("g_name")||"Student";
+let theme=localStorage.getItem("g_theme")||"light";
+let timerSeconds=0,timerInterval=null,soundOn=false,audioCtx=null;
+document.body.classList.toggle("dark",theme==="dark");
 
-let tasks=getData('ss_tasks',[]);
-let notes=getData('ss_notes',[]);
-let plans=getData('ss_plans',[]);
-let sessions=getData('ss_sessions',[]);
-let studyDays=getData('ss_days',[]);
-let name=localStorage.getItem('ss_name')||'Student';
-let seconds=1500;
-let interval=null;
-let focusSound=false;
-let completionSound=true;
-let audioContext=null;
-let noiseNode=null;
-let noiseGain=null;
-
-const quotes=[
-"Small progress is still progress. Keep going! 💜",
-"Your future is built by what you do today.",
-"Believe in the effort you are making.",
-"Consistency beats perfection.",
-"Every page you study is a step forward.",
-"You don't have to be perfect to make progress.",
-"Focus on the next small step."
-];
-document.getElementById('quote').textContent=quotes[new Date().getDate()%quotes.length];
-document.getElementById('today').textContent=new Date().toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-document.getElementById('greeting').textContent='Hello, '+name+'! 💜';
-document.getElementById('profileName').value=name;
-document.getElementById('planDate').value=todayKey();
-document.getElementById('studentName').value=name;
-
-if(localStorage.getItem('ss_theme')==='dark')document.body.classList.add('dark');
-
-function enterApp(){
- let n=document.getElementById('studentName').value.trim()||name;
- name=n;
- localStorage.setItem('ss_name',name);
- localStorage.setItem('ss_entered','yes');
- document.getElementById('greeting').textContent='Hello, '+name+'! 💜';
- document.getElementById('profileName').value=name;
- document.getElementById('welcome').classList.add('hidden');
- document.getElementById('app').classList.remove('hidden');
- renderAll();
+function show(id,b){
+document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+document.getElementById(id).classList.add("active");
+document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));
+if(b)b.classList.add("active");
 }
-if(localStorage.getItem('ss_entered')==='yes'){
- document.getElementById('welcome').classList.add('hidden');
- document.getElementById('app').classList.remove('hidden');
+function editProfile(){
+let n=prompt("What should we call you?",name);
+if(n&&n.trim()){name=n.trim();localStorage.setItem("g_name",name);render();}
 }
-
-function showSection(id,btn){
- document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
- document.getElementById(id).classList.add('active');
- document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
- if(btn)btn.classList.add('active');
+function toggleTheme(){
+theme=theme==="dark"?"light":"dark";
+localStorage.setItem("g_theme",theme);
+document.body.classList.toggle("dark",theme==="dark");
 }
-
-function addTask(inputId){
- let input=document.getElementById(inputId);
- let value=input.value.trim();
- if(!value)return;
- tasks.push({text:value,done:false,created:todayKey()});
- setData('ss_tasks',tasks);
- input.value='';
- renderTasks();
- updateProgress();
+function today(){return new Date().toISOString().slice(0,10)}
+function award(points){
+xp+=points;put("g_xp",xp);render();
+}
+function addTask(){
+let t=document.getElementById("taskInput").value.trim();
+if(!t)return;
+tasks.push({text:t,done:false});
+put("g_tasks",tasks);
+document.getElementById("taskInput").value="";
+render();
+}
+function finishTask(i){
+if(tasks[i].done)return;
+tasks[i].done=true;put("g_tasks",tasks);
+award(10);
 }
 function deleteTask(i){
- tasks.splice(i,1);
- setData('ss_tasks',tasks);
- renderTasks();
- updateProgress();
-}
-function toggleTask(i){
- tasks[i].done=!tasks[i].done;
- if(tasks[i].done)tasks[i].completedDate=todayKey();
- else tasks[i].completedDate=null;
- setData('ss_tasks',tasks);
- renderTasks();
- updateProgress();
+tasks.splice(i,1);put("g_tasks",tasks);render();
 }
 function renderTasks(){
- let el=document.getElementById('taskList');
- el.innerHTML='';
- tasks.forEach((t,i)=>{
-  let div=document.createElement('div');
-  div.className='item'+(t.done?' done':'');
-  let span=document.createElement('span');
-  span.textContent=t.text;
-  let controls=document.createElement('div');
-  controls.className='row';
-  let check=document.createElement('button');
-  check.className='secondary';
-  check.textContent=t.done?'↩':'✓';
-  check.onclick=()=>toggleTask(i);
-  let del=document.createElement('button');
-  del.className='danger';
-  del.textContent='✕';
-  del.onclick=()=>deleteTask(i);
-  controls.append(check,del);
-  div.append(span,controls);
-  el.append(div);
- });
+let el=document.getElementById("taskList");
+el.innerHTML="";
+tasks.forEach((t,i)=>{
+let d=document.createElement("div");d.className="item";
+let s=document.createElement("span");
+s.textContent=(t.done?"✅ ":"")+t.text;
+if(t.done)s.style.textDecoration="line-through";
+let r=document.createElement("div");
+let b=document.createElement("button");b.textContent=t.done?"Done":"Complete";b.disabled=t.done;b.onclick=()=>finishTask(i);
+let x=document.createElement("button");x.textContent="✕";x.onclick=()=>deleteTask(i);
+r.append(b,x);d.append(s,r);el.append(d);
+});
 }
-function updateProgress(){
- let total=tasks.length;
- let done=tasks.filter(t=>t.done).length;
- let percent=total?Math.round(done/total*100):0;
- document.getElementById('taskStat').textContent=total;
- document.getElementById('doneStat').textContent=done;
- document.getElementById('progressFill').style.width=percent+'%';
- document.getElementById('progressText').textContent=percent+'% completed';
- document.getElementById('totalCompleted').textContent=done;
-}
-
-function displayTime(){
- let m=Math.floor(seconds/60);
- let s=seconds%60;
- let txt=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
- document.getElementById('timerDisplay').textContent=txt;
- document.getElementById('focusDisplay').textContent=txt;
-}
-function changeDuration(){
- if(interval!==null)return;
- seconds=Number(document.getElementById('duration').value)*60;
- displayTime();
-}
-function startTimer(){
- if(interval!==null)return;
- if(seconds<=0)seconds=Number(document.getElementById('duration').value)*60;
- interval=setInterval(()=>{
-  seconds--;
-  displayTime();
-  if(seconds<=0){
-   clearInterval(interval);
-   interval=null;
-   seconds=0;
-   displayTime();
-   recordSession();
-   if(completionSound)beep();
-   alert('Focus session completed! Great work 💜');
-  }
- },1000);
-}
-function pauseTimer(){
- if(interval!==null){
-  clearInterval(interval);
-  interval=null;
- }
- stopNoise();
-}
-function resetTimer(){
- pauseTimer();
- seconds=Number(document.getElementById('duration').value)*60;
- displayTime();
-}
-function toggleFocus(){
- document.getElementById('focusOverlay').classList.toggle('hidden');
-}
-function recordSession(){
- let mins=Number(document.getElementById('duration').value);
- sessions.push({date:todayKey(),minutes:mins});
- setData('ss_sessions',sessions);
- if(!studyDays.includes(todayKey())){
-  studyDays.push(todayKey());
-  setData('ss_days',studyDays);
- }
- renderAnalytics();
-}
-
-function toggleTheme(){
- document.body.classList.toggle('dark');
- localStorage.setItem('ss_theme',document.body.classList.contains('dark')?'dark':'light');
-}
-function saveProfile(){
- let n=document.getElementById('profileName').value.trim();
- if(!n)return;
- name=n;
- localStorage.setItem('ss_name',name);
- document.getElementById('greeting').textContent='Hello, '+name+'! 💜';
- alert('Profile updated!');
-}
-function exitDashboard(){
- localStorage.setItem('ss_entered','no');
- document.getElementById('app').classList.add('hidden');
- document.getElementById('welcome').classList.remove('hidden');
-}
-
 function saveNote(){
- let title=document.getElementById('noteTitle').value.trim();
- let content=document.getElementById('noteContent').value.trim();
- if(!title&&!content)return;
- notes.unshift({title:title||'Untitled',content});
- setData('ss_notes',notes);
- document.getElementById('noteTitle').value='';
- document.getElementById('noteContent').value='';
- renderNotes();
-}
-function deleteNote(i){
- notes.splice(i,1);
- setData('ss_notes',notes);
- renderNotes();
+let title=document.getElementById("noteTitle").value.trim();
+let text=document.getElementById("noteText").value.trim();
+if(!title||!text)return alert("Add a title and note!");
+notes.push({title,text});
+put("g_notes",notes);
+document.getElementById("noteTitle").value="";
+document.getElementById("noteText").value="";
+render();
 }
 function renderNotes(){
- let el=document.getElementById('noteList');
- el.innerHTML='';
- notes.forEach((n,i)=>{
-  let div=document.createElement('div');
-  div.className='card';
-  let h=document.createElement('h3');
-  h.textContent=n.title;
-  let p=document.createElement('p');
-  p.style.whiteSpace='pre-wrap';
-  p.textContent=n.content;
-  let b=document.createElement('button');
-  b.className='danger';
-  b.textContent='Delete';
-  b.onclick=()=>deleteNote(i);
-  div.append(h,p,b);
-  el.append(div);
- });
+let el=document.getElementById("noteList");el.innerHTML="";
+notes.forEach((n,i)=>{
+let d=document.createElement("div");d.className="item";
+let s=document.createElement("span");
+s.textContent=n.title+" — "+n.text;
+let b=document.createElement("button");b.textContent="Delete";
+b.onclick=()=>{notes.splice(i,1);put("g_notes",notes);render()};
+d.append(s,b);el.append(d);
+});
 }
-
 function addPlan(){
- let time=document.getElementById('planTime').value.trim();
- let text=document.getElementById('planText').value.trim();
- let date=document.getElementById('planDate').value||todayKey();
- if(!time||!text)return;
- plans.push({date,time,text});
- setData('ss_plans',plans);
- document.getElementById('planTime').value='';
- document.getElementById('planText').value='';
- renderPlans();
-}
-function deletePlan(i){
- plans.splice(i,1);
- setData('ss_plans',plans);
- renderPlans();
+let text=document.getElementById("planText").value.trim();
+let date=document.getElementById("planDate").value;
+let time=document.getElementById("planTime").value;
+if(!text)return;
+plans.push({text,date,time});
+put("g_plans",plans);
+document.getElementById("planText").value="";
+render();
 }
 function renderPlans(){
- let el=document.getElementById('planList');
- el.innerHTML='';
- let sorted=plans.map((p,i)=>({...p,index:i})).sort((a,b)=>(a.date||'').localeCompare(b.date||''));
- sorted.forEach(p=>{
-  let div=document.createElement('div');
-  div.className='item';
-  let span=document.createElement('span');
-  span.textContent=(p.date||'')+' · '+p.time+' — '+p.text;
-  let b=document.createElement('button');
-  b.className='danger';
-  b.textContent='✕';
-  b.onclick=()=>deletePlan(p.index);
-  div.append(span,b);
-  el.append(div);
- });
+let el=document.getElementById("planList");el.innerHTML="";
+plans.sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
+plans.forEach((p,i)=>{
+let d=document.createElement("div");d.className="item";
+let s=document.createElement("span");s.textContent=(p.date||"No date")+" "+(p.time||"")+" — "+p.text;
+let b=document.createElement("button");b.textContent="Delete";
+b.onclick=()=>{plans.splice(i,1);put("g_plans",plans);render()};
+d.append(s,b);el.append(d);
+});
 }
-
-function getStreak(){
- let dates=[...new Set(studyDays)].sort().reverse();
- if(!dates.length)return 0;
- let streak=0;
- let d=new Date();
- let today=todayKey();
- let yesterday=new Date();
- yesterday.setDate(yesterday.getDate()-1);
- let yKey=yesterday.toLocaleDateString('en-CA');
- if(dates[0]!==today&&dates[0]!==yKey)return 0;
- let check=new Date(dates[0]+'T12:00:00');
- for(let i=0;i<dates.length;i++){
-  let expected=new Date(check);
-  expected.setDate(expected.getDate()-i);
-  if(dates[i]===expected.toLocaleDateString('en-CA'))streak++;
-  else break;
- }
- return streak;
+function resetTimer(){
+pauseTimer();
+timerSeconds=Number(document.getElementById("duration").value)*60;
+displayTimer();
 }
-function renderAnalytics(){
- let total=sessions.reduce((a,s)=>a+s.minutes,0);
- let todayTotal=sessions.filter(s=>s.date===todayKey()).reduce((a,s)=>a+s.minutes,0);
- document.getElementById('totalMinutes').textContent=total;
- document.getElementById('todayMinutes').textContent=todayTotal;
- document.getElementById('sessionStat').textContent=sessions.length;
- let streak=getStreak();
- document.getElementById('streakStat').textContent=streak+' days';
- document.getElementById('analyticsStreak').textContent=streak+' days';
- let el=document.getElementById('activityList');
- el.innerHTML='';
- sessions.slice().reverse().slice(0,10).forEach(s=>{
-  let div=document.createElement('div');
-  div.className='item';
-  let span=document.createElement('span');
-  span.textContent=s.date+' — '+s.minutes+' min focus';
-  div.append(span);
-  el.append(div);
- });
- if(!sessions.length)el.textContent='Your completed focus sessions will appear here.';
+function displayTimer(){
+let m=Math.floor(timerSeconds/60),s=timerSeconds%60;
+document.getElementById("timer").textContent=String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
 }
-
-function beep(){
- try{
-  audioContext=audioContext||new (window.AudioContext||window.webkitAudioContext)();
-  let osc=audioContext.createOscillator();
-  let gain=audioContext.createGain();
-  osc.connect(gain);
-  gain.connect(audioContext.destination);
-  osc.frequency.value=880;
-  gain.gain.value=.15;
-  osc.start();
-  osc.stop(audioContext.currentTime+.4);
- }catch(e){}
+function startTimer(){
+if(timerInterval)return;
+if(timerSeconds<=0)resetTimer();
+timerInterval=setInterval(()=>{
+timerSeconds--;
+displayTimer();
+if(timerSeconds<=0){
+pauseTimer();
+sessions++;minutes+=Number(document.getElementById("duration").value);
+put("g_sessions",sessions);put("g_minutes",minutes);
+streakDates.push(today());streakDates=[...new Set(streakDates)];put("g_dates",streakDates);
+award(25);
+alert("Focus session complete! +25 XP 🌸");
 }
-
-function toggleCompletionSound(){
- completionSound=!completionSound;
- updateSoundStatus();
+},1000);
 }
-function toggleFocusSound(){
- focusSound=!focusSound;
- if(focusSound)startNoise();
- else stopNoise();
- updateSoundStatus();
+function pauseTimer(){clearInterval(timerInterval);timerInterval=null}
+function toggleSound(){
+soundOn=!soundOn;
+if(soundOn){
+try{
+audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+let buffer=audioCtx.createBuffer(1,audioCtx.sampleRate*2,audioCtx.sampleRate);
+let data=buffer.getChannelData(0);
+for(let i=0;i<data.length;i++)data[i]=Math.random()*2-1;
+let src=audioCtx.createBufferSource();src.buffer=buffer;src.loop=true;
+let gain=audioCtx.createGain();gain.gain.value=.035;
+src.connect(gain);gain.connect(audioCtx.destination);src.start();
+window.noiseSource=src;window.noiseGain=gain;
+}catch{soundOn=false}
+}else if(window.noiseSource){window.noiseSource.stop();window.noiseSource=null}
 }
-function updateSoundStatus(){
- document.getElementById('soundStatus').textContent=
- 'Focus sound '+(focusSound?'on':'off')+' · Completion sound '+(completionSound?'on':'off');
+function streak(){
+let count=0,d=new Date();
+for(let i=0;i<365;i++){
+let key=d.toISOString().slice(0,10);
+if(streakDates.includes(key)){count++;d.setDate(d.getDate()-1)}
+else if(i===0){d.setDate(d.getDate()-1)}
+else break;
 }
-function startNoise(){
- try{
-  audioContext=audioContext||new (window.AudioContext||window.webkitAudioContext)();
-  let buffer=audioContext.createBuffer(1,audioContext.sampleRate*2,audioContext.sampleRate);
-  let data=buffer.getChannelData(0);
-  for(let i=0;i<data.length;i++)data[i]=Math.random()*2-1;
-  noiseNode=audioContext.createBufferSource();
-  noiseNode.buffer=buffer;
-  noiseNode.loop=true;
-  noiseGain=audioContext.createGain();
-  noiseGain.gain.value=.035;
-  noiseNode.connect(noiseGain);
-  noiseGain.connect(audioContext.destination);
-  noiseNode.start();
- }catch(e){}
+return count;
 }
-function stopNoise(){
- try{if(noiseNode)noiseNode.stop()}catch(e){}
- noiseNode=null;
+function renderGarden(){
+let plants=Math.floor(xp/100);
+document.getElementById("gardenPlants").textContent=plants?("🌱 ".repeat(Math.min(plants,15))):"🌰";
+document.getElementById("gardenLevel").textContent=plants+" plant level"+(plants===1?"":"s");
+document.getElementById("gardenMessage").textContent=plants===0?"Earn 100 XP to grow your first plant!":plants<5?"Your garden is growing! Keep learning!":"Your garden is flourishing! 🌸";
 }
-
-function renderAll(){
- renderTasks();
- renderNotes();
- renderPlans();
- updateProgress();
- displayTime();
- renderAnalytics();
+function renderBadges(){
+let completed=tasks.filter(t=>t.done).length;
+let list=[
+["🌟 First Task",completed>=1,"Complete your first task"],
+["📚 Task Master",completed>=10,"Complete 10 tasks"],
+["⏱️ Focus Starter",sessions>=1,"Complete a focus session"],
+["🔥 Focus Five",sessions>=5,"Complete 5 focus sessions"],
+["💎 100 XP",xp>=100,"Earn 100 XP"],
+["👑 500 XP",xp>=500,"Earn 500 XP"],
+["🌿 Garden Grower",xp>=100,"Grow your first plant"]
+];
+let el=document.getElementById("badgeList");el.innerHTML="";
+list.forEach(([n,ok,desc])=>{
+let d=document.createElement("div");d.className="badge"+(ok?"":" locked");
+d.innerHTML="<strong>"+n+"</strong><br><small>"+desc+"</small>";
+el.append(d);
+});
 }
-renderAll();
+function render(){
+document.getElementById("greeting").textContent="Welcome back, "+name+"! 🌸";
+let level=Math.floor(xp/100)+1,within=xp%100;
+document.getElementById("level").textContent=level;
+document.getElementById("xp").textContent=xp;
+document.getElementById("xpbar").style.width=within+"%";
+document.getElementById("xptext").textContent=within+" / 100 XP to next level";
+document.getElementById("homeTasks").textContent=tasks.filter(t=>t.done).length;
+document.getElementById("homeSessions").textContent=sessions;
+document.getElementById("homeXP").textContent=xp;
+document.getElementById("streak").textContent=streak();
+let done=tasks.filter(t=>t.done).length;
+document.getElementById("progressbar").style.width=(tasks.length?done/tasks.length*100:0)+"%";
+document.getElementById("progresstext").textContent=done+" of "+tasks.length+" tasks completed";
+document.getElementById("aXP").textContent=xp;
+document.getElementById("aTasks").textContent=done;
+document.getElementById("aSessions").textContent=sessions;
+document.getElementById("aMinutes").textContent=minutes;
+document.getElementById("aStreak").textContent=streak();
+renderTasks();renderNotes();renderPlans();renderGarden();renderBadges();
+}
+let quotes=["Small steps every day add up.","You are capable of amazing things.","Progress, not perfection.","Start where you are. Keep going.","Your future self will thank you."];
+document.getElementById("quote").textContent=quotes[Math.floor(Math.random()*quotes.length)];
+resetTimer();render();
 </script>
 </body>
 </html>
