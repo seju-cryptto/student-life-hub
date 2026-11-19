@@ -3,249 +3,316 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Student Life Hub</title>
 <link rel="manifest" href="./manifest.json">
 <meta name="theme-color" content="#9470d8">
 
 <style>
+:root{
+ --purple:#9470d8;
+ --dark:#392958;
+ --light:#f8f5ff;
+ --card:#ffffff;
+ --muted:#887e9c;
+}
 *{box-sizing:border-box}
 body{
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:#f8f5ff;
-  color:#33294a;
+ margin:0;
+ font-family:Arial,sans-serif;
+ background:var(--light);
+ color:var(--dark);
 }
-header{
-  background:#9470d8;
-  color:white;
-  text-align:center;
-  padding:25px 15px;
+.layout{display:flex;min-height:100vh}
+.sidebar{
+ width:235px;
+ background:#fff;
+ padding:24px 18px;
+ border-right:1px solid #eee5fa;
+ position:sticky;
+ top:0;
+ height:100vh;
 }
-header h1{margin:0 0 8px}
-header p{margin:0}
-nav{
-  display:flex;
-  justify-content:center;
-  flex-wrap:wrap;
-  gap:10px;
-  padding:15px;
+.brand{font-size:21px;font-weight:bold;color:var(--purple)}
+.brand small{display:block;font-size:12px;margin-top:6px;color:var(--muted)}
+.menu{margin-top:35px}
+.menu a{
+ display:block;
+ text-decoration:none;
+ color:var(--dark);
+ padding:13px;
+ border-radius:12px;
+ margin:8px 0;
 }
-nav a{
-  text-decoration:none;
-  background:white;
-  color:#7452b5;
-  padding:10px 14px;
-  border-radius:20px;
-  font-weight:bold;
+.menu a:hover,.menu a.active{
+ background:#eee7ff;
+ color:var(--purple);
 }
-main{
-  max-width:1000px;
-  margin:auto;
-  padding:15px;
+.main{flex:1;padding:30px;min-width:0}
+.topbar{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:15px;
+ flex-wrap:wrap;
+}
+.topbar h1{margin:0;font-size:28px}
+.subtitle{color:var(--muted);margin-top:8px}
+.grid{
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+ gap:18px;
+ margin-top:22px;
 }
 .card{
-  background:white;
-  padding:20px;
-  margin:18px 0;
-  border-radius:18px;
-  box-shadow:0 4px 15px #e5dcf4;
+ background:var(--card);
+ padding:22px;
+ border-radius:20px;
+ box-shadow:0 5px 18px rgba(94,69,139,.06);
 }
-h2{color:#7956bb}
+.stat{font-size:28px;font-weight:bold;margin-top:10px}
+.label{color:var(--muted);font-size:14px}
+h2{font-size:19px}
+h3{font-size:16px}
 input,textarea,button{
-  padding:12px;
-  border-radius:10px;
-  border:1px solid #ddd;
-  font:inherit;
-  margin:5px 0;
+ font:inherit;
+ padding:12px;
+ border:1px solid #e6ddf3;
+ border-radius:12px;
+ margin:5px 0;
 }
-input,textarea{width:100%}
+input,textarea{width:100%;background:white;color:var(--dark)}
 button{
-  background:#9470d8;
-  color:white;
-  border:none;
-  cursor:pointer;
+ background:var(--purple);
+ color:white;
+ border:none;
+ cursor:pointer;
 }
-button:hover{background:#7956bb}
+button:hover{opacity:.88}
+.secondary{background:#eee7ff;color:var(--purple)}
 .task{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:10px;
-  border-bottom:1px solid #eee;
+ display:flex;
+ gap:10px;
+ align-items:center;
+ padding:12px 5px;
+ border-bottom:1px solid #f0ebf8;
 }
 .task input{width:auto}
-.task span{flex:1;word-break:break-word}
+.task span{flex:1;overflow-wrap:anywhere}
 .task.done span{text-decoration:line-through;opacity:.6}
-.small-btn{padding:7px 12px}
+.task button{padding:8px}
 .timer{
-  font-size:50px;
-  font-weight:bold;
-  text-align:center;
-  color:#9470d8;
-  margin:20px 0;
+ font-size:48px;
+ font-weight:bold;
+ text-align:center;
+ color:var(--purple);
+ margin:20px 0;
 }
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:15px;
+.progressbar{
+ background:#eee7ff;
+ height:10px;
+ border-radius:10px;
+ overflow:hidden;
 }
+.progressbar div{
+ height:100%;
+ background:var(--purple);
+ width:0;
+ transition:width .3s;
+}
+.section{scroll-margin-top:20px}
 .resource a{
-  color:#7956bb;
-  word-break:break-word;
+ color:var(--purple);
+ text-decoration:none;
+ font-weight:bold;
 }
-footer{
-  text-align:center;
-  padding:25px;
-  color:#7956bb;
+.resource a:hover{text-decoration:underline}
+footer{text-align:center;color:var(--muted);padding:30px}
+@media(max-width:750px){
+ .layout{display:block}
+ .sidebar{width:100%;height:auto;position:static}
+ .menu{display:flex;flex-wrap:wrap;margin-top:15px}
+ .menu a{padding:9px;margin:3px}
+ .main{padding:18px}
+ .topbar h1{font-size:24px}
 }
-#quote{font-style:italic}
 </style>
 </head>
 
 <body>
+<div class="layout">
 
-<header>
-<h1>💜 Student Life Hub</h1>
-<p>Your little space to plan, learn and grow.</p>
-</header>
+<aside class="sidebar">
+<div class="brand">
+💜 Student Life Hub
+<small>Your space to grow</small>
+</div>
 
-<nav>
-<a href="#planner">Planner</a>
-<a href="#timer">Focus Timer</a>
-<a href="#notes">Notes</a>
-<a href="#exam">Exam Countdown</a>
-<a href="#careers">Careers</a>
-<a href="#resources">Resources</a>
+<nav class="menu">
+<a class="active" href="#home">🏠 Home</a>
+<a href="#planner">📚 Planner</a>
+<a href="#focus">⏳ Focus</a>
+<a href="#notes">📝 Notes</a>
+<a href="#exam">📅 Countdown</a>
+<a href="#careers">🚀 Careers</a>
+<a href="#resources">🌐 Resources</a>
 </nav>
+</aside>
 
-<main>
+<div class="main">
 
-<section class="card">
-<h2 id="welcome">Welcome!</h2>
-<p id="today"></p>
+<section id="home" class="section">
+<div class="topbar">
+<div>
+<h1 id="greeting">Welcome!</h1>
+<p class="subtitle" id="date"></p>
+</div>
+</div>
+
+<div class="grid">
+<div class="card">
+<div class="label">📚 Total study tasks</div>
+<div class="stat" id="totalStat">0</div>
+</div>
+
+<div class="card">
+<div class="label">✅ Completed tasks</div>
+<div class="stat" id="doneStat">0</div>
+</div>
+
+<div class="card">
+<div class="label">🌟 Progress</div>
+<div class="stat" id="percentStat">0%</div>
+</div>
+</div>
+
+<div class="card" style="margin-top:20px">
+<h2>✨ Daily Motivation</h2>
 <p id="quote"></p>
+</div>
 </section>
 
-<section class="card" id="planner">
+<section id="planner" class="card section" style="margin-top:22px">
 <h2>📚 Study Planner</h2>
-<input id="taskInput" placeholder="Enter your study task...">
-<button onclick="addTask()">Add Task</button>
-<p id="progress">0 completed</p>
+<input id="taskInput" placeholder="Add a study task...">
+<button onclick="addTask()">+ Add Task</button>
+<p id="progressText">0 of 0 completed</p>
+<div class="progressbar"><div id="bar"></div></div>
 <div id="taskList"></div>
 </section>
 
-<section class="card" id="timer">
-<h2>⏳ Focus Timer</h2>
-<div class="timer" id="display">25:00</div>
+<section id="focus" class="card section" style="margin-top:22px">
+<h2>⏳ Focus Room</h2>
+<p class="label">25 minute focus session</p>
+<div class="timer" id="timerDisplay">25:00</div>
+<div style="text-align:center">
 <button onclick="startTimer()">Start</button>
-<button onclick="pauseTimer()">Pause</button>
-<button onclick="resetTimer()">Reset</button>
+<button class="secondary" onclick="pauseTimer()">Pause</button>
+<button class="secondary" onclick="resetTimer()">Reset</button>
+</div>
 </section>
 
-<section class="card" id="notes">
+<section id="notes" class="card section" style="margin-top:22px">
 <h2>📝 Quick Notes</h2>
-<textarea id="notesBox" rows="8"
-placeholder="Write your notes here..."></textarea>
+<textarea id="notesBox" rows="7" placeholder="Write your ideas, reminders or notes..."></textarea>
 <button onclick="saveNotes()">Save Notes</button>
 <p id="noteStatus"></p>
 </section>
 
-<section class="card" id="exam">
+<section id="exam" class="card section" style="margin-top:22px">
 <h2>📅 Exam Countdown</h2>
-<label>Select your exam date:</label>
 <input type="date" id="examDate">
 <button onclick="countdown()">Calculate</button>
 <p id="countResult"></p>
 </section>
 
-<section class="card" id="careers">
-<h2>🚀 Career Explorer</h2>
+<section id="careers" class="card section" style="margin-top:22px">
+<h2>🚀 Explore Careers</h2>
 <div class="grid">
-<div>
-<h3>💻 Web Developer</h3>
-<p>Build websites and web applications using HTML, CSS and JavaScript.</p>
+<div class="card">
+<h3>💻 Web Development</h3>
+<p>Build websites, web apps and digital products.</p>
 </div>
-<div>
-<h3>🤖 AI & Machine Learning</h3>
-<p>Explore artificial intelligence, data and intelligent systems.</p>
+<div class="card">
+<h3>🤖 AI & ML</h3>
+<p>Explore intelligent systems and machine learning.</p>
 </div>
-<div>
-<h3>🎨 UI/UX Designer</h3>
-<p>Design digital experiences that are useful and easy to navigate.</p>
+<div class="card">
+<h3>🎨 UI/UX Design</h3>
+<p>Design better digital experiences.</p>
 </div>
-<div>
+<div class="card">
 <h3>🔐 Cybersecurity</h3>
-<p>Learn how to protect systems, applications and digital information.</p>
+<p>Understand digital security and protection.</p>
 </div>
-<div>
-<h3>📱 App Developer</h3>
-<p>Create mobile applications and software for everyday users.</p>
+<div class="card">
+<h3>📱 App Development</h3>
+<p>Create applications for mobile and desktop.</p>
 </div>
-<div>
-<h3>📊 Data Scientist</h3>
-<p>Explore data, statistics and tools to understand information.</p>
+<div class="card">
+<h3>📊 Data Science</h3>
+<p>Explore data, statistics and insights.</p>
 </div>
 </div>
 </section>
 
-<section class="card" id="resources">
-<h2>🌐 Free Learning Resources</h2>
+<section id="resources" class="card section" style="margin-top:22px">
+<h2>🌐 Learning Resources</h2>
 <div class="grid">
-<div class="resource">
+<div class="card resource">
 <h3>HTML & CSS</h3>
-<a href="https://www.w3schools.com"
-target="_blank" rel="noopener">W3Schools</a>
+<a href="https://www.w3schools.com" target="_blank" rel="noopener">W3Schools ↗</a>
 </div>
-<div class="resource">
+<div class="card resource">
 <h3>Programming</h3>
-<a href="https://www.freecodecamp.org"
-target="_blank" rel="noopener">freeCodeCamp</a>
+<a href="https://www.freecodecamp.org" target="_blank" rel="noopener">freeCodeCamp ↗</a>
 </div>
-<div class="resource">
+<div class="card resource">
 <h3>Python</h3>
-<a href="https://www.python.org/about/gettingstarted/"
-target="_blank" rel="noopener">Python Beginner Guide</a>
+<a href="https://www.python.org/about/gettingstarted/" target="_blank" rel="noopener">Python ↗</a>
 </div>
-<div class="resource">
-<h3>School Studies</h3>
-<a href="https://ncert.nic.in"
-target="_blank" rel="noopener">NCERT</a>
+<div class="card resource">
+<h3>School</h3>
+<a href="https://ncert.nic.in" target="_blank" rel="noopener">NCERT ↗</a>
 </div>
-<div class="resource">
+<div class="card resource">
 <h3>Maths & Science</h3>
-<a href="https://www.khanacademy.org"
-target="_blank" rel="noopener">Khan Academy</a>
+<a href="https://www.khanacademy.org" target="_blank" rel="noopener">Khan Academy ↗</a>
 </div>
-<div class="resource">
+<div class="card resource">
 <h3>Courses</h3>
-<a href="https://www.edx.org"
-target="_blank" rel="noopener">edX</a>
+<a href="https://www.edx.org" target="_blank" rel="noopener">edX ↗</a>
 </div>
 </div>
 </section>
 
-</main>
+<footer>Student Life Hub © 2026 | Built for students 💜</footer>
 
-<footer>
-Student Life Hub © 2026 | Built for students 💜
-</footer>
+</div>
+</div>
 
 <script>
-document.getElementById("today").textContent =
-"Today is " + new Date().toLocaleDateString(
-undefined,{weekday:"long",year:"numeric",month:"long",day:"numeric"}
-);
+const now=new Date();
+const hour=now.getHours();
+
+document.getElementById("greeting").textContent=
+hour<12?"Good morning! ☀️":
+hour<18?"Good afternoon! 🌷":"Good evening! 🌙";
+
+document.getElementById("date").textContent=
+now.toLocaleDateString(undefined,{
+weekday:"long",day:"numeric",month:"long",year:"numeric"
+});
 
 const quotes=[
-"Small steps every day lead to big achievements.",
-"Your future is built by what you do today.",
-"Consistency beats perfection.",
+"Small steps lead to big results.",
+"Consistency is your superpower.",
 "Keep learning. Keep growing.",
-"Believe in your ability to improve."
+"Your future starts with today's effort.",
+"You can always learn something new."
 ];
 
-document.getElementById("quote").textContent =
+document.getElementById("quote").textContent=
 quotes[Math.floor(Math.random()*quotes.length)];
 
 let tasks=JSON.parse(localStorage.getItem("hubTasks")||"[]");
@@ -253,6 +320,7 @@ let tasks=JSON.parse(localStorage.getItem("hubTasks")||"[]");
 function renderTasks(){
 const list=document.getElementById("taskList");
 list.innerHTML="";
+
 tasks.forEach((task,i)=>{
 const row=document.createElement("div");
 row.className="task"+(task.done?" done":"");
@@ -269,8 +337,7 @@ const span=document.createElement("span");
 span.textContent=task.text;
 
 const del=document.createElement("button");
-del.textContent="Delete";
-del.className="small-btn";
+del.textContent="✕";
 del.onclick=()=>{
 tasks.splice(i,1);
 saveTasks();
@@ -280,9 +347,16 @@ row.append(checkbox,span,del);
 list.appendChild(row);
 });
 
+const total=tasks.length;
 const done=tasks.filter(t=>t.done).length;
-document.getElementById("progress").textContent=
-done+" of "+tasks.length+" tasks completed";
+const percent=total?Math.round(done/total*100):0;
+
+document.getElementById("totalStat").textContent=total;
+document.getElementById("doneStat").textContent=done;
+document.getElementById("percentStat").textContent=percent+"%";
+document.getElementById("progressText").textContent=
+done+" of "+total+" completed";
+document.getElementById("bar").style.width=percent+"%";
 }
 
 function saveTasks(){
@@ -307,11 +381,10 @@ renderTasks();
 let seconds=1500;
 let interval=null;
 
-function updateDisplay(){
-const m=Math.floor(seconds/60);
-const s=seconds%60;
-document.getElementById("display").textContent=
-String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
+function updateTimer(){
+document.getElementById("timerDisplay").textContent=
+String(Math.floor(seconds/60)).padStart(2,"0")+":"+
+String(seconds%60).padStart(2,"0");
 }
 
 function startTimer(){
@@ -319,11 +392,10 @@ if(interval!==null)return;
 interval=setInterval(()=>{
 if(seconds>0){
 seconds--;
-updateDisplay();
+updateTimer();
 }else{
-clearInterval(interval);
-interval=null;
-alert("Focus session completed! Take a little rest.");
+pauseTimer();
+alert("Focus session completed!");
 }
 },1000);
 }
@@ -336,43 +408,44 @@ interval=null;
 function resetTimer(){
 pauseTimer();
 seconds=1500;
-updateDisplay();
+updateTimer();
 }
 
-updateDisplay();
+updateTimer();
 
 const notesBox=document.getElementById("notesBox");
 notesBox.value=localStorage.getItem("hubNotes")||"";
 
 function saveNotes(){
 localStorage.setItem("hubNotes",notesBox.value);
-document.getElementById("noteStatus").textContent="Notes saved!";
+document.getElementById("noteStatus").textContent="Saved successfully! 💜";
 }
 
 function countdown(){
 const value=document.getElementById("examDate").value;
 const result=document.getElementById("countResult");
+
 if(!value){
-result.textContent="Please select an exam date.";
+result.textContent="Select your exam date first.";
 return;
 }
+
 const today=new Date();
 today.setHours(0,0,0,0);
 const target=new Date(value+"T00:00:00");
 const diff=Math.ceil((target-today)/86400000);
 
-if(diff<0)result.textContent="This exam date has passed.";
-else if(diff===0)result.textContent="Your exam is today!";
-else result.textContent=diff+" days left until your exam!";
+result.textContent=diff<0?"Date has passed!":
+diff===0?"Your exam is today! 🎯":
+diff+" days remaining! 🌷";
 }
 
 if("serviceWorker" in navigator){
 window.addEventListener("load",()=>{
 navigator.serviceWorker.register("./service-worker.js")
-.catch(err=>console.log("Service worker error:",err));
+.catch(err=>console.log(err));
 });
 }
 </script>
-
 </body>
 </html>
