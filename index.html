@@ -2,291 +2,377 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#9470d8">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Student Life Hub</title>
+<link rel="manifest" href="./manifest.json">
+<meta name="theme-color" content="#9470d8">
+
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Arial,sans-serif;background:#f7f5fc;color:#25213b}
-header{background:#fff;padding:20px 7%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #eee}
-.logo{font-size:23px;font-weight:800;color:#7654c7}
-.logo span{color:#b48be9}
-nav a{color:#5f5877;text-decoration:none;margin-left:20px;font-size:14px}
-.hero{padding:55px 7% 35px;background:linear-gradient(135deg,#ede5ff,#f9f6ff)}
-.hero h1{font-size:38px;margin-bottom:12px}
-.hero h1 span{color:#7957c9}
-.hero p{color:#6b6680;line-height:1.7}
-.container{padding:30px 7%}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
-.card{background:white;border-radius:18px;padding:25px;box-shadow:0 4px 20px #30206008}
-.card h2{font-size:20px;margin-bottom:14px}
-.muted{color:#827b96;font-size:14px}
-input,textarea,button{font-family:inherit}
-input,textarea{padding:12px;border:1px solid #ded7ee;border-radius:10px;width:100%;margin:8px 0;outline:none}
-button{background:#8060cf;color:white;border:0;border-radius:10px;padding:11px 15px;cursor:pointer;margin-top:8px}
-button:hover{background:#6847b8}
-.task{display:flex;gap:10px;align-items:center;padding:12px 0;border-bottom:1px solid #eee}
-.task input{width:auto;margin:0}
-.task span{flex:1}
-.task.done span{text-decoration:line-through;color:#999}
-.delete{background:#eee;color:#555;padding:6px 10px}
-#timer{font-size:48px;font-weight:bold;color:#7654c7;margin:20px 0}
-.stat{background:#f2ecff;border-radius:12px;padding:15px;margin-top:12px}
-footer{text-align:center;padding:30px;color:#8a829e}
-section{scroll-margin-top:20px}
-@media(max-width:700px){
-header{flex-direction:column;gap:15px}
-nav a{margin:5px}
-.hero h1{font-size:30px}
-.grid{grid-template-columns:1fr}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f8f5ff;
+  color:#33294a;
 }
+header{
+  background:#9470d8;
+  color:white;
+  text-align:center;
+  padding:25px 15px;
+}
+header h1{margin:0 0 8px}
+header p{margin:0}
+nav{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:10px;
+  padding:15px;
+}
+nav a{
+  text-decoration:none;
+  background:white;
+  color:#7452b5;
+  padding:10px 14px;
+  border-radius:20px;
+  font-weight:bold;
+}
+main{
+  max-width:1000px;
+  margin:auto;
+  padding:15px;
+}
+.card{
+  background:white;
+  padding:20px;
+  margin:18px 0;
+  border-radius:18px;
+  box-shadow:0 4px 15px #e5dcf4;
+}
+h2{color:#7956bb}
+input,textarea,button{
+  padding:12px;
+  border-radius:10px;
+  border:1px solid #ddd;
+  font:inherit;
+  margin:5px 0;
+}
+input,textarea{width:100%}
+button{
+  background:#9470d8;
+  color:white;
+  border:none;
+  cursor:pointer;
+}
+button:hover{background:#7956bb}
+.task{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px;
+  border-bottom:1px solid #eee;
+}
+.task input{width:auto}
+.task span{flex:1;word-break:break-word}
+.task.done span{text-decoration:line-through;opacity:.6}
+.small-btn{padding:7px 12px}
+.timer{
+  font-size:50px;
+  font-weight:bold;
+  text-align:center;
+  color:#9470d8;
+  margin:20px 0;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:15px;
+}
+.resource a{
+  color:#7956bb;
+  word-break:break-word;
+}
+footer{
+  text-align:center;
+  padding:25px;
+  color:#7956bb;
+}
+#quote{font-style:italic}
 </style>
 </head>
+
 <body>
 
 <header>
-  <div class="logo">Student Life <span>Hub</span> ✦</div>
-  <nav>
-    <a href="#planner">Planner</a>
-    <a href="#focus">Focus</a>
-    <a href="#notes">Notes</a>
-    <a href="#resources">Resources</a>
-  </nav>
+<h1>💜 Student Life Hub</h1>
+<p>Your little space to plan, learn and grow.</p>
 </header>
 
-<div class="hero">
-  <h1>Your goals. Your pace.<br><span>Your future.</span></h1>
-  <p>Your personal space to plan, focus, learn and grow.<br>One small step at a time.</p>
-</div>
+<nav>
+<a href="#planner">Planner</a>
+<a href="#timer">Focus Timer</a>
+<a href="#notes">Notes</a>
+<a href="#exam">Exam Countdown</a>
+<a href="#careers">Careers</a>
+<a href="#resources">Resources</a>
+</nav>
 
-<div class="container">
-  <section class="card" style="margin:25px 7% 0">
-<h2 id="welcome">Welcome to Student Life Hub ✨</h2>
-<p id="todayDate" class="muted"></p>
-<p style="margin-top:12px">
-Every little effort you make today counts toward your future.
-</p>
-</section>
-<div class="grid">
-
-<section class="card" id="planner">
-<h2>✦ Today's Study Planner</h2>
-<p class="muted">Add tasks and keep track of your progress.</p>
-<input id="taskInput" placeholder="What do you need to study?">
-<button onclick="addTask()">+ Add task</button>
-<div id="tasks"></div>
-<div class="stat"><strong id="progress">0/0 completed</strong></div>
-</section>
-
-<section class="card" id="focus">
-<h2>◷ Focus Timer</h2>
-<p class="muted">Focus on one thing at a time.</p>
-<div id="timer">25:00</div>
-<button onclick="startTimer()">Start</button>
-<button onclick="pauseTimer()">Pause</button>
-<button onclick="resetTimer()" class="delete">Reset</button>
-</section>
-<section class="card" id="exam">
-<h2>📅 Exam Countdown</h2>
-<p class="muted">Keep track of your upcoming exams.</p>
-<input type="date" id="examDate">
-<button onclick="calculateCountdown()">Check days left</button>
-<div class="stat" id="countdownResult">Choose your exam date.</div>
-</section>
-
-<section class="card" id="career">
-<h2>🚀 Career Explorer</h2>
-<p class="muted">Explore skills and career paths.</p>
-<select id="careerChoice">
-<option value="">Choose a career</option>
-<option value="web">Web Developer</option>
-<option value="ai">AI / Machine Learning</option>
-<option value="design">UI/UX Designer</option>
-<option value="cyber">Cybersecurity</option>
-</select>
-<button onclick="exploreCareer()">Explore roadmap</button>
-<div class="stat" id="careerResult">Choose a career to see its roadmap.</div>
-</section><section class="card" id="resources">
-<h2>📚 Free Learning Resources</h2>
-<p class="muted">Explore free tools to learn and grow.</p>
-
-<div class="stat">
-<strong>💻 Coding</strong>
-<p><a href="https://www.w3schools.com/" target="_blank" rel="noopener noreferrer">W3Schools — Learn coding</a></p>
-<p><a href="https://www.freecodecamp.org/" target="_blank" rel="noopener noreferrer">freeCodeCamp — Coding courses</a></p>
-<p><a href="https://docs.python.org/3/tutorial/" target="_blank" rel="noopener noreferrer">Python — Official tutorial</a></p>
-</div>
-
-<div class="stat">
-<strong>📖 School Learning</strong>
-<p><a href="https://www.khanacademy.org/" target="_blank" rel="noopener noreferrer">Khan Academy — Free lessons</a></p>
-<p><a href="https://ncert.nic.in/" target="_blank" rel="noopener noreferrer">NCERT — Textbooks & resources</a></p>
-</div>
-
-<div class="stat">
-<strong>🌱 Explore & Learn</strong>
-<p><a href="https://www.edx.org/" target="_blank" rel="noopener noreferrer">edX — Online courses</a></p>
-<p><a href="https://www.coursera.org/" target="_blank" rel="noopener noreferrer">Coursera — Explore courses</a></p>
-</div>
-</section>
-<section class="card" id="notes">
-<h2>✎ Quick Notes</h2>
-<p class="muted">Write down ideas, reminders or study notes.</p>
-<textarea id="noteInput" rows="6" placeholder="Write your notes here..."></textarea>
-<button onclick="saveNotes()">Save notes</button>
-<p id="noteStatus" class="muted"></p>
-</section>
+<main>
 
 <section class="card">
-<h2>✧ Study Motivation</h2>
-<p id="quote" style="line-height:1.8;margin-top:20px">
-You don't have to be perfect. You just have to begin.
-</p>
-<button onclick="newQuote()">New motivation</button>
+<h2 id="welcome">Welcome!</h2>
+<p id="today"></p>
+<p id="quote"></p>
 </section>
 
-</div>
-</div>
+<section class="card" id="planner">
+<h2>📚 Study Planner</h2>
+<input id="taskInput" placeholder="Enter your study task...">
+<button onclick="addTask()">Add Task</button>
+<p id="progress">0 completed</p>
+<div id="taskList"></div>
+</section>
 
-<footer><footer>Student Life Hub © 2026 | Built for students.</footer></footer>
+<section class="card" id="timer">
+<h2>⏳ Focus Timer</h2>
+<div class="timer" id="display">25:00</div>
+<button onclick="startTimer()">Start</button>
+<button onclick="pauseTimer()">Pause</button>
+<button onclick="resetTimer()">Reset</button>
+</section>
+
+<section class="card" id="notes">
+<h2>📝 Quick Notes</h2>
+<textarea id="notesBox" rows="8"
+placeholder="Write your notes here..."></textarea>
+<button onclick="saveNotes()">Save Notes</button>
+<p id="noteStatus"></p>
+</section>
+
+<section class="card" id="exam">
+<h2>📅 Exam Countdown</h2>
+<label>Select your exam date:</label>
+<input type="date" id="examDate">
+<button onclick="countdown()">Calculate</button>
+<p id="countResult"></p>
+</section>
+
+<section class="card" id="careers">
+<h2>🚀 Career Explorer</h2>
+<div class="grid">
+<div>
+<h3>💻 Web Developer</h3>
+<p>Build websites and web applications using HTML, CSS and JavaScript.</p>
+</div>
+<div>
+<h3>🤖 AI & Machine Learning</h3>
+<p>Explore artificial intelligence, data and intelligent systems.</p>
+</div>
+<div>
+<h3>🎨 UI/UX Designer</h3>
+<p>Design digital experiences that are useful and easy to navigate.</p>
+</div>
+<div>
+<h3>🔐 Cybersecurity</h3>
+<p>Learn how to protect systems, applications and digital information.</p>
+</div>
+<div>
+<h3>📱 App Developer</h3>
+<p>Create mobile applications and software for everyday users.</p>
+</div>
+<div>
+<h3>📊 Data Scientist</h3>
+<p>Explore data, statistics and tools to understand information.</p>
+</div>
+</div>
+</section>
+
+<section class="card" id="resources">
+<h2>🌐 Free Learning Resources</h2>
+<div class="grid">
+<div class="resource">
+<h3>HTML & CSS</h3>
+<a href="https://www.w3schools.com"
+target="_blank" rel="noopener">W3Schools</a>
+</div>
+<div class="resource">
+<h3>Programming</h3>
+<a href="https://www.freecodecamp.org"
+target="_blank" rel="noopener">freeCodeCamp</a>
+</div>
+<div class="resource">
+<h3>Python</h3>
+<a href="https://www.python.org/about/gettingstarted/"
+target="_blank" rel="noopener">Python Beginner Guide</a>
+</div>
+<div class="resource">
+<h3>School Studies</h3>
+<a href="https://ncert.nic.in"
+target="_blank" rel="noopener">NCERT</a>
+</div>
+<div class="resource">
+<h3>Maths & Science</h3>
+<a href="https://www.khanacademy.org"
+target="_blank" rel="noopener">Khan Academy</a>
+</div>
+<div class="resource">
+<h3>Courses</h3>
+<a href="https://www.edx.org"
+target="_blank" rel="noopener">edX</a>
+</div>
+</div>
+</section>
+
+</main>
+
+<footer>
+Student Life Hub © 2026 | Built for students 💜
+</footer>
 
 <script>
-let tasks=JSON.parse(localStorage.getItem("slh_tasks")||"[]");
+document.getElementById("today").textContent =
+"Today is " + new Date().toLocaleDateString(
+undefined,{weekday:"long",year:"numeric",month:"long",day:"numeric"}
+);
+
+const quotes=[
+"Small steps every day lead to big achievements.",
+"Your future is built by what you do today.",
+"Consistency beats perfection.",
+"Keep learning. Keep growing.",
+"Believe in your ability to improve."
+];
+
+document.getElementById("quote").textContent =
+quotes[Math.floor(Math.random()*quotes.length)];
+
+let tasks=JSON.parse(localStorage.getItem("hubTasks")||"[]");
 
 function renderTasks(){
- const box=document.getElementById("tasks");
- box.innerHTML="";
- tasks.forEach((t,i)=>{
-  const div=document.createElement("div");
-  div.className="task"+(t.done?" done":"");
-  const check=document.createElement("input");
-  check.type="checkbox";
-  check.checked=t.done;
-  check.onchange=()=>{tasks[i].done=check.checked;saveTasks()};
-  const span=document.createElement("span");
-  span.textContent=t.text;
-  const del=document.createElement("button");
-  del.textContent="×";
-  del.className="delete";
-  del.onclick=()=>{tasks.splice(i,1);saveTasks()};
-  div.append(check,span,del);
-  box.appendChild(div);
- });
- document.getElementById("progress").textContent=
- tasks.filter(t=>t.done).length+"/"+tasks.length+" completed";
+const list=document.getElementById("taskList");
+list.innerHTML="";
+tasks.forEach((task,i)=>{
+const row=document.createElement("div");
+row.className="task"+(task.done?" done":"");
+
+const checkbox=document.createElement("input");
+checkbox.type="checkbox";
+checkbox.checked=task.done;
+checkbox.onchange=()=>{
+tasks[i].done=checkbox.checked;
+saveTasks();
+};
+
+const span=document.createElement("span");
+span.textContent=task.text;
+
+const del=document.createElement("button");
+del.textContent="Delete";
+del.className="small-btn";
+del.onclick=()=>{
+tasks.splice(i,1);
+saveTasks();
+};
+
+row.append(checkbox,span,del);
+list.appendChild(row);
+});
+
+const done=tasks.filter(t=>t.done).length;
+document.getElementById("progress").textContent=
+done+" of "+tasks.length+" tasks completed";
 }
 
 function saveTasks(){
- localStorage.setItem("slh_tasks",JSON.stringify(tasks));
- renderTasks();
+localStorage.setItem("hubTasks",JSON.stringify(tasks));
+renderTasks();
 }
 
 function addTask(){
- const input=document.getElementById("taskInput");
- if(!input.value.trim())return;
- tasks.push({text:input.value.trim(),done:false});
- input.value="";
- saveTasks();
+const input=document.getElementById("taskInput");
+if(!input.value.trim())return;
+tasks.push({text:input.value.trim(),done:false});
+input.value="";
+saveTasks();
 }
+
+document.getElementById("taskInput").addEventListener("keydown",e=>{
+if(e.key==="Enter")addTask();
+});
+
 renderTasks();
 
-document.getElementById("noteInput").value=localStorage.getItem("slh_notes")||"";
-function saveNotes(){
- localStorage.setItem("slh_notes",document.getElementById("noteInput").value);
- document.getElementById("noteStatus").textContent="Notes saved on this device!";
+let seconds=1500;
+let interval=null;
+
+function updateDisplay(){
+const m=Math.floor(seconds/60);
+const s=seconds%60;
+document.getElementById("display").textContent=
+String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
 }
 
-let seconds=1500, interval=null;
-function updateTimer(){
- document.getElementById("timer").textContent=
- String(Math.floor(seconds/60)).padStart(2,"0")+":"+
- String(seconds%60).padStart(2,"0");
-}
 function startTimer(){
- if(interval)return;
- interval=setInterval(()=>{
-  if(seconds>0){seconds--;updateTimer();}
-  else{pauseTimer();alert("Focus session complete!");}
- },1000);
+if(interval!==null)return;
+interval=setInterval(()=>{
+if(seconds>0){
+seconds--;
+updateDisplay();
+}else{
+clearInterval(interval);
+interval=null;
+alert("Focus session completed! Take a little rest.");
 }
-function pauseTimer(){clearInterval(interval);interval=null;}
-function resetTimer(){pauseTimer();seconds=1500;updateTimer();}
-updateTimer();
-
-const quotes=[
- "You don't have to be perfect. You just have to begin.",
- "Small progress is still progress.",
- "Your future is built by what you do today.",
- "Believe in your ability to learn.",
- "Consistency beats waiting for motivation.",
- "Every expert was once a beginner."
-];
-function newQuote(){
- document.getElementById("quote").textContent=
- quotes[Math.floor(Math.random()*quotes.length)];
-}function calculateCountdown(){
- const selected=document.getElementById("examDate").value;
- const result=document.getElementById("countdownResult");
-
- if(!selected){
-  result.textContent="Please choose an exam date.";
-  return;
- }
-
- const today=new Date();
- today.setHours(0,0,0,0);
-
- const exam=new Date(selected+"T00:00:00");
- const days=Math.ceil((exam-today)/86400000);
-
- if(days<0){
-  result.textContent="This exam date has already passed.";
- }else if(days===0){
-  result.textContent="Your exam is today! Good luck!";
- }else{
-  result.textContent=days+" days left until your exam!";
- }
+},1000);
 }
 
-function exploreCareer(){
- const choice=document.getElementById("careerChoice").value;
- const result=document.getElementById("careerResult");
-
- const roadmaps={
-  web:"Web Developer: HTML → CSS → JavaScript → Git & GitHub → Projects.",
-  ai:"AI / ML: Python → Maths → Data Analysis → Machine Learning → Projects.",
-  design:"UI/UX Designer: Design Principles → Figma → User Research → Prototypes → Portfolio.",
-  cyber:"Cybersecurity: Computer Basics → Networking → Linux → Security Fundamentals → Legal Practice Labs."
- };
-
- result.textContent=roadmaps[choice]||"Please select a career.";
-}function showDashboard(){
- const hour=new Date().getHours();
- let greeting="Good evening";
-
- if(hour<12) greeting="Good morning";
- else if(hour<17) greeting="Good afternoon";
-
- document.getElementById("welcome").textContent=
- greeting+"! Welcome to Student Life Hub ✨";
-
- document.getElementById("todayDate").textContent=
- new Date().toLocaleDateString("en-IN",{
-  weekday:"long",day:"numeric",month:"long",year:"numeric"
- });
+function pauseTimer(){
+clearInterval(interval);
+interval=null;
 }
-showDashboard();
-</script>
-  <script>
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./service-worker.js")
-      .then(() => console.log("App ready!"))
-      .catch(error => console.log(error));
-  });
+
+function resetTimer(){
+pauseTimer();
+seconds=1500;
+updateDisplay();
+}
+
+updateDisplay();
+
+const notesBox=document.getElementById("notesBox");
+notesBox.value=localStorage.getItem("hubNotes")||"";
+
+function saveNotes(){
+localStorage.setItem("hubNotes",notesBox.value);
+document.getElementById("noteStatus").textContent="Notes saved!";
+}
+
+function countdown(){
+const value=document.getElementById("examDate").value;
+const result=document.getElementById("countResult");
+if(!value){
+result.textContent="Please select an exam date.";
+return;
+}
+const today=new Date();
+today.setHours(0,0,0,0);
+const target=new Date(value+"T00:00:00");
+const diff=Math.ceil((target-today)/86400000);
+
+if(diff<0)result.textContent="This exam date has passed.";
+else if(diff===0)result.textContent="Your exam is today!";
+else result.textContent=diff+" days left until your exam!";
+}
+
+if("serviceWorker" in navigator){
+window.addEventListener("load",()=>{
+navigator.serviceWorker.register("./service-worker.js")
+.catch(err=>console.log("Service worker error:",err));
+});
 }
 </script>
+
 </body>
 </html>
