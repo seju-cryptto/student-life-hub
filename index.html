@@ -1,398 +1,437 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>StudentSpace ✨</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#8b5cf6">
+<title>Students Hub</title>
+<link rel="manifest" href="./manifest.json">
+
 <style>
-*{box-sizing:border-box}
-:root{
---bg:#f7f3ff;--card:#fff;--text:#35264b;--muted:#81758f;
---accent:#9b78dc;--border:#e9def8;--soft:#eee5ff
+:root {
+  --bg: #f5f3ff;
+  --card: #ffffff;
+  --text: #25213a;
+  --muted: #77738b;
+  --accent: #8b5cf6;
+  --border: #e8e3f5;
 }
-body.dark{
---bg:#171421;--card:#251e33;--text:#eee5ff;--muted:#b8aaca;
---accent:#b794f6;--border:#40334f;--soft:#352949
+.dark {
+  --bg: #171524;
+  --card: #242136;
+  --text: #f5f1ff;
+  --muted: #b9b1d0;
+  --accent: #b69aff;
+  --border: #39324f;
 }
-body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text);transition:.2s}
-button,input,textarea,select{font:inherit}
-button{border:0;border-radius:12px;padding:10px 14px;background:var(--accent);color:white;cursor:pointer}
-button:hover{opacity:.88}
-input,textarea,select{padding:11px;border:1px solid var(--border);border-radius:10px;background:var(--card);color:var(--text);width:100%}
-.wrap{max-width:1150px;margin:auto;padding:22px}
-header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-h1{font-size:26px;margin:8px 0}
-h2{font-size:19px}
-small,.muted{color:var(--muted)}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;margin-top:20px}
-.card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:20px}
-nav{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0}
-nav button{background:var(--soft);color:var(--text)}
-nav button.active{background:var(--accent);color:white}
-.section{display:none}
-.section.active{display:block}
-.stat{font-size:28px;font-weight:bold;margin:12px 0}
-.bar{height:12px;border-radius:99px;background:var(--soft);overflow:hidden}
-.bar div{height:100%;background:var(--accent);width:0%;transition:.3s}
-.row{display:flex;gap:10px;align-items:center;margin:10px 0}
-.row input{flex:1}
-.item{padding:12px;background:var(--soft);border-radius:12px;margin:8px 0;display:flex;align-items:center;justify-content:space-between;gap:10px}
-.item span{overflow-wrap:anywhere}
-.badge{display:inline-block;background:var(--soft);padding:12px;border-radius:16px;text-align:center;margin:6px}
-.badge.locked{opacity:.35;filter:grayscale(1)}
-#timer{font-size:60px;font-weight:bold;text-align:center;margin:20px}
-.center{text-align:center}
-.garden{font-size:45px;line-height:1.8}
-.hidden{display:none}
-.quote{font-style:italic;color:var(--muted)}
-footer{text-align:center;padding:30px;color:var(--muted)}
-@media(max-width:600px){.wrap{padding:12px}#timer{font-size:42px}}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  transition: .2s;
+}
+header {
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+h1 { margin: 0; }
+button, input, textarea {
+  font: inherit;
+}
+button {
+  border: none;
+  padding: 11px 15px;
+  border-radius: 12px;
+  background: var(--accent);
+  color: white;
+  cursor: pointer;
+}
+button:hover { opacity: .85; }
+.secondary {
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+.container {
+  max-width: 1100px;
+  margin: auto;
+  padding: 15px;
+}
+.welcome {
+  padding: 28px;
+  background: linear-gradient(135deg,#a78bfa,#e9d5ff);
+  border-radius: 22px;
+  color: #28164b;
+  margin-bottom: 20px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(240px,1fr));
+  gap: 16px;
+}
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 20px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+}
+.card h2 { margin-top: 0; }
+input, textarea {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+}
+textarea {
+  resize: vertical;
+  min-height: 140px;
+}
+.task {
+  display:flex;
+  gap:10px;
+  align-items:center;
+  padding:10px;
+  border-bottom:1px solid var(--border);
+}
+.task span { flex:1; overflow-wrap:anywhere; }
+.task.completed span {
+  text-decoration:line-through;
+  opacity:.55;
+}
+.small {
+  font-size:13px;
+  color:var(--muted);
+}
+.progress {
+  background:var(--border);
+  height:12px;
+  border-radius:10px;
+  overflow:hidden;
+  margin-top:10px;
+}
+.bar {
+  height:100%;
+  background:var(--accent);
+  width:0%;
+  transition:.3s;
+}
+.timer {
+  font-size:44px;
+  font-weight:bold;
+  text-align:center;
+  padding:15px;
+}
+.center { text-align:center; }
+footer {
+  text-align:center;
+  padding:25px;
+  color:var(--muted);
+}
 </style>
 </head>
+
 <body>
-<div class="wrap">
 
 <header>
-<div>
-<h1>🌸 StudentSpace</h1>
-<small>Your little universe of learning</small>
-</div>
-<div class="row" style="flex-wrap:wrap">
-<button onclick="toggleTheme()">🌙 Theme</button>
-<button onclick="editProfile()">👤 Profile</button>
-</div>
+  <h1>🎓 Students Hub</h1>
+  <div>
+    <button class="secondary" onclick="toggleTheme()">🌙 Theme</button>
+    <button class="secondary" onclick="backup()">📥 Backup</button>
+    <button class="secondary" onclick="document.getElementById('restoreFile').click()">📤 Restore</button>
+  </div>
 </header>
 
-<div class="card" style="margin-top:16px">
-<h2 id="greeting">Welcome!</h2>
-<div class="muted">Level <span id="level">1</span> · <span id="xp">0</span> XP</div>
-<div class="bar" style="margin:12px 0"><div id="xpbar"></div></div>
-<small id="xptext"></small>
-</div>
+<div class="container">
 
-<nav id="nav">
-<button class="active" onclick="show('home',this)">🏠 Home</button>
-<button onclick="show('tasks',this)">📝 Tasks</button>
-<button onclick="show('focus',this)">⏱️ Focus</button>
-<button onclick="show('notes',this)">📓 Notes</button>
-<button onclick="show('planner',this)">📅 Planner</button>
-<button onclick="show('garden',this)">🌱 Garden</button>
-<button onclick="show('achievements',this)">🏆 Achievements</button>
-<button onclick="show('analytics',this)">📊 Analytics</button>
-</nav>
+<section class="welcome">
+  <h2>Welcome to your Student Space ✨</h2>
+  <p>Plan better. Learn smarter. Keep growing.</p>
+  <p id="date"></p>
+</section>
 
-<section id="home" class="section active">
 <div class="grid">
-<div class="card"><small>Tasks completed</small><div class="stat" id="homeTasks">0</div></div>
-<div class="card"><small>Focus sessions</small><div class="stat" id="homeSessions">0</div></div>
-<div class="card"><small>Total XP</small><div class="stat" id="homeXP">0</div></div>
-<div class="card"><small>Study streak</small><div class="stat">🔥 <span id="streak">0</span></div></div>
-</div>
-<div class="card" style="margin-top:16px">
-<h2>✨ Today's inspiration</h2>
-<p class="quote" id="quote"></p>
-</div>
-<div class="card" style="margin-top:16px">
-<h2>🌸 Your progress</h2>
-<div class="bar"><div id="progressbar"></div></div>
-<p id="progresstext" class="muted"></p>
-</div>
+
+<section class="card">
+  <h2>✅ Daily Tasks</h2>
+  <input id="taskInput" placeholder="Add a new task...">
+  <button onclick="addTask()">+ Add Task</button>
+  <div id="tasks"></div>
 </section>
 
-<section id="tasks" class="section">
-<div class="card">
-<h2>📝 My Tasks</h2>
-<div class="row"><input id="taskInput" placeholder="Add a task..."><button onclick="addTask()">Add</button></div>
-<div id="taskList"></div>
-</div>
+<section class="card">
+  <h2>📊 Your Progress</h2>
+  <h3 id="progressText">0% completed</h3>
+  <div class="progress">
+    <div class="bar" id="progressBar"></div>
+  </div>
+  <p class="small" id="progressDetails">0 of 0 tasks completed</p>
 </section>
 
-<section id="focus" class="section">
-<div class="card center">
-<h2>⏱️ Focus Timer</h2>
-<select id="duration" onchange="resetTimer()">
-<option value="25">25 minutes</option>
-<option value="45">45 minutes</option>
-<option value="60">60 minutes</option>
-</select>
-<div id="timer">25:00</div>
-<div class="row" style="justify-content:center;flex-wrap:wrap">
-<button onclick="startTimer()">▶ Start</button>
-<button onclick="pauseTimer()">⏸ Pause</button>
-<button onclick="resetTimer()">↻ Reset</button>
-</div>
-<button onclick="toggleSound()" style="margin-top:10px">🎵 Focus Sound</button>
-<p class="muted">Focus on one thing at a time.</p>
-</div>
+<section class="card">
+  <h2>⏳ Focus Timer</h2>
+  <div class="timer" id="timer">25:00</div>
+  <div class="center">
+    <button onclick="startTimer()">▶ Start</button>
+    <button class="secondary" onclick="pauseTimer()">⏸ Pause</button>
+    <button class="secondary" onclick="resetTimer()">↺ Reset</button>
+  </div>
+  <p class="small center">25-minute focus session</p>
 </section>
 
-<section id="notes" class="section">
-<div class="card">
-<h2>📓 Notes</h2>
-<input id="noteTitle" placeholder="Note title">
-<textarea id="noteText" rows="5" placeholder="Write your notes..."></textarea>
-<button onclick="saveNote()" style="margin-top:10px">Save note</button>
-<div id="noteList"></div>
-</div>
+<section class="card">
+  <h2>📝 Quick Notes</h2>
+  <textarea id="notes" placeholder="Write your ideas, reminders or study notes..."></textarea>
+  <p class="small">Notes save automatically on this device.</p>
 </section>
 
-<section id="planner" class="section">
-<div class="card">
-<h2>📅 Planner</h2>
-<input id="planText" placeholder="What do you plan to do?">
-<div class="row">
-<input id="planDate" type="date">
-<input id="planTime" type="time">
-</div>
-<button onclick="addPlan()">Add plan</button>
-<div id="planList"></div>
-</div>
+<section class="card">
+  <h2>🌟 Hub Stats</h2>
+  <h3 id="totalTasks">Tasks: 0</h3>
+  <h3 id="doneTasks">Completed: 0</h3>
+  <h3 id="pendingTasks">Pending: 0</h3>
 </section>
 
-<section id="garden" class="section">
-<div class="card center">
-<h2>🌱 My Study Garden</h2>
-<p class="muted">Every 100 XP grows your garden!</p>
-<div class="garden" id="gardenPlants"></div>
-<div class="stat" id="gardenLevel"></div>
-<p id="gardenMessage"></p>
-</div>
+<section class="card">
+  <h2>💾 Your Data</h2>
+  <p>Download a backup of your tasks, notes and theme settings. Restore them whenever needed.</p>
+  <button onclick="backup()">Download Backup</button>
+  <button class="secondary" onclick="document.getElementById('restoreFile').click()">Restore Backup</button>
+  <input type="file" id="restoreFile" accept=".json,application/json" hidden>
 </section>
 
-<section id="achievements" class="section">
-<div class="card">
-<h2>🏆 Achievements</h2>
-<div id="badgeList"></div>
 </div>
-</section>
+</div>
 
-<section id="analytics" class="section">
-<div class="grid">
-<div class="card"><small>Total XP</small><div class="stat" id="aXP">0</div></div>
-<div class="card"><small>Completed tasks</small><div class="stat" id="aTasks">0</div></div>
-<div class="card"><small>Focus sessions</small><div class="stat" id="aSessions">0</div></div>
-<div class="card"><small>Focus minutes</small><div class="stat" id="aMinutes">0</div></div>
-<div class="card"><small>Current streak</small><div class="stat" id="aStreak">0</div></div>
-</div>
-</section>
-
-<footer>Made with 💜 for your study journey</footer>
-</div>
+<footer>
+  Made for students ✨ | Students Hub
+</footer>
 
 <script>
-const get=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}};
-const put=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
-let tasks=get("g_tasks",[]);
-let notes=get("g_notes",[]);
-let plans=get("g_plans",[]);
-let xp=get("g_xp",0);
-let sessions=get("g_sessions",0);
-let minutes=get("g_minutes",0);
-let streakDates=get("g_dates",[]);
-let name=localStorage.getItem("g_name")||"Student";
-let theme=localStorage.getItem("g_theme")||"light";
-let timerSeconds=0,timerInterval=null,soundOn=false,audioCtx=null;
-document.body.classList.toggle("dark",theme==="dark");
+const STORAGE_KEY = "studentsHubData";
 
-function show(id,b){
-document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
-document.getElementById(id).classList.add("active");
-document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));
-if(b)b.classList.add("active");
+let data = {
+  tasks: [],
+  notes: "",
+  theme: "light"
+};
+
+function loadData() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if(saved) data = {...data, ...JSON.parse(saved)};
+  } catch(e) {
+    console.error("Data load error",e);
+  }
 }
-function editProfile(){
-let n=prompt("What should we call you?",name);
-if(n&&n.trim()){name=n.trim();localStorage.setItem("g_name",name);render();}
+
+function saveData() {
+  localStorage.setItem(STORAGE_KEY,JSON.stringify(data));
 }
-function toggleTheme(){
-theme=theme==="dark"?"light":"dark";
-localStorage.setItem("g_theme",theme);
-document.body.classList.toggle("dark",theme==="dark");
-}
-function today(){return new Date().toISOString().slice(0,10)}
-function award(points){
-xp+=points;put("g_xp",xp);render();
-}
-function addTask(){
-let t=document.getElementById("taskInput").value.trim();
-if(!t)return;
-tasks.push({text:t,done:false});
-put("g_tasks",tasks);
-document.getElementById("taskInput").value="";
-render();
-}
-function finishTask(i){
-if(tasks[i].done)return;
-tasks[i].done=true;put("g_tasks",tasks);
-award(10);
-}
-function deleteTask(i){
-tasks.splice(i,1);put("g_tasks",tasks);render();
-}
-function renderTasks(){
-let el=document.getElementById("taskList");
-el.innerHTML="";
-tasks.forEach((t,i)=>{
-let d=document.createElement("div");d.className="item";
-let s=document.createElement("span");
-s.textContent=(t.done?"✅ ":"")+t.text;
-if(t.done)s.style.textDecoration="line-through";
-let r=document.createElement("div");
-let b=document.createElement("button");b.textContent=t.done?"Done":"Complete";b.disabled=t.done;b.onclick=()=>finishTask(i);
-let x=document.createElement("button");x.textContent="✕";x.onclick=()=>deleteTask(i);
-r.append(b,x);d.append(s,r);el.append(d);
-});
-}
-function saveNote(){
-let title=document.getElementById("noteTitle").value.trim();
-let text=document.getElementById("noteText").value.trim();
-if(!title||!text)return alert("Add a title and note!");
-notes.push({title,text});
-put("g_notes",notes);
-document.getElementById("noteTitle").value="";
-document.getElementById("noteText").value="";
-render();
-}
-function renderNotes(){
-let el=document.getElementById("noteList");el.innerHTML="";
-notes.forEach((n,i)=>{
-let d=document.createElement("div");d.className="item";
-let s=document.createElement("span");
-s.textContent=n.title+" — "+n.text;
-let b=document.createElement("button");b.textContent="Delete";
-b.onclick=()=>{notes.splice(i,1);put("g_notes",notes);render()};
-d.append(s,b);el.append(d);
-});
-}
-function addPlan(){
-let text=document.getElementById("planText").value.trim();
-let date=document.getElementById("planDate").value;
-let time=document.getElementById("planTime").value;
-if(!text)return;
-plans.push({text,date,time});
-put("g_plans",plans);
-document.getElementById("planText").value="";
-render();
-}
-function renderPlans(){
-let el=document.getElementById("planList");el.innerHTML="";
-plans.sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
-plans.forEach((p,i)=>{
-let d=document.createElement("div");d.className="item";
-let s=document.createElement("span");s.textContent=(p.date||"No date")+" "+(p.time||"")+" — "+p.text;
-let b=document.createElement("button");b.textContent="Delete";
-b.onclick=()=>{plans.splice(i,1);put("g_plans",plans);render()};
-d.append(s,b);el.append(d);
-});
-}
-function resetTimer(){
-pauseTimer();
-timerSeconds=Number(document.getElementById("duration").value)*60;
-displayTimer();
-}
-function displayTimer(){
-let m=Math.floor(timerSeconds/60),s=timerSeconds%60;
-document.getElementById("timer").textContent=String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
-}
-function startTimer(){
-if(timerInterval)return;
-if(timerSeconds<=0)resetTimer();
-timerInterval=setInterval(()=>{
-timerSeconds--;
-displayTimer();
-if(timerSeconds<=0){
-pauseTimer();
-sessions++;minutes+=Number(document.getElementById("duration").value);
-put("g_sessions",sessions);put("g_minutes",minutes);
-streakDates.push(today());streakDates=[...new Set(streakDates)];put("g_dates",streakDates);
-award(25);
-alert("Focus session complete! +25 XP 🌸");
-}
-},1000);
-}
-function pauseTimer(){clearInterval(timerInterval);timerInterval=null}
-function toggleSound(){
-soundOn=!soundOn;
-if(soundOn){
-try{
-audioCtx=new(window.AudioContext||window.webkitAudioContext)();
-let buffer=audioCtx.createBuffer(1,audioCtx.sampleRate*2,audioCtx.sampleRate);
-let data=buffer.getChannelData(0);
-for(let i=0;i<data.length;i++)data[i]=Math.random()*2-1;
-let src=audioCtx.createBufferSource();src.buffer=buffer;src.loop=true;
-let gain=audioCtx.createGain();gain.gain.value=.035;
-src.connect(gain);gain.connect(audioCtx.destination);src.start();
-window.noiseSource=src;window.noiseGain=gain;
-}catch{soundOn=false}
-}else if(window.noiseSource){window.noiseSource.stop();window.noiseSource=null}
-}
-function streak(){
-let count=0,d=new Date();
-for(let i=0;i<365;i++){
-let key=d.toISOString().slice(0,10);
-if(streakDates.includes(key)){count++;d.setDate(d.getDate()-1)}
-else if(i===0){d.setDate(d.getDate()-1)}
-else break;
-}
-return count;
-}
-function renderGarden(){
-let plants=Math.floor(xp/100);
-document.getElementById("gardenPlants").textContent=plants?("🌱 ".repeat(Math.min(plants,15))):"🌰";
-document.getElementById("gardenLevel").textContent=plants+" plant level"+(plants===1?"":"s");
-document.getElementById("gardenMessage").textContent=plants===0?"Earn 100 XP to grow your first plant!":plants<5?"Your garden is growing! Keep learning!":"Your garden is flourishing! 🌸";
-}
-function renderBadges(){
-let completed=tasks.filter(t=>t.done).length;
-let list=[
-["🌟 First Task",completed>=1,"Complete your first task"],
-["📚 Task Master",completed>=10,"Complete 10 tasks"],
-["⏱️ Focus Starter",sessions>=1,"Complete a focus session"],
-["🔥 Focus Five",sessions>=5,"Complete 5 focus sessions"],
-["💎 100 XP",xp>=100,"Earn 100 XP"],
-["👑 500 XP",xp>=500,"Earn 500 XP"],
-["🌿 Garden Grower",xp>=100,"Grow your first plant"]
-];
-let el=document.getElementById("badgeList");el.innerHTML="";
-list.forEach(([n,ok,desc])=>{
-let d=document.createElement("div");d.className="badge"+(ok?"":" locked");
-d.innerHTML="<strong>"+n+"</strong><br><small>"+desc+"</small>";
-el.append(d);
-});
-}
-function render(){
-document.getElementById("greeting").textContent="Welcome back, "+name+"! 🌸";
-let level=Math.floor(xp/100)+1,within=xp%100;
-document.getElementById("level").textContent=level;
-document.getElementById("xp").textContent=xp;
-document.getElementById("xpbar").style.width=within+"%";
-document.getElementById("xptext").textContent=within+" / 100 XP to next level";
-document.getElementById("homeTasks").textContent=tasks.filter(t=>t.done).length;
-document.getElementById("homeSessions").textContent=sessions;
-document.getElementById("homeXP").textContent=xp;
-document.getElementById("streak").textContent=streak();
-let done=tasks.filter(t=>t.done).length;
-document.getElementById("progressbar").style.width=(tasks.length?done/tasks.length*100:0)+"%";
-document.getElementById("progresstext").textContent=done+" of "+tasks.length+" tasks completed";
-document.getElementById("aXP").textContent=xp;
-document.getElementById("aTasks").textContent=done;
-document.getElementById("aSessions").textContent=sessions;
-document.getElementById("aMinutes").textContent=minutes;
-document.getElementById("aStreak").textContent=streak();
-renderTasks();renderNotes();renderPlans();renderGarden();renderBadges();
-}
-let quotes=["Small steps every day add up.","You are capable of amazing things.","Progress, not perfection.","Start where you are. Keep going.","Your future self will thank you."];
-document.getElementById("quote").textContent=quotes[Math.floor(Math.random()*quotes.length)];
-resetTimer();render();
-</script>
-</body>
-  <script>
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./sw.js")
-      .then(() => console.log("Students Hub is ready!"))
-      .catch((error) => console.error("SW error:", error));
+
+function renderTasks() {
+  const container = document.getElementById("tasks");
+  container.innerHTML = "";
+
+  data.tasks.forEach((task,index) => {
+    const div = document.createElement("div");
+    div.className = "task" + (task.done ? " completed" : "");
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.checked = task.done;
+    checkbox.style.width = "auto";
+
+    checkbox.addEventListener("change", () => {
+      data.tasks[index].done = checkbox.checked;
+      saveData();
+      renderTasks();
+    });
+
+    const span = document.createElement("span");
+    span.textContent = task.text;
+
+    const remove = document.createElement("button");
+    remove.textContent = "✕";
+    remove.style.background = "#ef4444";
+    remove.addEventListener("click", () => {
+      data.tasks.splice(index,1);
+      saveData();
+      renderTasks();
+    });
+
+    div.append(checkbox,span,remove);
+    container.appendChild(div);
   });
+
+  updateProgress();
+}
+
+function addTask() {
+  const input = document.getElementById("taskInput");
+  const text = input.value.trim();
+  if(!text) return;
+
+  data.tasks.push({text,done:false});
+  input.value = "";
+  saveData();
+  renderTasks();
+}
+
+document.getElementById("taskInput").addEventListener("keydown",e => {
+  if(e.key === "Enter") addTask();
+});
+
+function updateProgress() {
+  const total = data.tasks.length;
+  const done = data.tasks.filter(t=>t.done).length;
+  const pending = total-done;
+  const percentage = total ? Math.round(done/total*100) : 0;
+
+  document.getElementById("progressText").textContent = percentage+"% completed";
+  document.getElementById("progressBar").style.width = percentage+"%";
+  document.getElementById("progressDetails").textContent = done+" of "+total+" tasks completed";
+  document.getElementById("totalTasks").textContent = "Tasks: "+total;
+  document.getElementById("doneTasks").textContent = "Completed: "+done;
+  document.getElementById("pendingTasks").textContent = "Pending: "+pending;
+}
+
+document.getElementById("notes").addEventListener("input",e => {
+  data.notes = e.target.value;
+  saveData();
+});
+
+function toggleTheme() {
+  data.theme = data.theme === "dark" ? "light" : "dark";
+  applyTheme();
+  saveData();
+}
+
+function applyTheme() {
+  document.body.classList.toggle("dark",data.theme === "dark");
+}
+
+function backup() {
+  const blob = new Blob([JSON.stringify(data,null,2)],{
+    type:"application/json"
+  });
+
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "students-hub-backup.json";
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+document.getElementById("restoreFile").addEventListener("change",async e=>{
+  const file = e.target.files[0];
+  if(!file) return;
+
+  try {
+    const imported = JSON.parse(await file.text());
+
+    if(!imported || !Array.isArray(imported.tasks) ||
+       typeof imported.notes !== "string") {
+      throw new Error("Invalid backup file");
+    }
+
+    if(!confirm("Restore this backup? Current data will be replaced.")) {
+      e.target.value = "";
+      return;
+    }
+
+    data = {
+      tasks: imported.tasks.filter(t =>
+        t && typeof t.text === "string" &&
+        typeof t.done === "boolean"
+      ),
+      notes: imported.notes,
+      theme: imported.theme === "dark" ? "dark" : "light"
+    };
+
+    saveData();
+    document.getElementById("notes").value = data.notes;
+    applyTheme();
+    renderTasks();
+
+    alert("Backup restored successfully!");
+  } catch(err) {
+    alert("Invalid backup file!");
+  }
+
+  e.target.value = "";
+});
+
+let seconds = 25*60;
+let interval = null;
+
+function updateTimer() {
+  const mins = Math.floor(seconds/60);
+  const secs = seconds%60;
+  document.getElementById("timer").textContent =
+    String(mins).padStart(2,"0")+":"+
+    String(secs).padStart(2,"0");
+}
+
+function startTimer() {
+  if(interval) return;
+
+  interval = setInterval(()=>{
+    if(seconds > 0) {
+      seconds--;
+      updateTimer();
+    } else {
+      pauseTimer();
+      alert("Focus session completed! 🎉");
+    }
+  },1000);
+}
+
+function pauseTimer() {
+  clearInterval(interval);
+  interval = null;
+}
+
+function resetTimer() {
+  pauseTimer();
+  seconds = 25*60;
+  updateTimer();
+}
+
+function updateDate() {
+  document.getElementById("date").textContent =
+    new Date().toLocaleDateString(undefined,{
+      weekday:"long",
+      year:"numeric",
+      month:"long",
+      day:"numeric"
+    });
+}
+
+loadData();
+document.getElementById("notes").value = data.notes;
+applyTheme();
+renderTasks();
+updateDate();
+updateTimer();
+
+if("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("./sw.js")
+    .catch(err=>console.log("SW:",err));
 }
 </script>
+
+</body>
 </html>
+
