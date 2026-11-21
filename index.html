@@ -4,139 +4,81 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#8b5cf6">
-<title>Students Hub</title>
-<link rel="manifest" href="./manifest.json">
-
+<title>Students Hub 💜</title>
 <style>
-:root {
-  --bg: #f5f3ff;
-  --card: #ffffff;
-  --text: #25213a;
-  --muted: #77738b;
-  --accent: #8b5cf6;
-  --border: #e8e3f5;
+:root{
+ --bg:#f8f5ff;--card:#fff;--text:#29243c;--muted:#77718c;
+ --primary:#9570e8;--soft:#eee5ff;--border:#e5ddf5;
 }
-.dark {
-  --bg: #171524;
-  --card: #242136;
-  --text: #f5f1ff;
-  --muted: #b9b1d0;
-  --accent: #b69aff;
-  --border: #39324f;
+.dark{
+ --bg:#171525;--card:#242137;--text:#f6f1ff;
+ --muted:#b8aecf;--primary:#ad8cff;--soft:#352a50;--border:#39324e;
 }
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  transition: .2s;
+*{box-sizing:border-box}
+body{
+ margin:0;background:var(--bg);color:var(--text);
+ font-family:Arial,Helvetica,sans-serif;transition:.2s;
 }
-header {
-  padding: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
+header{
+ display:flex;justify-content:space-between;align-items:center;
+ flex-wrap:wrap;gap:12px;padding:20px 25px;
 }
-h1 { margin: 0; }
-button, input, textarea {
-  font: inherit;
+h1{margin:0;font-size:30px}
+button,input,textarea,select{
+ font:inherit;border-radius:12px;border:1px solid var(--border);
+ padding:11px;background:var(--bg);color:var(--text);
 }
-button {
-  border: none;
-  padding: 11px 15px;
-  border-radius: 12px;
-  background: var(--accent);
-  color: white;
-  cursor: pointer;
+button{cursor:pointer;transition:.15s}
+button:hover{transform:translateY(-1px);opacity:.9}
+.primary{background:var(--primary);color:white;border:none}
+.small{padding:8px 12px;font-size:14px}
+.container{max-width:1250px;margin:auto;padding:15px}
+.hero{
+ background:linear-gradient(120deg,#ae91ff,#ead5ff);
+ color:#2c2047;padding:32px;border-radius:25px;margin-bottom:20px;
 }
-button:hover { opacity: .85; }
-.secondary {
-  background: var(--card);
-  color: var(--text);
-  border: 1px solid var(--border);
+.hero h2{margin-top:0;font-size:25px}
+.grid{
+ display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+ gap:15px;
 }
-.container {
-  max-width: 1100px;
-  margin: auto;
-  padding: 15px;
+.card{
+ background:var(--card);padding:20px;border:1px solid var(--border);
+ border-radius:22px;min-width:0;
 }
-.welcome {
-  padding: 28px;
-  background: linear-gradient(135deg,#a78bfa,#e9d5ff);
-  border-radius: 22px;
-  color: #28164b;
-  margin-bottom: 20px;
+.card h2{font-size:21px;margin-top:0}
+.wide{grid-column:span 2}
+.full{grid-column:1/-1}
+input,textarea,select{width:100%;margin:5px 0}
+textarea{resize:vertical;min-height:120px}
+.flex{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.flex input,.flex select{flex:1;min-width:120px}
+.item{
+ padding:12px;background:var(--bg);border:1px solid var(--border);
+ border-radius:12px;margin:8px 0;display:flex;align-items:center;
+ justify-content:space-between;gap:10px;
 }
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit,minmax(240px,1fr));
-  gap: 16px;
+.item span{overflow-wrap:anywhere}
+.done{text-decoration:line-through;opacity:.5}
+.muted{color:var(--muted);font-size:13px}
+.progress{
+ background:var(--soft);height:12px;border-radius:20px;
+ overflow:hidden;margin:15px 0;
 }
-.card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  padding: 20px;
-  border-radius: 20px;
-  margin-bottom: 16px;
-}
-.card h2 { margin-top: 0; }
-input, textarea {
-  width: 100%;
-  padding: 12px;
-  margin: 8px 0;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  background: var(--bg);
-  color: var(--text);
-}
-textarea {
-  resize: vertical;
-  min-height: 140px;
-}
-.task {
-  display:flex;
-  gap:10px;
-  align-items:center;
-  padding:10px;
-  border-bottom:1px solid var(--border);
-}
-.task span { flex:1; overflow-wrap:anywhere; }
-.task.completed span {
-  text-decoration:line-through;
-  opacity:.55;
-}
-.small {
-  font-size:13px;
-  color:var(--muted);
-}
-.progress {
-  background:var(--border);
-  height:12px;
-  border-radius:10px;
-  overflow:hidden;
-  margin-top:10px;
-}
-.bar {
-  height:100%;
-  background:var(--accent);
-  width:0%;
-  transition:.3s;
-}
-.timer {
-  font-size:44px;
-  font-weight:bold;
-  text-align:center;
-  padding:15px;
-}
-.center { text-align:center; }
-footer {
-  text-align:center;
-  padding:25px;
-  color:var(--muted);
+.bar{height:100%;background:var(--primary);width:0%;transition:.3s}
+.timer{font-size:45px;font-weight:bold;text-align:center;margin:18px}
+.center{text-align:center}
+.quote{font-size:17px;line-height:1.6}
+.badge{background:var(--soft);padding:5px 9px;border-radius:20px}
+footer{text-align:center;color:var(--muted);padding:25px}
+hr{border:0;border-top:1px solid var(--border);margin:15px 0}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:550px){
+ .grid{grid-template-columns:1fr}
+ .wide,.full{grid-column:span 1}
+ header{padding:15px}
+ .hero{padding:22px}
+ h1{font-size:24px}
 }
 </style>
 </head>
@@ -144,294 +86,371 @@ footer {
 <body>
 
 <header>
-  <h1>🎓 Students Hub</h1>
-  <div>
-    <button class="secondary" onclick="toggleTheme()">🌙 Theme</button>
-    <button class="secondary" onclick="backup()">📥 Backup</button>
-    <button class="secondary" onclick="document.getElementById('restoreFile').click()">📤 Restore</button>
-  </div>
+<h1>🎓 Students Hub</h1>
+<div class="flex">
+<button onclick="toggleTheme()">🌙 Theme</button>
+<button onclick="backup()">📥 Backup</button>
+<button onclick="document.getElementById('restoreFile').click()">📤 Restore</button>
+<input type="file" id="restoreFile" accept=".json" hidden onchange="restore(event)">
+</div>
 </header>
 
 <div class="container">
 
-<section class="welcome">
-  <h2>Welcome to your Student Space ✨</h2>
-  <p>Plan better. Learn smarter. Keep growing.</p>
-  <p id="date"></p>
+<section class="hero">
+<h2>Welcome to your Student Space ✨</h2>
+<p>Plan better. Learn smarter. Keep growing.</p>
+<p id="today"></p>
 </section>
 
 <div class="grid">
 
+<!-- TASKS -->
 <section class="card">
-  <h2>✅ Daily Tasks</h2>
-  <input id="taskInput" placeholder="Add a new task...">
-  <button onclick="addTask()">+ Add Task</button>
-  <div id="tasks"></div>
+<h2>✅ Daily Tasks</h2>
+<div class="flex">
+<input id="taskInput" placeholder="Add a new task...">
+<button class="primary" onclick="addTask()">Add</button>
+</div>
+<div id="tasks"></div>
 </section>
 
+<!-- PROGRESS -->
 <section class="card">
-  <h2>📊 Your Progress</h2>
-  <h3 id="progressText">0% completed</h3>
-  <div class="progress">
-    <div class="bar" id="progressBar"></div>
-  </div>
-  <p class="small" id="progressDetails">0 of 0 tasks completed</p>
+<h2>📊 Your Progress</h2>
+<h3 id="percent">0% completed</h3>
+<div class="progress"><div class="bar" id="bar"></div></div>
+<p class="muted" id="count">0 of 0 tasks completed</p>
+<hr>
+<h3>🏆 Completed today</h3>
+<h2 id="completedCount">0</h2>
 </section>
 
-<section class="card">
-  <h2>⏳ Focus Timer</h2>
-  <div class="timer" id="timer">25:00</div>
-  <div class="center">
-    <button onclick="startTimer()">▶ Start</button>
-    <button class="secondary" onclick="pauseTimer()">⏸ Pause</button>
-    <button class="secondary" onclick="resetTimer()">↺ Reset</button>
-  </div>
-  <p class="small center">25-minute focus session</p>
+<!-- TIMER -->
+<section class="card center">
+<h2>⏳ Focus Timer</h2>
+<div class="timer" id="timer">25:00</div>
+<div class="flex" style="justify-content:center">
+<button class="primary" onclick="startTimer()">▶ Start</button>
+<button onclick="pauseTimer()">⏸ Pause</button>
+<button onclick="resetTimer()">↻ Reset</button>
+</div>
+<hr>
+<div class="flex">
+<button onclick="setTimer(25)">25 min</button>
+<button onclick="setTimer(50)">50 min</button>
+<button onclick="setTimer(5)">5 min break</button>
+</div>
+<p class="muted" id="timerLabel">25-minute focus session</p>
 </section>
 
+<!-- QUICK NOTES -->
 <section class="card">
-  <h2>📝 Quick Notes</h2>
-  <textarea id="notes" placeholder="Write your ideas, reminders or study notes..."></textarea>
-  <p class="small">Notes save automatically on this device.</p>
+<h2>📝 Quick Notes</h2>
+<textarea id="quickNotes" placeholder="Write your ideas, reminders or study notes..." oninput="save()"></textarea>
+<p class="muted">Notes save automatically on this device.</p>
 </section>
 
-<section class="card">
-  <h2>🌟 Hub Stats</h2>
-  <h3 id="totalTasks">Tasks: 0</h3>
-  <h3 id="doneTasks">Completed: 0</h3>
-  <h3 id="pendingTasks">Pending: 0</h3>
+<!-- PLANNER -->
+<section class="card wide">
+<h2>📅 Study Planner</h2>
+<div class="flex">
+<select id="subject">
+<option>Physics</option>
+<option>Chemistry</option>
+<option>Mathematics</option>
+<option>English</option>
+<option>Computer Science</option>
+<option>Other</option>
+</select>
+<input id="topic" placeholder="Topic / Chapter">
+<input type="date" id="planDate">
+<input type="time" id="planTime">
+<button class="primary" onclick="addPlan()">Add</button>
+</div>
+<div id="plans"></div>
 </section>
 
+<!-- SUBJECT NOTES -->
+<section class="card wide">
+<h2>📚 Subject Notes</h2>
+<select id="noteSubject" onchange="loadSubjectNote()">
+<option>Physics</option>
+<option>Chemistry</option>
+<option>Mathematics</option>
+<option>English</option>
+<option>Computer Science</option>
+</select>
+<textarea id="subjectNote" placeholder="Write subject notes here..." oninput="saveSubjectNote()"></textarea>
+<p class="muted">Your notes automatically save on this device.</p>
+</section>
+
+<!-- QUOTE -->
 <section class="card">
-  <h2>💾 Your Data</h2>
-  <p>Download a backup of your tasks, notes and theme settings. Restore them whenever needed.</p>
-  <button onclick="backup()">Download Backup</button>
-  <button class="secondary" onclick="document.getElementById('restoreFile').click()">Restore Backup</button>
-  <input type="file" id="restoreFile" accept=".json,application/json" hidden>
+<h2>🌷 Motivation</h2>
+<div class="quote" id="quote"></div>
+<button class="small" onclick="newQuote()">Next quote ✨</button>
+</section>
+
+<!-- HABITS -->
+<section class="card">
+<h2>🌱 Daily Goals</h2>
+<div id="habits"></div>
+<p class="muted">Reset daily automatically.</p>
+</section>
+
+<!-- TODAY -->
+<section class="card full">
+<h2>📌 Today's Study Plan</h2>
+<div id="todayPlans"></div>
 </section>
 
 </div>
 </div>
 
-<footer>
-  Made for students ✨ | Students Hub
-</footer>
+<footer>Made for dreamers, learners & future creators 💜</footer>
 
 <script>
-const STORAGE_KEY = "studentsHubData";
+const KEY="studentsHubV2";
 
-let data = {
-  tasks: [],
-  notes: "",
-  theme: "light"
+let data=JSON.parse(localStorage.getItem(KEY)||"null")||{
+ tasks:[],plans:[],quickNotes:"",
+ subjectNotes:{},habits:{},theme:"light",habitDate:""
 };
 
-function loadData() {
-  try {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if(saved) data = {...data, ...JSON.parse(saved)};
-  } catch(e) {
-    console.error("Data load error",e);
-  }
+let seconds=1500;
+let interval=null;
+let timerMode=25;
+
+function save(){
+ data.quickNotes=document.getElementById("quickNotes").value;
+ localStorage.setItem(KEY,JSON.stringify(data));
 }
 
-function saveData() {
-  localStorage.setItem(STORAGE_KEY,JSON.stringify(data));
+function saveAll(){
+ localStorage.setItem(KEY,JSON.stringify(data));
+ render();
 }
 
-function renderTasks() {
-  const container = document.getElementById("tasks");
-  container.innerHTML = "";
-
-  data.tasks.forEach((task,index) => {
-    const div = document.createElement("div");
-    div.className = "task" + (task.done ? " completed" : "");
-
-    const checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.checked = task.done;
-    checkbox.style.width = "auto";
-
-    checkbox.addEventListener("change", () => {
-      data.tasks[index].done = checkbox.checked;
-      saveData();
-      renderTasks();
-    });
-
-    const span = document.createElement("span");
-    span.textContent = task.text;
-
-    const remove = document.createElement("button");
-    remove.textContent = "✕";
-    remove.style.background = "#ef4444";
-    remove.addEventListener("click", () => {
-      data.tasks.splice(index,1);
-      saveData();
-      renderTasks();
-    });
-
-    div.append(checkbox,span,remove);
-    container.appendChild(div);
-  });
-
-  updateProgress();
+function toggleTheme(){
+ data.theme=data.theme==="dark"?"light":"dark";
+ document.body.classList.toggle("dark",data.theme==="dark");
+ saveAll();
 }
 
-function addTask() {
-  const input = document.getElementById("taskInput");
-  const text = input.value.trim();
-  if(!text) return;
-
-  data.tasks.push({text,done:false});
-  input.value = "";
-  saveData();
-  renderTasks();
+function addTask(){
+ let input=document.getElementById("taskInput");
+ let value=input.value.trim();
+ if(!value)return;
+ data.tasks.push({text:value,done:false});
+ input.value="";
+ saveAll();
 }
 
-document.getElementById("taskInput").addEventListener("keydown",e => {
-  if(e.key === "Enter") addTask();
+function toggleTask(i){
+ data.tasks[i].done=!data.tasks[i].done;
+ saveAll();
+}
+
+function deleteTask(i){
+ data.tasks.splice(i,1);
+ saveAll();
+}
+
+function addPlan(){
+ let s=document.getElementById("subject").value;
+ let t=document.getElementById("topic").value.trim();
+ let d=document.getElementById("planDate").value;
+ let tm=document.getElementById("planTime").value;
+ if(!t||!d)return alert("Please enter a topic and date.");
+ data.plans.push({subject:s,topic:t,date:d,time:tm});
+ document.getElementById("topic").value="";
+ saveAll();
+}
+
+function deletePlan(i){
+ data.plans.splice(i,1);
+ saveAll();
+}
+
+function loadSubjectNote(){
+ let s=document.getElementById("noteSubject").value;
+ document.getElementById("subjectNote").value=data.subjectNotes[s]||"";
+}
+
+function saveSubjectNote(){
+ let s=document.getElementById("noteSubject").value;
+ data.subjectNotes[s]=document.getElementById("subjectNote").value;
+ saveAll();
+}
+
+function habitReset(){
+ let today=new Date().toLocaleDateString();
+ if(data.habitDate!==today){
+ data.habits={};
+ data.habitDate=today;
+ save();
+ }
+}
+
+function toggleHabit(h){
+ data.habits[h]=!data.habits[h];
+ saveAll();
+}
+
+const habitNames=["Drink water","Revise today","Read 10 minutes","Organize desk"];
+
+function renderHabits(){
+ document.getElementById("habits").innerHTML=habitNames.map(h=>
+ `<div class="item">
+ <span>${h}</span>
+ <button onclick="toggleHabit(${JSON.stringify(h)})">${data.habits[h]?"☑️":"⬜"}</button>
+ </div>`).join("");
+}
+
+function render(){
+ document.body.classList.toggle("dark",data.theme==="dark");
+ document.getElementById("quickNotes").value=data.quickNotes||"";
+
+ document.getElementById("tasks").innerHTML=data.tasks.map((t,i)=>
+ `<div class="item">
+ <span class="${t.done?"done":""}">${escapeHTML(t.text)}</span>
+ <div class="flex">
+ <button class="small" onclick="toggleTask(${i})">${t.done?"↩":"✔"}</button>
+ <button class="small" onclick="deleteTask(${i})">🗑</button>
+ </div>
+ </div>`).join("");
+
+ let total=data.tasks.length;
+ let completed=data.tasks.filter(t=>t.done).length;
+ let p=total?Math.round(completed/total*100):0;
+
+ document.getElementById("percent").textContent=p+"% completed";
+ document.getElementById("bar").style.width=p+"%";
+ document.getElementById("count").textContent=completed+" of "+total+" tasks completed";
+ document.getElementById("completedCount").textContent=completed;
+
+ document.getElementById("plans").innerHTML=data.plans
+ .slice().sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time))
+ .map((pl,i)=>`<div class="item">
+ <span><b>${escapeHTML(pl.subject)}</b> — ${escapeHTML(pl.topic)}<br>
+ <small>${pl.date} ${pl.time||""}</small></span>
+ <button onclick="deletePlan(${data.plans.indexOf(pl)})">🗑</button>
+ </div>`).join("");
+
+ let today=new Date().toISOString().slice(0,10);
+ let todays=data.plans.filter(p=>p.date===today);
+ document.getElementById("todayPlans").innerHTML=todays.length?
+ todays.map(p=>`<div class="item"><span><b>${escapeHTML(p.time||"")}</b> ${escapeHTML(p.subject)} — ${escapeHTML(p.topic)}</span></div>`).join("")
+ :"<p class='muted'>No study sessions planned for today. Add one above!</p>";
+
+ renderHabits();
+}
+
+function escapeHTML(str){
+ return String(str).replace(/[&<>"']/g,m=>({
+ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+ }[m]));
+}
+
+// TIMER
+function displayTimer(){
+ let m=Math.floor(seconds/60);
+ let s=seconds%60;
+ document.getElementById("timer").textContent=
+ String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
+}
+
+function startTimer(){
+ if(interval)return;
+ interval=setInterval(()=>{
+ seconds--;
+ displayTimer();
+ if(seconds<=0){
+ clearInterval(interval);
+ interval=null;
+ alert(timerMode===5?"Break finished! Back to focus 💜":"Focus session finished! Take a break 💜");
+ },1000);
+}
+
+function pauseTimer(){
+ clearInterval(interval);
+ interval=null;
+}
+
+function resetTimer(){
+ pauseTimer();
+ seconds=timerMode*60;
+ displayTimer();
+}
+
+function setTimer(m){
+ pauseTimer();
+ timerMode=m;
+ seconds=m*60;
+ document.getElementById("timerLabel").textContent=
+ m===5?"5-minute break":m+"-minute focus session";
+ displayTimer();
+}
+
+// MOTIVATION
+const quotes=[
+ "Small steps every day lead to big results. ✨",
+ "You don't need to be perfect. Just keep learning. 🌷",
+ "Your future is built by what you do today. 💜",
+ "Believe in your progress, even when it feels slow. 🌱",
+ "One chapter at a time. One dream at a time. 📚",
+ "Consistency is more powerful than motivation. ⭐",
+ "You are allowed to grow at your own pace. 🌸",
+ "Make yourself proud, one step at a time. 💫"
+];
+
+function newQuote(){
+ document.getElementById("quote").textContent=
+ quotes[Math.floor(Math.random()*quotes.length)];
+}
+
+// BACKUP
+function backup(){
+ save();
+ let blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+ let a=document.createElement("a");
+ a.href=URL.createObjectURL(blob);
+ a.download="StudentsHub_Backup.json";
+ a.click();
+ URL.revokeObjectURL(a.href);
+}
+
+function restore(e){
+ let file=e.target.files[0];
+ if(!file)return;
+ let reader=new FileReader();
+ reader.onload=function(){
+ try{
+ let restored=JSON.parse(reader.result);
+ if(!restored||!Array.isArray(restored.tasks)||!Array.isArray(restored.plans))
+ throw new Error("Invalid backup");
+ if(!confirm("Restore this backup? Current saved data will be replaced."))return;
+ data=restored;
+ localStorage.setItem(KEY,JSON.stringify(data));
+ location.reload();
+ }catch(err){
+ alert("Invalid Students Hub backup file.");
+ }
+ };
+ reader.readAsText(file);
+ e.target.value="";
+}
+
+// INIT
+document.getElementById("today").textContent=new Date().toLocaleDateString("en-IN",{
+ weekday:"long",year:"numeric",month:"long",day:"numeric"
 });
-
-function updateProgress() {
-  const total = data.tasks.length;
-  const done = data.tasks.filter(t=>t.done).length;
-  const pending = total-done;
-  const percentage = total ? Math.round(done/total*100) : 0;
-
-  document.getElementById("progressText").textContent = percentage+"% completed";
-  document.getElementById("progressBar").style.width = percentage+"%";
-  document.getElementById("progressDetails").textContent = done+" of "+total+" tasks completed";
-  document.getElementById("totalTasks").textContent = "Tasks: "+total;
-  document.getElementById("doneTasks").textContent = "Completed: "+done;
-  document.getElementById("pendingTasks").textContent = "Pending: "+pending;
-}
-
-document.getElementById("notes").addEventListener("input",e => {
-  data.notes = e.target.value;
-  saveData();
-});
-
-function toggleTheme() {
-  data.theme = data.theme === "dark" ? "light" : "dark";
-  applyTheme();
-  saveData();
-}
-
-function applyTheme() {
-  document.body.classList.toggle("dark",data.theme === "dark");
-}
-
-function backup() {
-  const blob = new Blob([JSON.stringify(data,null,2)],{
-    type:"application/json"
-  });
-
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "students-hub-backup.json";
-  a.click();
-  URL.revokeObjectURL(url);
-}
-
-document.getElementById("restoreFile").addEventListener("change",async e=>{
-  const file = e.target.files[0];
-  if(!file) return;
-
-  try {
-    const imported = JSON.parse(await file.text());
-
-    if(!imported || !Array.isArray(imported.tasks) ||
-       typeof imported.notes !== "string") {
-      throw new Error("Invalid backup file");
-    }
-
-    if(!confirm("Restore this backup? Current data will be replaced.")) {
-      e.target.value = "";
-      return;
-    }
-
-    data = {
-      tasks: imported.tasks.filter(t =>
-        t && typeof t.text === "string" &&
-        typeof t.done === "boolean"
-      ),
-      notes: imported.notes,
-      theme: imported.theme === "dark" ? "dark" : "light"
-    };
-
-    saveData();
-    document.getElementById("notes").value = data.notes;
-    applyTheme();
-    renderTasks();
-
-    alert("Backup restored successfully!");
-  } catch(err) {
-    alert("Invalid backup file!");
-  }
-
-  e.target.value = "";
-});
-
-let seconds = 25*60;
-let interval = null;
-
-function updateTimer() {
-  const mins = Math.floor(seconds/60);
-  const secs = seconds%60;
-  document.getElementById("timer").textContent =
-    String(mins).padStart(2,"0")+":"+
-    String(secs).padStart(2,"0");
-}
-
-function startTimer() {
-  if(interval) return;
-
-  interval = setInterval(()=>{
-    if(seconds > 0) {
-      seconds--;
-      updateTimer();
-    } else {
-      pauseTimer();
-      alert("Focus session completed! 🎉");
-    }
-  },1000);
-}
-
-function pauseTimer() {
-  clearInterval(interval);
-  interval = null;
-}
-
-function resetTimer() {
-  pauseTimer();
-  seconds = 25*60;
-  updateTimer();
-}
-
-function updateDate() {
-  document.getElementById("date").textContent =
-    new Date().toLocaleDateString(undefined,{
-      weekday:"long",
-      year:"numeric",
-      month:"long",
-      day:"numeric"
-    });
-}
-
-loadData();
-document.getElementById("notes").value = data.notes;
-applyTheme();
-renderTasks();
-updateDate();
-updateTimer();
-
-if("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("./sw.js")
-    .catch(err=>console.log("SW:",err));
-}
+habitReset();
+render();
+newQuote();
+displayTimer();
+loadSubjectNote();
 </script>
-
 </body>
 </html>
-
