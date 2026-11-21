@@ -539,3 +539,454 @@ init();
 </script>
 </body>
 </html>
+<!-- STUDY ROOM -->
+<section class="section" id="room">
+<div class="room" id="studyRoom">
+<div>
+<h2 id="roomTitle">🌙 Study Room</h2>
+<p class="muted" id="roomSubtitle">Your peaceful corner to focus.</p>
+</div>
+<div class="clock" id="timerDisplay">25:00</div>
+<div class="row" style="max-width:320px">
+<input type="number" id="timerMinutes" value="25" min="1" max="180" placeholder="Minutes">
+<button onclick="setTimer()">Set</button>
+</div>
+<div>
+<button onclick="startTimer()">▶ Start</button>
+<button class="ghost" onclick="pauseTimer()">⏸ Pause</button>
+<button class="ghost" onclick="resetTimer()">↺ Reset</button>
+</div>
+<div>
+<h3>🌈 Room ambience</h3>
+<div class="row">
+<button class="themebtn" onclick="setRoomTheme('lavender')">💜 Lavender</button>
+<button class="themebtn" onclick="setRoomTheme('night')">🌌 Night</button>
+<button class="themebtn" onclick="setRoomTheme('forest')">🌿 Forest</button>
+<button class="themebtn" onclick="setRoomTheme('ocean')">🌊 Ocean</button>
+<button class="themebtn" onclick="setRoomTheme('sunset')">🌅 Sunset</button>
+</div>
+</div>
+<div>
+<input id="roomSubject" placeholder="What are you studying?" oninput="saveRoomSubject()">
+</div>
+<p id="roomSession" class="muted">Focus on one thing at a time ✨</p>
+<button class="ghost" onclick="openSection('home')">← Exit Study Room</button>
+</div>
+</section>
+
+<!-- MINI DESKTOP -->
+<section class="section" id="desktop">
+<div class="card">
+<h3>🖥️ Mini Desktop</h3>
+<p class="muted">Your tiny desktop, right inside Students Hub.</p>
+</div>
+<div class="desktop-wall">
+<div class="desktop-icons">
+<div class="desktop-icon" onclick="desktopApp('notes')"><div style="font-size:32px">🗒️</div>Sticky Notes</div>
+<div class="desktop-icon" onclick="desktopApp('tasks')"><div style="font-size:32px">✅</div>Quick Tasks</div>
+<div class="desktop-icon" onclick="desktopApp('calculator')"><div style="font-size:32px">🧮</div>Calculator</div>
+<div class="desktop-icon" onclick="desktopApp('calendar')"><div style="font-size:32px">📅</div>Calendar</div>
+<div class="desktop-icon" onclick="desktopApp('formulas')"><div style="font-size:32px">📐</div>Formula Pad</div>
+<div class="desktop-icon" onclick="desktopApp('focus')"><div style="font-size:32px">⏱️</div>Focus Clock</div>
+</div>
+<div id="desktopWindow" class="desktop-window" style="display:none"></div>
+</div>
+</section>
+
+<!-- PLANNER -->
+<section class="section" id="planner">
+<div class="card">
+<h3>📅 Study Planner</h3>
+<div class="row">
+<input type="date" id="planDate">
+<input id="planTask" placeholder="Study plan">
+<button onclick="addPlan()">Add</button>
+</div>
+<div id="planList"></div>
+</div>
+</section>
+
+<!-- EXAMS -->
+<section class="section" id="exam">
+<div class="card">
+<h3>🎯 Exam Countdown</h3>
+<div class="row">
+<input id="examName" placeholder="Exam name">
+<input type="date" id="examDate">
+<button onclick="addExam()">Save exam</button>
+</div>
+<div id="examList"></div>
+</div>
+</section>
+
+<!-- NOTES -->
+<section class="section" id="notes">
+<div class="card">
+<h3>📝 Subject Notes</h3>
+<div class="row">
+<select id="noteSubject">
+<option>Physics</option>
+<option>Chemistry</option>
+<option>Mathematics</option>
+<option>English</option>
+<option>Computer Science</option>
+<option>Other</option>
+</select>
+<input id="noteTitle" placeholder="Note title">
+</div>
+<textarea id="noteText" placeholder="Write your notes here..." style="margin-top:12px"></textarea>
+<button onclick="addNote()" style="margin-top:12px">Save note</button>
+<div id="noteList"></div>
+</div>
+</section>
+
+<!-- JOURNAL -->
+<section class="section" id="journal">
+<div class="card">
+<h3>📔 Digital Journal</h3>
+<textarea id="journalText" placeholder="Write anything about your day..."></textarea>
+<button onclick="saveJournal()" style="margin-top:10px">Save today's journal</button>
+<div id="journalList"></div>
+</div>
+</section>
+
+<!-- QUICK LINKS -->
+<section class="section" id="links">
+<div class="card">
+<h3>🔗 Quick Links</h3>
+<div class="row">
+<input id="linkTitle" placeholder="Website name">
+<input id="linkUrl" placeholder="https://...">
+<button onclick="addLink()">Add</button>
+</div>
+<div id="linkList"></div>
+</div>
+</section>
+
+<!-- SETTINGS -->
+<section class="section" id="settings">
+<div class="card">
+<h3>⚙️ Settings</h3>
+<label>Student name</label>
+<input id="profileName" placeholder="Your name" style="margin:8px 0">
+<button onclick="saveProfile()">Save profile</button>
+
+<hr style="margin:20px 0;border:0;border-top:1px solid #eee">
+
+<h3>🎨 Dashboard theme</h3>
+<div class="row">
+<button class="themebtn" onclick="setTheme('lavender')">💜 Lavender</button>
+<button class="themebtn" onclick="setTheme('dark')">🌙 Dark</button>
+<button class="themebtn" onclick="setTheme('ocean')">🌊 Ocean</button>
+<button class="themebtn" onclick="setTheme('rose')">🌸 Rose</button>
+</div>
+
+<hr style="margin:20px 0;border:0;border-top:1px solid #eee">
+
+<h3>💾 Backup & Restore</h3>
+<button onclick="exportData()">Download backup</button>
+<label class="ghost" style="display:inline-block;padding:10px;border-radius:12px;margin:8px;cursor:pointer">
+Restore backup
+<input type="file" accept=".json" onchange="importData(event)" style="display:none">
+</label>
+
+<hr style="margin:20px 0;border:0;border-top:1px solid #eee">
+
+<button class="danger" onclick="resetAll()">Reset all data</button>
+</div>
+</section>
+
+<footer>Made with 💜 for students | Students Hub 5.0</footer>
+</main>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const KEY="studentsHub50";
+let data={tasks:[],chapters:[],plans:[],exams:[],notes:[],journals:[],links:[],sessions:0,profile:"",roomSubject:"",theme:"lavender",roomTheme:"lavender"};
+try{
+let saved=JSON.parse(localStorage.getItem(KEY));
+if(saved)data={...data,...saved};
+}catch(e){}
+function save(){localStorage.setItem(KEY,JSON.stringify(data));renderAll()}
+function openSection(id){
+document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+$(id).classList.add("active");
+document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.section===id));
+if(id==="room"){$("roomSubject").value=data.roomSubject||""}
+}
+$("nav").addEventListener("click",e=>{
+let b=e.target.closest("button[data-section]");
+if(b)openSection(b.dataset.section);
+});
+function addQuickTask(){
+let v=$("quickTask").value.trim();if(!v)return;
+data.tasks.push({name:v,priority:"Normal",done:false});
+$("quickTask").value="";save();openSection("tasks");
+}
+function addTask(){
+let v=$("taskInput").value.trim();if(!v)return;
+data.tasks.push({name:v,priority:$("taskPriority").value,done:false});
+$("taskInput").value="";save();
+}
+function toggleTask(i){data.tasks[i].done=!data.tasks[i].done;save()}
+function deleteTask(i){data.tasks.splice(i,1);save()}
+function renderTasks(){
+$("taskList").innerHTML=data.tasks.map((t,i)=>`
+<div class="item">
+<div class="row">
+<div style="flex:3">
+${t.done?"<del>":""}${esc(t.name)}${t.done?"</del>":""}
+<div class="small">Priority: ${esc(t.priority)}</div>
+</div>
+<button class="ghost" onclick="toggleTask(${i})">${t.done?"Undo":"Complete"}</button>
+<button class="danger" onclick="deleteTask(${i})">✕</button>
+</div></div>`).join("")||'<p class="muted">No tasks yet.</p>';
+$("taskStat").textContent=data.tasks.filter(t=>t.done).length;
+}
+function addChapter(){
+let subject=$("chapterSubject").value;
+let name=$("chapterName").value.trim();
+if(!name)return;
+data.chapters.push({subject,name,status:"Not Started"});
+$("chapterName").value="";save();
+}
+function changeChapter(i,v){data.chapters[i].status=v;save()}
+function deleteChapter(i){data.chapters.splice(i,1);save()}
+function renderChapters(){
+$("chapterList").innerHTML=data.chapters.map((c,i)=>`
+<div class="item">
+<div class="row">
+<div style="flex:2">
+<strong>${esc(c.name)}</strong><br>
+<span class="tag">${esc(c.subject)}</span>
+</div>
+<select class="status" onchange="changeChapter(${i},this.value)">
+<option ${c.status==="Not Started"?"selected":""}>Not Started</option>
+<option ${c.status==="In Progress"?"selected":""}>In Progress</option>
+<option ${c.status==="Completed"?"selected":""}>Completed</option>
+</select>
+<button class="danger" onclick="deleteChapter(${i})">✕</button>
+</div></div>`).join("")||'<p class="muted">Add your first chapter above!</p>';
+let total=data.chapters.length,completed=data.chapters.filter(c=>c.status==="Completed").length,working=data.chapters.filter(c=>c.status==="In Progress").length;
+let percent=total?Math.round(completed/total*100):0;
+$("totalChapters").textContent=total;$("completedChapters").textContent=completed;$("workingChapters").textContent=working;
+$("trackerProgress").style.width=percent+"%";$("trackerPercent").textContent=percent+"% completed";
+$("chapterStat").textContent=percent+"%";$("homeProgress").style.width=percent+"%";$("progressText").textContent=percent+"% completed";
+}
+function addPlan(){
+let date=$("planDate").value,v=$("planTask").value.trim();if(!date||!v)return;
+data.plans.push({date,v,done:false});$("planTask").value="";save();
+}
+function togglePlan(i){data.plans[i].done=!data.plans[i].done;save()}
+function deletePlan(i){data.plans.splice(i,1);save()}
+function renderPlans(){
+$("planList").innerHTML=data.plans.slice().sort((a,b)=>a.date.localeCompare(b.date)).map((p)=>{
+let i=data.plans.indexOf(p);
+return `<div class="item"><div class="row">
+<div style="flex:2"><strong>${esc(p.v)}</strong><div class="small">${esc(p.date)}</div></div>
+<button class="ghost" onclick="togglePlan(${i})">${p.done?"Undo":"Done"}</button>
+<button class="danger" onclick="deletePlan(${i})">✕</button>
+</div></div>`}).join("")||'<p class="muted">Nothing planned yet.</p>';
+}
+function addExam(){
+let name=$("examName").value.trim(),date=$("examDate").value;if(!name||!date)return;
+data.exams.push({name,date});$("examName").value="";save();
+}
+function deleteExam(i){data.exams.splice(i,1);save()}
+function renderExams(){
+$("examList").innerHTML=data.exams.map((e,i)=>{
+let days=Math.ceil((new Date(e.date+"T00:00:00")-new Date(new Date().toDateString()))/86400000);
+return `<div class="item"><strong>${esc(e.name)}</strong><div class="small">${esc(e.date)}</div><div class="stat">${days<0?"Passed":days===0?"TODAY":days+" days left"}</div><button class="danger" onclick="deleteExam(${i})">Delete</button></div>`}).join("")||'<p class="muted">Add an exam countdown.</p>';
+}
+function addNote(){
+let title=$("noteTitle").value.trim(),text=$("noteText").value.trim(),subject=$("noteSubject").value;
+if(!title||!text)return;
+data.notes.push({title,text,subject,date:new Date().toLocaleDateString()});
+$("noteTitle").value="";$("noteText").value="";save();
+}
+function deleteNote(i){data.notes.splice(i,1);save()}
+function renderNotes(){
+$("noteList").innerHTML=data.notes.map((n,i)=>`
+<div class="item"><strong>${esc(n.title)}</strong><span class="tag">${esc(n.subject)}</span>
+<p class="small">${esc(n.date)}</p><p style="white-space:pre-wrap;margin:10px 0">${esc(n.text)}</p>
+<button class="danger" onclick="deleteNote(${i})">Delete</button></div>`).join("")||'<p class="muted">No notes saved.</p>';
+}
+function saveJournal(){
+let v=$("journalText").value.trim();if(!v)return;
+data.journals.unshift({text:v,date:new Date().toLocaleString()});
+$("journalText").value="";save();
+}
+function deleteJournal(i){data.journals.splice(i,1);save()}
+function renderJournals(){
+$("journalList").innerHTML=data.journals.map((j,i)=>`
+<div class="item"><p class="small">${esc(j.date)}</p><p style="white-space:pre-wrap;margin:10px 0">${esc(j.text)}</p><button class="danger" onclick="deleteJournal(${i})">Delete</button></div>`).join("");
+}
+function addLink(){
+let title=$("linkTitle").value.trim(),url=$("linkUrl").value.trim();
+if(!title||!url)return;
+try{let u=new URL(url);if(!["https:","http:"].includes(u.protocol))return alert("Only web links are allowed.");data.links.push({title,url:u.href});}
+catch(e){return alert("Enter a valid website link.");}
+$("linkTitle").value="";$("linkUrl").value="";save();
+}
+function deleteLink(i){data.links.splice(i,1);save()}
+function renderLinks(){
+$("linkList").innerHTML=data.links.map((l,i)=>`
+<div class="item"><div class="row"><div style="flex:2"><strong>${esc(l.title)}</strong></div>
+<button onclick="window.open('${safeUrl(l.url)}','_blank','noopener')">Open</button>
+<button class="danger" onclick="deleteLink(${i})">Delete</button></div></div>`).join("")||'<p class="muted">No links added.</p>';
+}
+function saveProfile(){data.profile=$("profileName").value.trim();save()}
+function saveRoomSubject(){data.roomSubject=$("roomSubject").value;localStorage.setItem(KEY,JSON.stringify(data))}
+function setTheme(t){
+data.theme=t;
+let themes={
+lavender:["#f5f3ff","#fff","#292344","#9070dd","#eee8ff"],
+dark:["#181827","#25253a","#f3f0ff","#ad8cff","#36334d"],
+ocean:["#eaf7ff","#fff","#18364d","#3b9edb","#d9f1ff"],
+rose:["#fff1f6","#fff","#502b43","#d777a4","#ffe0ed"]
+};
+let x=themes[t];
+document.documentElement.style.setProperty("--bg",x[0]);
+document.documentElement.style.setProperty("--card",x[1]);
+document.documentElement.style.setProperty("--text",x[2]);
+document.documentElement.style.setProperty("--accent",x[3]);
+document.documentElement.style.setProperty("--soft",x[4]);
+saveThemeOnly();
+}
+function saveThemeOnly(){localStorage.setItem(KEY,JSON.stringify(data))}
+function setRoomTheme(t){
+data.roomTheme=t;saveThemeOnly();
+let themes={lavender:"#eee8ff",night:"#22243d",forest:"#e0f1e4",ocean:"#dff4ff",sunset:"#fff0df"};
+$("studyRoom").style.setProperty("--roombg",themes[t]);
+$("studyRoom").style.color=t==="night"?"#fff":"var(--text)";
+}
+function newChallenge(){
+let a=["Revise one difficult chapter 📚","Solve 5 extra questions ✍️","Spend 25 minutes distraction-free ⏳","Organise your notes 📝","Review yesterday's learning 🔁","Complete one pending task 🎯","Learn one new concept 💡"];
+$("challenge").textContent=a[Math.floor(Math.random()*a.length)];
+}
+let remaining=25*60,timer=null;
+function updateTimer(){
+let m=Math.floor(remaining/60),s=remaining%60;
+$("timerDisplay").textContent=String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
+}
+function setTimer(){
+let v=parseInt($("timerMinutes").value);
+if(!v||v<1||v>180)return alert("Choose 1–180 minutes.");
+pauseTimer();remaining=v*60;updateTimer();
+}
+function startTimer(){
+if(timer)return;
+if(remaining<=0)resetTimer();
+timer=setInterval(()=>{
+remaining--;updateTimer();
+if(remaining<=0){
+pauseTimer();data.sessions++;save();
+$("roomSession").textContent="Session completed! Great work! ✨";
+alert("Focus session completed! 💜");
+}
+},1000);
+}
+function pauseTimer(){if(timer){clearInterval(timer);timer=null}}
+function resetTimer(){pauseTimer();remaining=25*60;updateTimer();$("roomSession").textContent="Focus on one thing at a time ✨"}
+  function exportData(){
+let blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+let a=document.createElement("a");
+a.href=URL.createObjectURL(blob);
+a.download="students-hub-backup.json";
+a.click();
+URL.revokeObjectURL(a.href);
+}
+function importData(e){
+let file=e.target.files[0];if(!file)return;
+let r=new FileReader();
+r.onload=()=>{try{
+let d=JSON.parse(r.result);
+if(!d||typeof d!=="object")throw Error();
+data={...data,...d};save();alert("Backup restored!");
+}catch(x){alert("Invalid backup file.");}};
+r.readAsText(file);
+}
+function resetAll(){
+if(confirm("Are you sure? This will erase all Students Hub data saved in this browser.")){
+localStorage.removeItem(KEY);location.reload();
+}
+}
+function esc(s){
+return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function safeUrl(s){return esc(s).replace(/'/g,"%27")}
+function desktopApp(app){
+const w=$("desktopWindow");w.style.display="block";
+if(app==="notes"){
+w.innerHTML=`<h3>🗒️ Sticky Notes</h3><textarea id="deskNote" placeholder="Your quick note..."></textarea><button onclick="saveDeskNote()">Save</button>`;
+$("deskNote").value=data.deskNote||"";
+}
+if(app==="tasks"){
+w.innerHTML=`<h3>✅ Quick Tasks</h3><div class="row"><input id="deskTaskInput" placeholder="Add desktop task"><button onclick="addDeskTask()">Add</button></div><div id="deskTasks"></div>`;
+renderDeskTasks();
+}
+if(app==="calculator"){
+w.innerHTML=`<h3>🧮 Calculator</h3><input id="calcDisplay" readonly value=""><div class="calc-grid">${["7","8","9","/","4","5","6","*","1","2","3","-","0",".","=","+"].map(x=>`<button onclick="calcPress('${x}')">${x}</button>`).join("")}<button class="danger" onclick="calcClear()" style="grid-column:span 4">Clear</button></div>`;
+}
+if(app==="calendar"){
+w.innerHTML=`<h3>📅 Calendar</h3><p>${new Date().toLocaleDateString(undefined,{weekday:"long",year:"numeric",month:"long",day:"numeric"})}</p><p class="muted">Your saved plans are shown below.</p>${data.plans.map(p=>`<div class="item"><strong>${esc(p.date)}</strong> — ${esc(p.v)}</div>`).join("")||"No plans saved yet."}`;
+}
+if(app==="formulas"){
+w.innerHTML=`<h3>📐 Formula Pad</h3><textarea id="deskFormula" placeholder="Save formulas here..."></textarea><button onclick="saveDeskFormula()">Save formulas</button>`;
+$("deskFormula").value=data.deskFormula||"";
+}
+if(app==="focus"){
+w.innerHTML=`<h3>⏱️ Focus Clock</h3><p style="font-size:32px;font-weight:bold" id="deskClock">25:00</p><button onclick="deskStart()">Start 25 min</button><button class="ghost" onclick="deskStop()">Stop</button><p class="small">A simple mini focus countdown.</p>`;
+}
+}
+function saveDeskNote(){data.deskNote=$("deskNote").value;save();alert("Sticky note saved!");}
+function saveDeskFormula(){data.deskFormula=$("deskFormula").value;save();alert("Formulas saved!");}
+function addDeskTask(){
+let v=$("deskTaskInput").value.trim();if(!v)return;
+data.deskTasks=data.deskTasks||[];
+data.deskTasks.push({v,done:false});
+$("deskTaskInput").value="";renderDeskTasks();
+}
+function toggleDeskTask(i){data.deskTasks[i].done=!data.deskTasks[i].done;localStorage.setItem(KEY,JSON.stringify(data));renderDeskTasks();}
+function deleteDeskTask(i){data.deskTasks.splice(i,1);localStorage.setItem(KEY,JSON.stringify(data));renderDeskTasks();}
+function renderDeskTasks(){
+if(!$("deskTasks"))return;
+$("deskTasks").innerHTML=(data.deskTasks||[]).map((t,i)=>`<div class="item"><div class="row"><span>${t.done?"<del>":""}${esc(t.v)}${t.done?"</del>":""}</span><button class="ghost" onclick="toggleDeskTask(${i})">${t.done?"Undo":"Done"}</button><button class="danger" onclick="deleteDeskTask(${i})">✕</button></div></div>`).join("")||'<p class="muted">No mini tasks yet.</p>';
+}
+function calcPress(v){
+let d=$("calcDisplay");
+if(v==="="){
+try{
+if(!/^[0-9+\-*/.() ]+$/.test(d.value))throw Error();
+d.value=String(Function("return ("+d.value+")")());
+}catch(e){d.value="Error";}
+}else d.value+=v;
+}
+function calcClear(){if($("calcDisplay"))$("calcDisplay").value="";}
+let deskInterval=null,deskSecs=1500;
+function deskStart(){
+deskStop();deskSecs=1500;
+deskInterval=setInterval(()=>{
+deskSecs--;
+if($("deskClock"))$("deskClock").textContent=Math.floor(deskSecs/60).toString().padStart(2,"0")+":"+ (deskSecs%60).toString().padStart(2,"0");
+if(deskSecs<=0){deskStop();alert("Mini focus session complete!");}
+},1000);
+}
+function deskStop(){if(deskInterval){clearInterval(deskInterval);deskInterval=null;}}
+function renderAll(){
+renderTasks();renderChapters();renderPlans();renderExams();renderNotes();renderJournals();renderLinks();renderDeskTasks();
+$("sessionStat").textContent=data.sessions;
+}
+function init(){
+$("today").textContent=new Date().toLocaleDateString(undefined,{weekday:"long",year:"numeric",month:"long",day:"numeric"});
+$("profileName").value=data.profile||"";
+$("greeting").textContent=data.profile?"Welcome back, "+data.profile+" 💜":"Welcome back! 💜";
+if(data.theme)setTheme(data.theme);
+if(data.roomTheme)setRoomTheme(data.roomTheme);
+$("roomSubject").value=data.roomSubject||"";
+renderAll();updateTimer();
+}
+init();
+</script>
+</body>
+</html>
