@@ -1,566 +1,246 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Mini Desktop 💜</title>
 <style>
 *{box-sizing:border-box}
-body{
-margin:0;font-family:Arial,sans-serif;
-background:#c9b8f3;color:#34244d;
-overflow:hidden;
-}
-#desktop{
-height:100vh;
-padding:20px;
-padding-bottom:65px;
-background:linear-gradient(135deg,#d9c9ff,#b9d5ff,#f4d6ee);
-position:relative;
-transition:.3s;
-}
-#icons{
-display:grid;
-grid-template-columns:90px;
-gap:12px;
-width:100px;
-}
-.icon{
-border:0;background:transparent;color:#34244d;
-padding:12px 5px;border-radius:14px;
-cursor:pointer;font-size:14px;
-}
+body{margin:0;font-family:Arial;color:#49365f}
+#desktop{height:100vh;background:linear-gradient(135deg,#d8c9ff,#bde0ff,#f8d9eb);padding:15px;position:relative;overflow:hidden}
+.icons{display:grid;grid-template-columns:85px;gap:5px}
+.icon{background:transparent;border:0;padding:10px;border-radius:12px;cursor:pointer;color:#49365f;font-size:14px}
 .icon:hover{background:#ffffff70}
-.icon span{display:block;font-size:32px;margin-bottom:7px}
-#taskbar{
-position:absolute;bottom:0;left:0;width:100%;
-height:55px;background:#ffffff90;
-backdrop-filter:blur(15px);
-display:flex;align-items:center;justify-content:center;
-gap:8px;padding:5px;z-index:9999;
-}
-.tb{
-border:0;background:#ffffffbb;
-padding:10px 14px;border-radius:12px;
-cursor:pointer;color:#34244d;font-weight:bold;
-}
-.tb:hover{background:#ded0ff}
-#clock{
-position:absolute;right:14px;font-size:12px;
-text-align:right;
-}
-.window{
-position:absolute;width:min(440px,94vw);
-height:min(440px,78vh);
-background:#fff9ff;
-border:1px solid #c9b4ed;
-border-radius:18px;
-box-shadow:0 15px 40px #57417a45;
-overflow:hidden;
-display:none;
-z-index:10;
-}
-.window.active{display:flex;flex-direction:column}
-.bar{
-background:#e6d8ff;
-padding:12px;
-display:flex;justify-content:space-between;
-align-items:center;font-weight:bold;
-cursor:move;user-select:none;
-}
-.controls button{
-border:0;border-radius:8px;padding:5px 9px;
-cursor:pointer;background:#fff;color:#493466;
-margin-left:4px;
-}
-.content{
-padding:15px;overflow:auto;flex:1;
-}
-button.action{
-background:#a88be3;color:white;
-border:0;padding:10px 14px;border-radius:10px;
-cursor:pointer;margin:4px;
-}
-button.action:hover{background:#896ac8}
-input,textarea,select{
-padding:10px;border-radius:10px;
-border:1px solid #d8c6ef;
-width:100%;margin:6px 0;
-background:white;color:#34244d;
-}
-textarea{resize:vertical;min-height:100px}
-.note{
-background:#f0e7ff;border-radius:12px;
-padding:10px;margin:8px 0;
-overflow-wrap:anywhere;
-}
-.small{font-size:13px;color:#735e91}
-#calcDisplay{
-font-size:24px;text-align:right;
-font-weight:bold;
-}
-.calcgrid{
-display:grid;grid-template-columns:repeat(4,1fr);
-gap:6px;margin-top:10px;
-}
-.calcgrid button{
-border:0;border-radius:12px;
-padding:15px;background:#eee3ff;
-font-size:18px;cursor:pointer;
-}
-.calcgrid button:hover{background:#dac6ff}
-.wall{
-height:60px;border:0;border-radius:12px;
-cursor:pointer;margin:5px;width:90%;
-}
-#filelist .note button{float:right}
+.icon span{display:block;font-size:32px;margin-bottom:5px}
+.win{display:none;position:absolute;top:70px;left:110px;width:min(400px,90vw);height:min(420px,75vh);background:#fff;border-radius:16px;box-shadow:0 8px 30px #5555;overflow:hidden;z-index:5}
+.head{background:#e6d9ff;padding:12px;display:flex;justify-content:space-between;font-weight:bold}
+.head button{border:0;border-radius:8px;padding:5px 10px;cursor:pointer}
+.body{padding:15px;overflow:auto;height:calc(100% - 44px)}
+button.action{background:#a78bdb;color:white;border:0;border-radius:9px;padding:10px;margin:4px;cursor:pointer}
+input,textarea{width:100%;padding:10px;margin:5px 0;border:1px solid #ddd;border-radius:9px}
+textarea{min-height:80px}
+.note{background:#eee5ff;padding:10px;border-radius:10px;margin:10px 0;overflow-wrap:anywhere}
+#bar{position:absolute;bottom:0;height:55px;width:100%;left:0;background:#ffffffbb;display:flex;justify-content:center;align-items:center;gap:8px;z-index:999;padding:5px}
+#bar button{border:0;border-radius:10px;padding:10px;cursor:pointer}
+#clock{position:absolute;right:10px;font-size:12px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.grid button{padding:14px;border:0;border-radius:10px;background:#e9ddff;cursor:pointer;font-size:17px}
+.wall{display:block;width:100%;padding:20px;border:0;border-radius:10px;margin:8px 0;cursor:pointer}
 </style>
 </head>
 <body>
 <div id="desktop">
-<div id="icons">
 
-<button class="icon" onclick="openApp('notes')">
-<span>📝</span>Notes
-</button>
-
-<button class="icon" onclick="openApp('files')">
-<span>📁</span>My Files
-</button>
-
-<button class="icon" onclick="openApp('calc')">
-<span>🧮</span>Calculator
-</button>
-
-<button class="icon" onclick="openApp('timer')">
-<span>⏱️</span>Focus Timer
-</button>
-
-<button class="icon" onclick="openApp('calendar')">
-<span>📅</span>Calendar
-</button>
-
-<button class="icon" onclick="openApp('wall')">
-<span>🎨</span>Wallpapers
-</button>
-
-<button class="icon" onclick="openApp('trash')">
-<span>🗑️</span>Recycle Bin
-</button>
-
+<div class="icons">
+<button class="icon" onclick="openW('notes')"><span>📝</span>Notes</button>
+<button class="icon" onclick="openW('files')"><span>📁</span>My Files</button>
+<button class="icon" onclick="openW('calc')"><span>🧮</span>Calculator</button>
+<button class="icon" onclick="openW('timer')"><span>⏱️</span>Timer</button>
+<button class="icon" onclick="openW('calendar')"><span>📅</span>Calendar</button>
+<button class="icon" onclick="openW('wall')"><span>🎨</span>Wallpapers</button>
+<button class="icon" onclick="openW('trash')"><span>🗑️</span>Trash</button>
 </div>
 
 <!-- NOTES -->
-<div class="window" id="notes">
-<div class="bar">
-📝 Notes
-<div class="controls">
-<button onclick="minApp('notes')">—</button>
-<button onclick="closeApp('notes')">✕</button>
-</div>
-</div>
-<div class="content">
-<h3>My Sticky Notes</h3>
-<input id="noteTitle" placeholder="Note title">
-<textarea id="noteText" placeholder="Write anything..."></textarea>
-<button class="action" onclick="saveNote()">Save Note</button>
-<button class="action" onclick="clearNoteInput()">Clear</button>
-<div id="noteList"></div>
+<div class="win" id="notes">
+<div class="head">📝 Notes <span><button onclick="minW('notes')">—</button><button onclick="closeW('notes')">✕</button></span></div>
+<div class="body">
+<input id="nt" placeholder="Title">
+<textarea id="nb" placeholder="Write your note..."></textarea>
+<button class="action" onclick="saveNote()">Save</button>
+<button class="action" onclick="clearNote()">Clear</button>
+<div id="notesList"></div>
 </div>
 </div>
 
 <!-- FILES -->
-<div class="window" id="files">
-<div class="bar">
-📁 My Files
-<div class="controls">
-<button onclick="minApp('files')">—</button>
-<button onclick="closeApp('files')">✕</button>
-</div>
-</div>
-<div class="content">
-<h3>Saved Notes & Files</h3>
-<p class="small">Your saved notes appear here.</p>
-<div id="filelist"></div>
-</div>
+<div class="win" id="files">
+<div class="head">📁 My Files <span><button onclick="minW('files')">—</button><button onclick="closeW('files')">✕</button></span></div>
+<div class="body"><h3>Saved notes</h3><div id="filesList"></div></div>
 </div>
 
 <!-- CALCULATOR -->
-<div class="window" id="calc">
-<div class="bar">
-🧮 Calculator
-<div class="controls">
-<button onclick="minApp('calc')">—</button>
-<button onclick="closeApp('calc')">✕</button>
-</div>
-</div>
-<div class="content">
-<input id="calcDisplay" readonly value="0">
-<div class="calcgrid">
-<button onclick="calcInput('7')">7</button>
-<button onclick="calcInput('8')">8</button>
-<button onclick="calcInput('9')">9</button>
-<button onclick="calcInput('/')">÷</button>
-
-<button onclick="calcInput('4')">4</button>
-<button onclick="calcInput('5')">5</button>
-<button onclick="calcInput('6')">6</button>
-<button onclick="calcInput('*')">×</button>
-
-<button onclick="calcInput('1')">1</button>
-<button onclick="calcInput('2')">2</button>
-<button onclick="calcInput('3')">3</button>
-<button onclick="calcInput('-')">−</button>
-
-<button onclick="calcInput('0')">0</button>
-<button onclick="calcInput('.')">.</button>
-<button onclick="calculate()">=</button>
-<button onclick="calcInput('+')">+</button>
-
-<button onclick="calcClear()" style="grid-column:span 4">
-Clear
-</button>
+<div class="win" id="calc">
+<div class="head">🧮 Calculator <span><button onclick="minW('calc')">—</button><button onclick="closeW('calc')">✕</button></span></div>
+<div class="body">
+<input id="cd" value="0" readonly style="font-size:25px;text-align:right">
+<div class="grid">
+<button onclick="ci('7')">7</button><button onclick="ci('8')">8</button><button onclick="ci('9')">9</button><button onclick="ci('/')">÷</button>
+<button onclick="ci('4')">4</button><button onclick="ci('5')">5</button><button onclick="ci('6')">6</button><button onclick="ci('*')">×</button>
+<button onclick="ci('1')">1</button><button onclick="ci('2')">2</button><button onclick="ci('3')">3</button><button onclick="ci('-')">−</button>
+<button onclick="ci('0')">0</button><button onclick="ci('.')">.</button><button onclick="ce()">=</button><button onclick="ci('+')">+</button>
+<button onclick="cc()" style="grid-column:span 4">Clear</button>
 </div>
 </div>
 </div>
 
 <!-- TIMER -->
-<div class="window" id="timer">
-<div class="bar">
-⏱️ Focus Timer
-<div class="controls">
-<button onclick="minApp('timer')">—</button>
-<button onclick="closeApp('timer')">✕</button>
-</div>
-</div>
-<div class="content" style="text-align:center">
-<h2 id="timerDisplay" style="font-size:50px">25:00</h2>
-<input id="timerMinutes" type="number" min="1" max="180" value="25" placeholder="Minutes">
-<button class="action" onclick="setTimer()">Set</button>
-<button class="action" onclick="startTimer()">Start</button>
-<button class="action" onclick="pauseTimer()">Pause</button>
-<button class="action" onclick="resetTimer()">Reset</button>
-<p id="timerStatus">Ready to focus ✨</p>
+<div class="win" id="timer">
+<div class="head">⏱️ Timer <span><button onclick="minW('timer')">—</button><button onclick="closeW('timer')">✕</button></span></div>
+<div class="body" style="text-align:center">
+<h1 id="td" style="font-size:50px">25:00</h1>
+<input id="tm" type="number" min="1" max="180" value="25">
+<button class="action" onclick="setT()">Set</button>
+<button class="action" onclick="startT()">Start</button>
+<button class="action" onclick="pauseT()">Pause</button>
+<button class="action" onclick="resetT()">Reset</button>
+<p id="ts">Ready ✨</p>
 </div>
 </div>
 
 <!-- CALENDAR -->
-<div class="window" id="calendar">
-<div class="bar">
-📅 Calendar
-<div class="controls">
-<button onclick="minApp('calendar')">—</button>
-<button onclick="closeApp('calendar')">✕</button>
-</div>
-</div>
-<div class="content" style="text-align:center">
-<h2>Today's Date</h2>
-<h3 id="dateDisplay"></h3>
-<h3 id="dayDisplay"></h3>
+<div class="win" id="calendar">
+<div class="head">📅 Calendar <span><button onclick="minW('calendar')">—</button><button onclick="closeW('calendar')">✕</button></span></div>
+<div class="body" style="text-align:center">
+<h2>Today's date</h2><h3 id="date"></h3><h3 id="day"></h3>
 </div>
 </div>
 
 <!-- WALLPAPERS -->
-<div class="window" id="wall">
-<div class="bar">
-🎨 Wallpapers
-<div class="controls">
-<button onclick="minApp('wall')">—</button>
-<button onclick="closeApp('wall')">✕</button>
-</div>
-</div>
-<div class="content">
-<h3>Choose a wallpaper</h3>
-<button class="wall" style="background:linear-gradient(135deg,#d9c9ff,#b9d5ff)" onclick="setWall('linear-gradient(135deg,#d9c9ff,#b9d5ff)')">💜 Lavender Sky</button>
-<button class="wall" style="background:linear-gradient(135deg,#ffcde5,#fff0bd)" onclick="setWall('linear-gradient(135deg,#ffcde5,#fff0bd)')">🌸 Pink Sunset</button>
-<button class="wall" style="background:linear-gradient(135deg,#b9f2df,#d6e9ff)" onclick="setWall('linear-gradient(135deg,#b9f2df,#d6e9ff)')">🌿 Mint Garden</button>
-<button class="wall" style="background:linear-gradient(135deg,#252447,#55427a)" onclick="setWall('linear-gradient(135deg,#252447,#55427a)')">🌙 Midnight</button>
-<button class="wall" style="background:linear-gradient(135deg,#fff0bd,#ffcde5,#d9c9ff)" onclick="setWall('linear-gradient(135deg,#fff0bd,#ffcde5,#d9c9ff)')">🌈 Dreamy</button>
+<div class="win" id="wall">
+<div class="head">🎨 Wallpapers <span><button onclick="minW('wall')">—</button><button onclick="closeW('wall')">✕</button></span></div>
+<div class="body">
+<button class="wall" style="background:linear-gradient(135deg,#d8c9ff,#bde0ff)" onclick="sw('linear-gradient(135deg,#d8c9ff,#bde0ff)')">💜 Lavender</button>
+<button class="wall" style="background:linear-gradient(135deg,#ffcde5,#fff0bd)" onclick="sw('linear-gradient(135deg,#ffcde5,#fff0bd)')">🌸 Pink</button>
+<button class="wall" style="background:linear-gradient(135deg,#b9f2df,#d6e9ff)" onclick="sw('linear-gradient(135deg,#b9f2df,#d6e9ff)')">🌿 Mint</button>
+<button class="wall" style="background:linear-gradient(135deg,#252447,#55427a);color:white" onclick="sw('linear-gradient(135deg,#252447,#55427a)')">🌙 Midnight</button>
+<button class="wall" style="background:linear-gradient(135deg,#fff0bd,#ffcde5,#d9c9ff)" onclick="sw('linear-gradient(135deg,#fff0bd,#ffcde5,#d9c9ff)')">🌈 Dream</button>
 </div>
 </div>
 
 <!-- TRASH -->
-<div class="window" id="trash">
-<div class="bar">
-🗑️ Recycle Bin
-<div class="controls">
-<button onclick="minApp('trash')">—</button>
-<button onclick="closeApp('trash')">✕</button>
-</div>
-</div>
-<div class="content">
-<h3>Deleted notes</h3>
-<div id="trashList"></div>
-<button class="action" onclick="emptyTrash()">Empty Trash</button>
-</div>
+<div class="win" id="trash">
+<div class="head">🗑️ Trash <span><button onclick="minW('trash')">—</button><button onclick="closeW('trash')">✕</button></span></div>
+<div class="body"><div id="trashList"></div><button class="action" onclick="emptyT()">Empty Trash</button></div>
 </div>
 
-<!-- TASKBAR -->
-<div id="taskbar">
-<button class="tb" onclick="openApp('notes')">📝</button>
-<button class="tb" onclick="openApp('files')">📁</button>
-<button class="tb" onclick="openApp('calc')">🧮</button>
-<button class="tb" onclick="openApp('timer')">⏱️</button>
-<button class="tb" onclick="openApp('calendar')">📅</button>
+<div id="bar">
+<button onclick="openW('notes')">📝</button>
+<button onclick="openW('files')">📁</button>
+<button onclick="openW('calc')">🧮</button>
+<button onclick="openW('timer')">⏱️</button>
+<button onclick="openW('calendar')">📅</button>
 <div id="clock"></div>
 </div>
 </div>
 
 <script>
-const $=id=>document.getElementById(id);
+const $=x=>document.getElementById(x);
+let N=JSON.parse(localStorage.getItem("notes2")||"[]");
+let T=JSON.parse(localStorage.getItem("trash2")||"[]");
+let Z=10;
 
-let notes=JSON.parse(localStorage.getItem("md_notes")||"[]");
-let trashData=JSON.parse(localStorage.getItem("md_trash")||"[]");
-let topZ=20;
+function openW(id){
+$(id).style.display="block";
+$(id).style.zIndex=++Z;
+}
+function closeW(id){$(id).style.display="none"}
+function minW(id){$(id).style.display="none"}
 
-function persist(){
-localStorage.setItem("md_notes",JSON.stringify(notes));
-localStorage.setItem("md_trash",JSON.stringify(trashData));
-renderNotes();
-renderFiles();
-renderTrash();
+function safe(s){
+return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
 
-function openApp(id){
-const w=$(id);
-w.style.display="flex";
-w.classList.add("active");
-w.style.zIndex=++topZ;
+function save(){
+localStorage.setItem("notes2",JSON.stringify(N));
+localStorage.setItem("trash2",JSON.stringify(T));
+render();
 }
-
-function closeApp(id){
-$(id).style.display="none";
-$(id).classList.remove("active");
-}
-
-function minApp(id){
-$(id).style.display="none";
-}
-
 function saveNote(){
-let title=$("noteTitle").value.trim();
-let body=$("noteText").value.trim();
+let a=$("nt").value.trim(),b=$("nb").value.trim();
+if(!a&&!b){alert("Write something first!");return}
+N.unshift({id:Date.now(),a:a||"Untitled",b:b});
+save();clearNote();
+}
+function clearNote(){$("nt").value="";$("nb").value=""}
 
-if(!title && !body){
-alert("Write something first!");
-return;
-}
+function render(){
+$("notesList").innerHTML=N.map(n=>`
+<div class="note"><b>${safe(n.a)}</b><p>${safe(n.b).replace(/\n/g,"<br>")}</p>
+<button class="action" onclick="del(${n.id})">Delete</button></div>`).join("");
 
-notes.unshift({
-id:Date.now(),
-title:title||"Untitled",
-body:body,
-date:new Date().toLocaleDateString()
-});
+$("filesList").innerHTML=N.map(n=>`
+<div class="note"><b>📄 ${safe(n.a)}</b><p>${safe(n.b).replace(/\n/g,"<br>")}</p></div>`).join("")||"No saved notes.";
 
-persist();
-clearNoteInput();
+$("trashList").innerHTML=T.map(n=>`
+<div class="note"><b>${safe(n.a)}</b><p>${safe(n.b)}</p>
+<button class="action" onclick="restore(${n.id})">Restore</button>
+<button class="action" onclick="pd(${n.id})">Delete forever</button></div>`).join("")||"Trash is empty.";
 }
+function del(id){
+let n=N.find(x=>x.id===id);
+if(n){T.unshift(n);N=N.filter(x=>x.id!==id);save()}
+}
+function restore(id){
+let n=T.find(x=>x.id===id);
+if(n){N.unshift(n);T=T.filter(x=>x.id!==id);save()}
+}
+function pd(id){T=T.filter(x=>x.id!==id);save()}
+function emptyT(){if(confirm("Empty trash?")){T=[];save()}}
 
-function clearNoteInput(){
-$("noteTitle").value="";
-$("noteText").value="";
-}
-
-function renderNotes(){
-$("noteList").innerHTML=notes.map(n=>`
-<div class="note">
-<strong>${escapeHTML(n.title)}</strong>
-<p>${escapeHTML(n.body).replace(/\n/g,"<br>")}</p>
-<div class="small">${escapeHTML(n.date)}</div>
-<button class="action" onclick="deleteNote(${n.id})">Delete</button>
-</div>`).join("");
-}
-
-function renderFiles(){
-$("filelist").innerHTML=notes.map(n=>`
-<div class="note">
-<strong>📄 ${escapeHTML(n.title)}</strong>
-<div class="small">${escapeHTML(n.date)}</div>
-<p>${escapeHTML(n.body).replace(/\n/g,"<br>")}</p>
-</div>`).join("")||"<p>No files saved yet.</p>";
-}
-
-function deleteNote(id){
-const note=notes.find(n=>n.id===id);
-if(note){
-trashData.unshift(note);
-notes=notes.filter(n=>n.id!==id);
-persist();
-}
-}
-
-function renderTrash(){
-$("trashList").innerHTML=trashData.map(n=>`
-<div class="note">
-<strong>${escapeHTML(n.title)}</strong>
-<p>${escapeHTML(n.body).replace(/\n/g,"<br>")}</p>
-<button class="action" onclick="restoreNote(${n.id})">Restore</button>
-<button class="action" onclick="permanentDelete(${n.id})">Delete forever</button>
-</div>`).join("")||"<p>Trash is empty 🫧</p>";
-}
-
-function restoreNote(id){
-const n=trashData.find(n=>n.id===id);
-if(n){
-notes.unshift(n);
-trashData=trashData.filter(n=>n.id!==id);
-persist();
-}
-}
-
-function permanentDelete(id){
-trashData=trashData.filter(n=>n.id!==id);
-persist();
-}
-
-function emptyTrash(){
-if(confirm("Delete all items in Trash permanently?")){
-trashData=[];
-persist();
-}
-}
-
-function escapeHTML(s){
-return String(s).replace(/[&<>"']/g,c=>({
-"&":"&amp;","<":"&lt;",">":"&gt;",
-'"':"&quot;","'":"&#39;"
-}[c]));
-}
-
-// CALCULATOR
-function calcInput(v){
-const d=$("calcDisplay");
-if(d.value==="0")d.value="";
+// Calculator
+function ci(v){
+let d=$("cd");
+if(d.value==="0"||d.value==="Error")d.value="";
 d.value+=v;
 }
-
-function calcClear(){
-$("calcDisplay").value="0";
-}
-
-function calculate(){
-const d=$("calcDisplay");
+function cc(){$("cd").value="0"}
+function ce(){
 try{
-if(!/^[0-9+\-*/.() ]+$/.test(d.value)){
-throw Error();
-}
-const result=Function('"use strict";return ('+d.value+')')();
-if(!Number.isFinite(result))throw Error();
-d.value=String(result);
-}catch(e){
-d.value="Error";
-}
+let s=$("cd").value;
+if(!/^[0-9+\-*/.() ]+$/.test(s))throw 0;
+let r=Function("return "+s)();
+if(!Number.isFinite(r))throw 0;
+$("cd").value=String(r);
+}catch(e){$("cd").value="Error"}
 }
 
-// TIMER
-let total=25*60;
-let remaining=total;
-let timerInterval=null;
-
-function showTimer(){
-let m=Math.floor(remaining/60);
-let s=remaining%60;
-$("timerDisplay").textContent=
-String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
+// Timer
+let total=1500,remaining=1500,interval=null;
+function showT(){
+$("td").textContent=Math.floor(remaining/60).toString().padStart(2,"0")+":"+ (remaining%60).toString().padStart(2,"0");
 }
-
-function setTimer(){
-pauseTimer();
-let m=parseInt($("timerMinutes").value);
-if(!Number.isFinite(m)||m<1||m>180){
-alert("Enter minutes between 1 and 180.");
-return;
+function setT(){
+pauseT();
+let m=Number($("tm").value);
+if(!m||m<1||m>180){alert("Enter 1 to 180 minutes");return}
+total=remaining=m*60;showT();$("ts").textContent="Timer set ✨";
 }
-total=m*60;
-remaining=total;
-showTimer();
-$("timerStatus").textContent="Timer set ✨";
-}
-
-function startTimer(){
-if(timerInterval!==null)return;
+function startT(){
+if(interval)return;
 if(remaining<=0)remaining=total;
-$("timerStatus").textContent="Focus time! 💜";
-timerInterval=setInterval(()=>{
-remaining--;
-showTimer();
-if(remaining<=0){
-pauseTimer();
-$("timerStatus").textContent="Session complete! 🎉";
-alert("Focus session complete!");
-}
+$("ts").textContent="Focus time 💜";
+interval=setInterval(()=>{
+remaining--;showT();
+if(remaining<=0){pauseT();$("ts").textContent="Completed 🎉";alert("Timer complete!")}
 },1000);
 }
+function pauseT(){clearInterval(interval);interval=null}
+function resetT(){pauseT();remaining=total;showT();$("ts").textContent="Ready ✨"}
 
-function pauseTimer(){
-if(timerInterval!==null){
-clearInterval(timerInterval);
-timerInterval=null;
-}
-}
-
-function resetTimer(){
-pauseTimer();
-remaining=total;
-showTimer();
-$("timerStatus").textContent="Ready to focus ✨";
+// Wallpaper
+function sw(b){
+$("desktop").style.background=b;
+localStorage.setItem("wall2",b);
 }
 
-// WALLPAPER
-function setWall(bg){
-$("desktop").style.background=bg;
-localStorage.setItem("md_wall",bg);
+// Date and clock
+function tick(){
+let d=new Date();
+$("clock").innerHTML=d.toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"})+"<br>"+d.toLocaleDateString();
+$("date").textContent=d.toLocaleDateString([],{day:"numeric",month:"long",year:"numeric"});
+$("day").textContent=d.toLocaleDateString([],{weekday:"long"});
 }
+tick();setInterval(tick,1000);
 
-// CLOCK
-function updateClock(){
-const now=new Date();
-$("clock").innerHTML=
-now.toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"})+
-"<br>"+now.toLocaleDateString();
-$("dateDisplay").textContent=
-now.toLocaleDateString([], {day:"numeric",month:"long",year:"numeric"});
-$("dayDisplay").textContent=
-now.toLocaleDateString([], {weekday:"long"});
-}
+if(localStorage.getItem("wall2"))sw(localStorage.getItem("wall2"));
+render();showT();
 
-updateClock();
-setInterval(updateClock,1000);
-
-// WINDOW DRAGGING
-document.querySelectorAll(".window").forEach(w=>{
-const bar=w.querySelector(".bar");
-let sx=0,sy=0,ox=0,oy=0,drag=false;
-
-bar.addEventListener("mousedown",e=>{
-if(e.target.closest(".controls"))return;
-drag=true;
-sx=e.clientX;
-sy=e.clientY;
-ox=w.offsetLeft;
-oy=w.offsetTop;
-w.style.zIndex=++topZ;
+// Bring window to front on click
+document.querySelectorAll(".win").forEach(w=>{
+w.addEventListener("mousedown",()=>w.style.zIndex=++Z);
 });
-
-document.addEventListener("mousemove",e=>{
-if(!drag)return;
-w.style.left=Math.max(0,ox+e.clientX-sx)+"px";
-w.style.top=Math.max(0,oy+e.clientY-sy)+"px";
-});
-
-document.addEventListener("mouseup",()=>drag=false);
-});
-
-// RESTORE WALLPAPER
-const savedWall=localStorage.getItem("md_wall");
-if(savedWall)$("desktop").style.background=savedWall;
-
-renderNotes();
-renderFiles();
-renderTrash();
-showTimer();
 </script>
 </body>
 </html>
