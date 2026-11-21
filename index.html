@@ -3,86 +3,82 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Students Hub 💜</title>
 <style>
 :root{
- --bg:#f8f5ff;--card:#fff;--text:#29243c;--muted:#77718c;
- --primary:#9570e8;--soft:#eee5ff;--border:#e5ddf5;
+ --bg:#f7f4ff;--card:#fff;--text:#302747;--muted:#837b99;
+ --p:#9270df;--soft:#eee7ff;--border:#e4dcf3;
+ --green:#dff5e9;--shadow:0 5px 22px rgba(100,70,150,.08);
 }
 .dark{
- --bg:#171525;--card:#242137;--text:#f6f1ff;
- --muted:#b8aecf;--primary:#ad8cff;--soft:#352a50;--border:#39324e;
+ --bg:#171526;--card:#242138;--text:#f4efff;--muted:#b4a9ca;
+ --p:#b39aff;--soft:#382d50;--border:#403653;
+ --green:#243b33;--shadow:none;
 }
 *{box-sizing:border-box}
-body{
- margin:0;background:var(--bg);color:var(--text);
- font-family:Arial,Helvetica,sans-serif;transition:.2s;
-}
-header{
- display:flex;justify-content:space-between;align-items:center;
- flex-wrap:wrap;gap:12px;padding:20px 25px;
-}
-h1{margin:0;font-size:30px}
+body{margin:0;background:var(--bg);color:var(--text);
+font-family:Arial,sans-serif;transition:.2s}
 button,input,textarea,select{
- font:inherit;border-radius:12px;border:1px solid var(--border);
- padding:11px;background:var(--bg);color:var(--text);
+ font:inherit;color:var(--text);background:var(--bg);
+ border:1px solid var(--border);border-radius:12px;padding:11px;
 }
 button{cursor:pointer;transition:.15s}
-button:hover{transform:translateY(-1px);opacity:.9}
-.primary{background:var(--primary);color:white;border:none}
-.small{padding:8px 12px;font-size:14px}
+button:hover{opacity:.85}
+button:active{transform:scale(.97)}
+.primary{background:var(--p);color:white;border:none}
+.danger{color:#d85e72}
+header{display:flex;justify-content:space-between;align-items:center;
+ gap:12px;flex-wrap:wrap;padding:20px 25px}
+header h1{margin:0;font-size:28px}
 .container{max-width:1250px;margin:auto;padding:15px}
-.hero{
- background:linear-gradient(120deg,#ae91ff,#ead5ff);
- color:#2c2047;padding:32px;border-radius:25px;margin-bottom:20px;
-}
-.hero h2{margin-top:0;font-size:25px}
-.grid{
- display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
- gap:15px;
-}
-.card{
- background:var(--card);padding:20px;border:1px solid var(--border);
- border-radius:22px;min-width:0;
-}
-.card h2{font-size:21px;margin-top:0}
+.hero{padding:30px;border-radius:25px;background:linear-gradient(120deg,#c5aaff,#f1dfff);
+color:#35244c;margin-bottom:20px}
+.hero h2{font-size:26px;margin:0 0 8px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--border);
+border-radius:22px;padding:20px;box-shadow:var(--shadow);min-width:0}
+.card h2{margin:0 0 15px;font-size:20px}
 .wide{grid-column:span 2}
 .full{grid-column:1/-1}
-input,textarea,select{width:100%;margin:5px 0}
-textarea{resize:vertical;min-height:120px}
 .flex{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .flex input,.flex select{flex:1;min-width:120px}
-.item{
- padding:12px;background:var(--bg);border:1px solid var(--border);
- border-radius:12px;margin:8px 0;display:flex;align-items:center;
- justify-content:space-between;gap:10px;
-}
+input,select,textarea{width:100%;margin:5px 0}
+textarea{resize:vertical;min-height:130px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.stat{background:var(--soft);padding:15px;border-radius:15px}
+.stat strong{font-size:24px;display:block;margin-top:5px}
+.progress{height:12px;background:var(--soft);border-radius:30px;overflow:hidden}
+.bar{height:100%;background:var(--p);width:0;transition:.3s}
+.item{background:var(--bg);border:1px solid var(--border);
+border-radius:14px;padding:12px;margin:9px 0;
+display:flex;justify-content:space-between;align-items:center;gap:10px}
 .item span{overflow-wrap:anywhere}
+.item small{display:block;color:var(--muted);margin-top:4px}
 .done{text-decoration:line-through;opacity:.5}
 .muted{color:var(--muted);font-size:13px}
-.progress{
- background:var(--soft);height:12px;border-radius:20px;
- overflow:hidden;margin:15px 0;
-}
-.bar{height:100%;background:var(--primary);width:0%;transition:.3s}
-.timer{font-size:45px;font-weight:bold;text-align:center;margin:18px}
+.timer{font-size:55px;font-weight:bold;text-align:center;margin:15px}
 .center{text-align:center}
-.quote{font-size:17px;line-height:1.6}
-.badge{background:var(--soft);padding:5px 9px;border-radius:20px}
+.badge{padding:6px 10px;background:var(--soft);border-radius:30px}
+.quote{line-height:1.7;font-size:17px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 20px}
+.tabs button{background:var(--soft)}
+.tabs button.active{background:var(--p);color:white}
+.section{display:none}
+.section.active{display:block}
+.empty{color:var(--muted);padding:10px}
 footer{text-align:center;color:var(--muted);padding:25px}
 hr{border:0;border-top:1px solid var(--border);margin:15px 0}
-@media(max-width:900px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:550px){
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){
  .grid{grid-template-columns:1fr}
  .wide,.full{grid-column:span 1}
  header{padding:15px}
  .hero{padding:22px}
- h1{font-size:24px}
+ .timer{font-size:45px}
 }
 </style>
 </head>
-
 <body>
 
 <header>
@@ -90,44 +86,45 @@ hr{border:0;border-top:1px solid var(--border);margin:15px 0}
 <div class="flex">
 <button onclick="toggleTheme()">🌙 Theme</button>
 <button onclick="backup()">📥 Backup</button>
-<button onclick="document.getElementById('restoreFile').click()">📤 Restore</button>
-<input type="file" id="restoreFile" accept=".json" hidden onchange="restore(event)">
+<button onclick="document.getElementById('file').click()">📤 Restore</button>
+<input id="file" type="file" accept=".json" hidden onchange="restore(event)">
 </div>
 </header>
 
 <div class="container">
 
-<section class="hero">
-<h2>Welcome to your Student Space ✨</h2>
-<p>Plan better. Learn smarter. Keep growing.</p>
-<p id="today"></p>
-</section>
+<div class="hero">
+<h2>Welcome to your study space ✨</h2>
+<p>Learn. Plan. Focus. Grow.</p>
+<p id="date"></p>
+</div>
 
+<div class="tabs">
+<button class="active" onclick="showTab('dashboard',this)">🏠 Dashboard</button>
+<button onclick="showTab('tasksSection',this)">✅ Tasks</button>
+<button onclick="showTab('plannerSection',this)">📅 Planner</button>
+<button onclick="showTab('notesSection',this)">📝 Notes</button>
+<button onclick="showTab('focusSection',this)">⏳ Focus</button>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard" class="section active">
 <div class="grid">
 
-<!-- TASKS -->
-<section class="card">
-<h2>✅ Daily Tasks</h2>
-<div class="flex">
-<input id="taskInput" placeholder="Add a new task...">
-<button class="primary" onclick="addTask()">Add</button>
-</div>
-<div id="tasks"></div>
-</section>
-
-<!-- PROGRESS -->
-<section class="card">
+<div class="card">
 <h2>📊 Your Progress</h2>
-<h3 id="percent">0% completed</h3>
-<div class="progress"><div class="bar" id="bar"></div></div>
-<p class="muted" id="count">0 of 0 tasks completed</p>
-<hr>
-<h3>🏆 Completed today</h3>
-<h2 id="completedCount">0</h2>
-</section>
+<div class="stats">
+<div class="stat">Tasks<strong id="total">0</strong></div>
+<div class="stat">Done<strong id="doneNum">0</strong></div>
+<div class="stat">Progress<strong id="pct">0%</strong></div>
+</div>
+<div class="progress" style="margin-top:15px">
+<div class="bar" id="progressBar"></div>
+</div>
+<p class="muted" id="progressText">Let's begin!</p>
+</div>
 
-<!-- TIMER -->
-<section class="card center">
+<div class="card">
 <h2>⏳ Focus Timer</h2>
 <div class="timer" id="timer">25:00</div>
 <div class="flex" style="justify-content:center">
@@ -135,27 +132,67 @@ hr{border:0;border-top:1px solid var(--border);margin:15px 0}
 <button onclick="pauseTimer()">⏸ Pause</button>
 <button onclick="resetTimer()">↻ Reset</button>
 </div>
-<hr>
-<div class="flex">
+<div class="flex" style="justify-content:center;margin-top:12px">
 <button onclick="setTimer(25)">25 min</button>
 <button onclick="setTimer(50)">50 min</button>
-<button onclick="setTimer(5)">5 min break</button>
+<button onclick="setTimer(5)">5 min</button>
 </div>
-<p class="muted" id="timerLabel">25-minute focus session</p>
-</section>
+<p class="center muted" id="modeLabel">Focus session</p>
+</div>
 
-<!-- QUICK NOTES -->
-<section class="card">
-<h2>📝 Quick Notes</h2>
-<textarea id="quickNotes" placeholder="Write your ideas, reminders or study notes..." oninput="save()"></textarea>
-<p class="muted">Notes save automatically on this device.</p>
-</section>
+<div class="card">
+<h2>🌷 Motivation</h2>
+<p class="quote" id="quote"></p>
+<button onclick="newQuote()">Another quote ✨</button>
+</div>
+
+<div class="card">
+<h2>🌱 Daily Habits</h2>
+<div id="habits"></div>
+</div>
+
+<div class="card wide">
+<h2>📌 Today's Study Sessions</h2>
+<div id="today"></div>
+</div>
+
+<div class="card full">
+<h2>⚡ Quick Task</h2>
+<div class="flex">
+<input id="quickTask" placeholder="What do you want to finish today?">
+<button class="primary" onclick="addTaskFrom('quickTask')">Add task</button>
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- TASKS -->
+<div id="tasksSection" class="section">
+<div class="grid">
+<div class="card wide">
+<h2>✅ Task Manager</h2>
+<div class="flex">
+<input id="taskInput" placeholder="Write a task...">
+<button class="primary" onclick="addTaskFrom('taskInput')">Add</button>
+</div>
+<div id="taskList"></div>
+</div>
+<div class="card">
+<h2>📈 Task Summary</h2>
+<h3 id="taskSummary">0 tasks</h3>
+<p class="muted">Every small task counts.</p>
+<button onclick="clearCompleted()">🗑 Clear completed</button>
+</div>
+</div>
+</div>
 
 <!-- PLANNER -->
-<section class="card wide">
+<div id="plannerSection" class="section">
+<div class="grid">
+<div class="card wide">
 <h2>📅 Study Planner</h2>
-<div class="flex">
-<select id="subject">
+<select id="planSubject">
 <option>Physics</option>
 <option>Chemistry</option>
 <option>Mathematics</option>
@@ -163,237 +200,222 @@ hr{border:0;border-top:1px solid var(--border);margin:15px 0}
 <option>Computer Science</option>
 <option>Other</option>
 </select>
-<input id="topic" placeholder="Topic / Chapter">
-<input type="date" id="planDate">
-<input type="time" id="planTime">
-<button class="primary" onclick="addPlan()">Add</button>
+<input id="planTopic" placeholder="Chapter / topic">
+<input id="planDate" type="date">
+<input id="planTime" type="time">
+<button class="primary" onclick="addPlan()">Add session</button>
+<hr>
+<div id="planList"></div>
 </div>
-<div id="plans"></div>
-</section>
+</div>
+</div>
 
-<!-- SUBJECT NOTES -->
-<section class="card wide">
-<h2>📚 Subject Notes</h2>
-<select id="noteSubject" onchange="loadSubjectNote()">
+<!-- NOTES -->
+<div id="notesSection" class="section">
+<div class="grid">
+<div class="card wide">
+<h2>📝 Notes Studio</h2>
+<select id="noteSubject" onchange="loadNote()">
 <option>Physics</option>
 <option>Chemistry</option>
 <option>Mathematics</option>
 <option>English</option>
 <option>Computer Science</option>
+<option>Other</option>
 </select>
-<textarea id="subjectNote" placeholder="Write subject notes here..." oninput="saveSubjectNote()"></textarea>
-<p class="muted">Your notes automatically save on this device.</p>
-</section>
-
-<!-- QUOTE -->
-<section class="card">
-<h2>🌷 Motivation</h2>
-<div class="quote" id="quote"></div>
-<button class="small" onclick="newQuote()">Next quote ✨</button>
-</section>
-
-<!-- HABITS -->
-<section class="card">
-<h2>🌱 Daily Goals</h2>
-<div id="habits"></div>
-<p class="muted">Reset daily automatically.</p>
-</section>
-
-<!-- TODAY -->
-<section class="card full">
-<h2>📌 Today's Study Plan</h2>
-<div id="todayPlans"></div>
-</section>
-
+<textarea id="notes" placeholder="Your notes appear here..." oninput="saveNote()"></textarea>
+<p class="muted">Auto-saved to your browser.</p>
+</div>
+<div class="card">
+<h2>💡 Notes tip</h2>
+<p>Write formulas, key definitions and questions you want to revisit.</p>
+</div>
 </div>
 </div>
 
-<footer>Made for dreamers, learners & future creators 💜</footer>
+<!-- FOCUS -->
+<div id="focusSection" class="section">
+<div class="grid">
+<div class="card center wide">
+<h2>⏳ Focus Room</h2>
+<div class="timer" id="timer2">25:00</div>
+<div class="flex" style="justify-content:center">
+<button class="primary" onclick="startTimer()">▶ Start</button>
+<button onclick="pauseTimer()">⏸ Pause</button>
+<button onclick="resetTimer()">↻ Reset</button>
+</div>
+<hr>
+<div class="flex" style="justify-content:center">
+<button onclick="setTimer(25)">25 min</button>
+<button onclick="setTimer(50)">50 min</button>
+<button onclick="setTimer(5)">5 min break</button>
+</div>
+<p id="modeLabel2" class="muted">Focus session</p>
+</div>
+</div>
+</div>
+
+</div>
+
+<footer>Students Hub 💜 — Your little space to grow.</footer>
 
 <script>
-const KEY="studentsHubV2";
+(function(){
 
-let data=JSON.parse(localStorage.getItem(KEY)||"null")||{
- tasks:[],plans:[],quickNotes:"",
- subjectNotes:{},habits:{},theme:"light",habitDate:""
+const KEY="studentsHubUpgrade3";
+
+let data;
+try{
+ data=JSON.parse(localStorage.getItem(KEY));
+}catch(e){data=null}
+
+if(!data||typeof data!=="object"){
+ data={tasks:[],plans:[],notes:{},habits:{},habitDate:"",theme:"light"};
+}
+if(!Array.isArray(data.tasks))data.tasks=[];
+if(!Array.isArray(data.plans))data.plans=[];
+if(!data.notes)data.notes={};
+if(!data.habits)data.habits={};
+
+let sec=1500,mode=25,clock=null;
+const habitsList=["Revise today","Read 10 minutes","Organize desk","Review tomorrow"];
+
+function persist(){
+ try{localStorage.setItem(KEY,JSON.stringify(data))}
+ catch(e){alert("Your browser storage is full. Please make a backup.")}
+}
+
+function esc(s){
+ return String(s).replace(/[&<>"']/g,c=>({
+ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+ }[c]));
+}
+
+window.showTab=function(id,btn){
+ document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+ document.querySelectorAll(".tabs button").forEach(b=>b.classList.remove("active"));
+ document.getElementById(id).classList.add("active");
+ btn.classList.add("active");
 };
 
-let seconds=1500;
-let interval=null;
-let timerMode=25;
-
-function save(){
- data.quickNotes=document.getElementById("quickNotes").value;
- localStorage.setItem(KEY,JSON.stringify(data));
-}
-
-function saveAll(){
- localStorage.setItem(KEY,JSON.stringify(data));
- render();
-}
-
-function toggleTheme(){
+window.toggleTheme=function(){
  data.theme=data.theme==="dark"?"light":"dark";
  document.body.classList.toggle("dark",data.theme==="dark");
- saveAll();
-}
+ persist();
+};
 
-function addTask(){
- let input=document.getElementById("taskInput");
- let value=input.value.trim();
- if(!value)return;
- data.tasks.push({text:value,done:false});
+window.addTaskFrom=function(id){
+ let input=document.getElementById(id),t=input.value.trim();
+ if(!t)return;
+ data.tasks.push({text:t,done:false});
  input.value="";
- saveAll();
-}
+ persist();render();
+};
 
-function toggleTask(i){
+window.toggleTask=function(i){
+ if(!data.tasks[i])return;
  data.tasks[i].done=!data.tasks[i].done;
- saveAll();
-}
+ persist();render();
+};
 
-function deleteTask(i){
+window.deleteTask=function(i){
  data.tasks.splice(i,1);
- saveAll();
-}
+ persist();render();
+};
 
-function addPlan(){
- let s=document.getElementById("subject").value;
- let t=document.getElementById("topic").value.trim();
+window.clearCompleted=function(){
+ data.tasks=data.tasks.filter(t=>!t.done);
+ persist();render();
+};
+
+window.addPlan=function(){
+ let s=document.getElementById("planSubject").value;
+ let t=document.getElementById("planTopic").value.trim();
  let d=document.getElementById("planDate").value;
  let tm=document.getElementById("planTime").value;
- if(!t||!d)return alert("Please enter a topic and date.");
+ if(!t||!d){alert("Enter a topic and date.");return;}
  data.plans.push({subject:s,topic:t,date:d,time:tm});
- document.getElementById("topic").value="";
- saveAll();
-}
+ document.getElementById("planTopic").value="";
+ document.getElementById("planDate").value="";
+ document.getElementById("planTime").value="";
+ persist();render();
+};
 
-function deletePlan(i){
+window.deletePlan=function(i){
  data.plans.splice(i,1);
- saveAll();
-}
+ persist();render();
+};
 
-function loadSubjectNote(){
+window.loadNote=function(){
  let s=document.getElementById("noteSubject").value;
- document.getElementById("subjectNote").value=data.subjectNotes[s]||"";
-}
+ document.getElementById("notes").value=data.notes[s]||"";
+};
 
-function saveSubjectNote(){
+window.saveNote=function(){
  let s=document.getElementById("noteSubject").value;
- data.subjectNotes[s]=document.getElementById("subjectNote").value;
- saveAll();
-}
+ data.notes[s]=document.getElementById("notes").value;
+ persist();
+};
 
-function habitReset(){
- let today=new Date().toLocaleDateString();
- if(data.habitDate!==today){
+window.toggleHabit=function(h){
+ data.habits[h]=!data.habits[h];
+ persist();render();
+};
+
+function resetHabitsIfNeeded(){
+ let d=new Date().toLocaleDateString();
+ if(data.habitDate!==d){
  data.habits={};
- data.habitDate=today;
- save();
+ data.habitDate=d;
+ persist();
  }
 }
 
-function toggleHabit(h){
- data.habits[h]=!data.habits[h];
- saveAll();
-}
-
-const habitNames=["Drink water","Revise today","Read 10 minutes","Organize desk"];
-
 function renderHabits(){
- document.getElementById("habits").innerHTML=habitNames.map(h=>
- `<div class="item">
- <span>${h}</span>
- <button onclick="toggleHabit(${JSON.stringify(h)})">${data.habits[h]?"☑️":"⬜"}</button>
- </div>`).join("");
+ document.getElementById("habits").innerHTML=habitsList.map(h=>
+ `<div class="item"><span>${esc(h)}</span>
+ <button onclick="toggleHabit('${h}')">${data.habits[h]?"☑":"⬜"}</button></div>`
+ ).join("");
 }
 
 function render(){
  document.body.classList.toggle("dark",data.theme==="dark");
- document.getElementById("quickNotes").value=data.quickNotes||"";
 
- document.getElementById("tasks").innerHTML=data.tasks.map((t,i)=>
- `<div class="item">
- <span class="${t.done?"done":""}">${escapeHTML(t.text)}</span>
- <div class="flex">
- <button class="small" onclick="toggleTask(${i})">${t.done?"↩":"✔"}</button>
- <button class="small" onclick="deleteTask(${i})">🗑</button>
- </div>
- </div>`).join("");
+ let n=data.tasks.length;
+ let d=data.tasks.filter(t=>t.done).length;
+ let p=n?Math.round(d/n*100):0;
 
- let total=data.tasks.length;
- let completed=data.tasks.filter(t=>t.done).length;
- let p=total?Math.round(completed/total*100):0;
+ document.getElementById("total").textContent=n;
+ document.getElementById("doneNum").textContent=d;
+ document.getElementById("pct").textContent=p+"%";
+ document.getElementById("progressBar").style.width=p+"%";
+ document.getElementById("progressText").textContent=d+" of "+n+" tasks completed";
+ document.getElementById("taskSummary").textContent=n+" tasks · "+d+" completed";
+ document.getElementById("taskSummary").textContent=n+" total · "+d+" completed";
 
- document.getElementById("percent").textContent=p+"% completed";
- document.getElementById("bar").style.width=p+"%";
- document.getElementById("count").textContent=completed+" of "+total+" tasks completed";
- document.getElementById("completedCount").textContent=completed;
+ let list=document.getElementById("taskList");
+ list.innerHTML=n?data.tasks.map((t,i)=>
+ `<div class="item"><span class="${t.done?"done":""}">${esc(t.text)}</span>
+ <div class="flex"><button onclick="toggleTask(${i})">${t.done?"↩":"✔"}</button>
+ <button class="danger" onclick="deleteTask(${i})">🗑</button></div></div>`
+ ).join(""):"<p class='empty'>No tasks yet. Add your first one!</p>";
 
- document.getElementById("plans").innerHTML=data.plans
- .slice().sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time))
- .map((pl,i)=>`<div class="item">
- <span><b>${escapeHTML(pl.subject)}</b> — ${escapeHTML(pl.topic)}<br>
- <small>${pl.date} ${pl.time||""}</small></span>
- <button onclick="deletePlan(${data.plans.indexOf(pl)})">🗑</button>
- </div>`).join("");
+ let plans=data.plans.slice().sort((a,b)=>(a.date+(a.time||"")).localeCompare(b.date+(b.time||"")));
+ document.getElementById("planList").innerHTML=plans.length?plans.map(pl=>
+ `<div class="item"><span><b>${esc(pl.subject)}</b> — ${esc(pl.topic)}
+ <small>${esc(pl.date)} ${esc(pl.time||"")}</small></span>
+ <button class="danger" onclick="deletePlan(${data.plans.indexOf(pl)})">🗑</button></div>`
+ ).join(""):"<p class='empty'>No sessions planned yet.</p>";
 
- let today=new Date().toISOString().slice(0,10);
- let todays=data.plans.filter(p=>p.date===today);
- document.getElementById("todayPlans").innerHTML=todays.length?
- todays.map(p=>`<div class="item"><span><b>${escapeHTML(p.time||"")}</b> ${escapeHTML(p.subject)} — ${escapeHTML(p.topic)}</span></div>`).join("")
- :"<p class='muted'>No study sessions planned for today. Add one above!</p>";
+ let todayDate=new Date().toLocaleDateString("en-CA");
+ let todays=data.plans.filter(pl=>pl.date===todayDate);
+ document.getElementById("today").innerHTML=todays.length?todays.map(pl=>
+ `<div class="item"><span><b>${esc(pl.time||"")}</b> ${esc(pl.subject)} — ${esc(pl.topic)}</span></div>`
+ ).join(""):"<p class='empty'>Nothing planned for today yet.</p>";
 
  renderHabits();
 }
 
-function escapeHTML(str){
- return String(str).replace(/[&<>"']/g,m=>({
- "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
- }[m]));
-}
-
-// TIMER
-function displayTimer(){
- let m=Math.floor(seconds/60);
- let s=seconds%60;
- document.getElementById("timer").textContent=
- String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
-}
-
-function startTimer(){
- if(interval)return;
- interval=setInterval(()=>{
- seconds--;
- displayTimer();
- if(seconds<=0){
- clearInterval(interval);
- interval=null;
- alert(timerMode===5?"Break finished! Back to focus 💜":"Focus session finished! Take a break 💜");
- },1000);
-}
-
-function pauseTimer(){
- clearInterval(interval);
- interval=null;
-}
-
-function resetTimer(){
- pauseTimer();
- seconds=timerMode*60;
- displayTimer();
-}
-
-function setTimer(m){
- pauseTimer();
- timerMode=m;
- seconds=m*60;
- document.getElementById("timerLabel").textContent=
- m===5?"5-minute break":m+"-minute focus session";
- displayTimer();
-}
-
-// MOTIVATION
 const quotes=[
  "Small steps every day lead to big results. ✨",
  "You don't need to be perfect. Just keep learning. 🌷",
@@ -405,52 +427,84 @@ const quotes=[
  "Make yourself proud, one step at a time. 💫"
 ];
 
-function newQuote(){
- document.getElementById("quote").textContent=
- quotes[Math.floor(Math.random()*quotes.length)];
+window.newQuote=function(){
+ document.getElementById("quote").textContent=quotes[Math.floor(Math.random()*quotes.length)];
+};
+
+// TIMER
+function displayTimer(){
+ let m=Math.floor(sec/60),s=sec%60;
+ let val=String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
+ document.getElementById("timer").textContent=val;
+ document.getElementById("timer2").textContent=val;
+ document.getElementById("modeLabel").textContent=mode===5?"Break":"Focus session";
+ document.getElementById("modeLabel2").textContent=mode===5?"Break":"Focus session";
 }
+
+window.startTimer=function(){
+ if(clock!==null)return;
+ clock=setInterval(function(){
+ sec--;
+ displayTimer();
+ if(sec<=0){
+ clearInterval(clock);clock=null;
+ alert(mode===5?"Break complete!":"Focus session complete!");
+ }
+ },1000);
+};
+
+window.pauseTimer=function(){
+ if(clock!==null){clearInterval(clock);clock=null;}
+};
+
+window.resetTimer=function(){
+ pauseTimer();sec=mode*60;displayTimer();
+};
+
+window.setTimer=function(m){
+ pauseTimer();mode=m;sec=m*60;displayTimer();
+};
 
 // BACKUP
-function backup(){
- save();
+window.backup=function(){
+ persist();
  let blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+ let url=URL.createObjectURL(blob);
  let a=document.createElement("a");
- a.href=URL.createObjectURL(blob);
- a.download="StudentsHub_Backup.json";
- a.click();
- URL.revokeObjectURL(a.href);
-}
+ a.href=url;a.download="StudentsHub_Backup.json";
+ document.body.appendChild(a);a.click();a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+};
 
-function restore(e){
- let file=e.target.files[0];
- if(!file)return;
- let reader=new FileReader();
- reader.onload=function(){
+window.restore=function(e){
+ let f=e.target.files[0];
+ if(!f)return;
+ let r=new FileReader();
+ r.onload=function(){
  try{
- let restored=JSON.parse(reader.result);
- if(!restored||!Array.isArray(restored.tasks)||!Array.isArray(restored.plans))
- throw new Error("Invalid backup");
- if(!confirm("Restore this backup? Current saved data will be replaced."))return;
- data=restored;
- localStorage.setItem(KEY,JSON.stringify(data));
- location.reload();
- }catch(err){
- alert("Invalid Students Hub backup file.");
- }
+ let v=JSON.parse(r.result);
+ if(!v||!Array.isArray(v.tasks)||!Array.isArray(v.plans))throw Error();
+ if(!confirm("Replace your current data with this backup?"))return;
+ data=v;
+ persist();location.reload();
+ }catch(err){alert("This is not a valid Students Hub backup.");}
  };
- reader.readAsText(file);
+ r.readAsText(f);
  e.target.value="";
-}
+};
 
-// INIT
-document.getElementById("today").textContent=new Date().toLocaleDateString("en-IN",{
- weekday:"long",year:"numeric",month:"long",day:"numeric"
+// INITIALIZE
+document.getElementById("date").textContent=new Date().toLocaleDateString("en-IN",{
+ weekday:"long",day:"numeric",month:"long",year:"numeric"
 });
-habitReset();
+
+resetHabitsIfNeeded();
 render();
 newQuote();
 displayTimer();
-loadSubjectNote();
+loadNote();
+
+})();
 </script>
 </body>
 </html>
