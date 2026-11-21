@@ -2,287 +2,442 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Student Life Hub</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Student OS 💜</title>
 <style>
 *{box-sizing:border-box}
-:root{--accent:#9875df;--bg:#f2edff;--text:#443665;--glass:rgba(255,255,255,.88)}
-body{margin:0;font-family:Segoe UI,Arial,sans-serif;color:var(--text);overflow:hidden}
-button,input,textarea,select{font:inherit}
-button{border:0;border-radius:12px;padding:10px 14px;cursor:pointer;background:var(--accent);color:white;transition:.2s}
-button:hover{filter:brightness(.96);transform:translateY(-1px)}
-button.secondary{background:#eee7ff;color:var(--text)}
-button.danger{background:#ffebee;color:#b33950}
-input,textarea,select{padding:11px;border:1px solid #ddd3f6;border-radius:12px;width:100%;outline:none;background:white;color:#443665}
-input:focus,textarea:focus,select:focus{border-color:var(--accent)}
-h1,h2,h3{margin-top:0}
-.small{font-size:12px;opacity:.7}
-#lock{position:fixed;inset:0;z-index:100;background:linear-gradient(135deg,#bca4f4,#e8dfff,#a9c5f8);display:flex;align-items:center;justify-content:center;text-align:center}
-.lockbox{background:rgba(255,255,255,.7);backdrop-filter:blur(20px);padding:40px;border-radius:30px;width:min(450px,90%);box-shadow:0 20px 80px #7560a533}
-#clock{font-size:65px;font-weight:700;margin-bottom:0}
-#date{margin:8px 0 25px}
-#desktop{position:fixed;inset:0;display:none;background:linear-gradient(135deg,#e9ddff,#d5e7ff,#f6e5ff);background-size:cover}
-#desktop:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 20% 20%,#ffffff88,transparent 35%),radial-gradient(circle at 80% 80%,#c9b1ff77,transparent 45%);pointer-events:none}
-.icons{position:absolute;top:15px;left:15px;display:flex;flex-direction:column;gap:8px;width:90px}
-.desktop-icon{background:transparent;color:var(--text);padding:10px 5px;border-radius:12px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:5px;word-break:break-word}
-.desktop-icon:hover{background:#ffffff77}
-.desktop-icon span:first-child{font-size:30px}
-#widget{position:absolute;right:22px;top:20px;background:#ffffffaa;backdrop-filter:blur(10px);padding:20px;border-radius:20px;width:220px}
-#widget h2{margin-bottom:8px}
-#taskbar{position:absolute;bottom:0;left:0;right:0;height:58px;background:#ffffffb8;backdrop-filter:blur(18px);display:flex;align-items:center;justify-content:space-between;padding:0 15px;z-index:80}
-#taskleft,#taskright{display:flex;align-items:center;gap:8px}
-#startbtn{font-size:18px;background:#e9ddff;color:var(--text)}
-#taskapps{display:flex;gap:5px;overflow:auto}
-.taskapp{background:#ffffff88;color:var(--text);padding:8px 12px;border-radius:10px;white-space:nowrap}
-#startmenu{position:absolute;bottom:65px;left:15px;width:310px;background:#ffffffee;backdrop-filter:blur(20px);border-radius:22px;padding:18px;z-index:90;display:none;box-shadow:0 15px 50px #6a538533}
-#startmenu.show{display:block}
-#startapps{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:15px}
-.startapp{background:#f2edff;color:var(--text);display:flex;flex-direction:column;align-items:center;gap:6px;padding:15px 5px}
-#search{margin-bottom:10px}
-.window{position:absolute;width:min(650px,90vw);height:min(540px,75vh);background:var(--glass);backdrop-filter:blur(25px);border:1px solid #ffffffb0;border-radius:20px;box-shadow:0 20px 60px #64558c35;display:flex;flex-direction:column;overflow:hidden;z-index:10}
-.window.maximized{left:8px!important;top:8px!important;width:calc(100% - 16px)!important;height:calc(100% - 74px)!important}
-.wtitle{height:45px;min-height:45px;background:#ffffff80;display:flex;align-items:center;justify-content:space-between;padding:0 14px;cursor:move;user-select:none}
-.wcontrols{display:flex;gap:6px}
-.wcontrols button{padding:5px 10px;background:#eee7ff;color:var(--text)}
-.wcontrols .close{background:#ffe4e9;color:#9f334b}
-.wbody{padding:18px;overflow:auto;flex:1}
-.row{display:flex;gap:8px;align-items:center;margin:8px 0}
-.row>*{flex:1}
-.card{background:white;border-radius:16px;padding:15px;margin:10px 0;box-shadow:0 3px 15px #6b538c0a}
-.pill{display:inline-block;background:#eee7ff;border-radius:20px;padding:5px 10px;font-size:12px}
-.progress{height:12px;background:#eee5fa;border-radius:20px;overflow:hidden}
-.progress div{height:100%;background:var(--accent);width:0}
-.item{background:#fff;padding:12px;border-radius:14px;margin:8px 0;display:flex;justify-content:space-between;align-items:center;gap:10px}
-.item button{padding:7px 10px}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-#toast{position:absolute;bottom:75px;left:50%;transform:translateX(-50%);background:#443665;color:white;padding:12px 20px;border-radius:20px;z-index:120;display:none}
-@media(max-width:650px){
-.icons{display:grid;grid-template-columns:repeat(3,75px);width:auto}
-#widget{top:150px;right:10px;width:180px}
-.window{width:94vw!important;left:3vw!important}
-.grid2{grid-template-columns:1fr}
+body{margin:0;font-family:Segoe UI,Arial;color:#32264a}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer;border:0;border-radius:10px;padding:10px;background:#8b70d5;color:white}
+button:hover{filter:brightness(.94)}
+input,select,textarea{padding:10px;border:1px solid #ddd;border-radius:10px;width:100%;margin:5px 0}
+.screen{position:fixed;inset:0}
+.hidden{display:none!important}
+#lock{
+ background:linear-gradient(140deg,#d8c9ff,#f6eaff,#b9c8ff);
+ display:flex;align-items:center;justify-content:center;text-align:center
 }
+.lockbox{background:#ffffffb9;padding:40px;border-radius:25px;width:min(420px,90%)}
+#clock{font-size:60px;font-weight:700}
+#desktop{
+ background:linear-gradient(135deg,#d8c7ff,#f5e9ff,#b5c9ff);
+ overflow:hidden
+}
+.icons{display:grid;grid-template-columns:90px;gap:10px;padding:20px}
+.icon{padding:14px;text-align:center;color:#38294f;cursor:pointer;border-radius:15px}
+.icon:hover{background:#ffffff70}
+.icon span{font-size:34px;display:block;margin-bottom:5px}
+#taskbar{
+ position:absolute;bottom:0;width:100%;height:55px;
+ background:#ffffffaa;backdrop-filter:blur(15px);
+ display:flex;align-items:center;justify-content:space-between;padding:8px 15px
+}
+#startmenu{
+ position:absolute;bottom:65px;left:10px;width:300px;
+ background:#ffffffed;padding:20px;border-radius:20px;
+ box-shadow:0 8px 30px #5553
+}
+.window{
+ position:absolute;top:10%;left:20%;width:min(650px,90%);
+ max-height:80%;overflow:auto;background:#fff;border-radius:18px;
+ box-shadow:0 10px 40px #55447755
+}
+.winhead{
+ background:#eee6ff;padding:12px;display:flex;
+ justify-content:space-between;align-items:center;position:sticky;top:0
+}
+.winbody{padding:16px}
+.close{background:#d75c83}
+.card{background:#f8f5ff;padding:12px;border-radius:13px;margin:8px 0}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.row>*{flex:1}
+.small{font-size:12px;color:#746887}
+#toast{position:absolute;bottom:75px;right:20px;background:#483568;color:white;padding:12px;border-radius:12px}
 </style>
 </head>
 <body>
 
 <!-- WELCOME / LOCK SCREEN -->
-<div id="lock">
-  <div class="lockbox">
-    <div style="font-size:60px">🎓</div>
-    <p class="small">STUDENT LIFE HUB</p>
-    <div id="clock">00:00</div>
-    <div id="date"></div>
-    <h2>Welcome to your Study Space 💜</h2>
-    <p>Learn. Grow. Achieve.</p>
-    <button onclick="enterDesktop()" style="width:100%;font-size:17px;padding:15px">✨ Enter Desktop</button>
-    <p class="small" style="margin-top:20px">Your personal learning universe</p>
-  </div>
+<div id="lock" class="screen">
+ <div class="lockbox">
+  <div id="clock">00:00</div>
+  <h2 id="date"></h2>
+  <h1>Welcome to Student OS 💜</h1>
+  <p>Your personal study desktop</p>
+  <button onclick="enterDesktop()" style="font-size:18px;padding:15px 25px">
+   Enter Desktop →
+  </button>
+ </div>
 </div>
 
 <!-- DESKTOP -->
-<div id="desktop">
-  <div class="icons" id="icons"></div>
+<div id="desktop" class="screen hidden">
+ <div class="icons">
+  <div class="icon" onclick="openApp('chapters')"><span>📚</span>Chapters</div>
+  <div class="icon" onclick="openApp('flash')"><span>🃏</span>Flashcards</div>
+  <div class="icon" onclick="openApp('mistakes')"><span>❌</span>Mistakes</div>
+  <div class="icon" onclick="openApp('revision')"><span>🔁</span>Revision</div>
+  <div class="icon" onclick="openApp('practice')"><span>🧪</span>Practice</div>
+  <div class="icon" onclick="openApp('exam')"><span>📝</span>Exam</div>
+  <div class="icon" onclick="openApp('notes')"><span>📒</span>Notes</div>
+  <div class="icon" onclick="openApp('settings')"><span>⚙️</span>Settings</div>
+ </div>
 
-  <div id="widget">
-    <h2>☁️ My Space</h2>
-    <div id="wdate"></div>
-    <hr style="border:0;border-top:1px solid #ddd">
-    <p id="quote">Small steps every day.</p>
-    <div class="pill">🎓 Study Edition</div>
-  </div>
+ <div id="windows"></div>
 
-  <div id="startmenu">
-    <h3>🎓 Student Life Hub</h3>
-    <input id="search" placeholder="🔍 Search apps..." oninput="searchApps(this.value)">
-    <div id="startapps"></div>
-    <button class="secondary" style="width:100%;margin-top:15px" onclick="lockDesktop()">🔒 Lock Screen</button>
-  </div>
+ <div id="taskbar">
+  <button onclick="toggleStart()">⊞ Start</button>
+  <div id="running" class="row"></div>
+  <div id="barclock">00:00</div>
+ </div>
 
-  <div id="taskbar">
-    <div id="taskleft">
-      <button id="startbtn" onclick="toggleStart()">🎓</button>
-      <div id="taskapps"></div>
-    </div>
-    <div id="taskright">
-      <span id="taskclock"></span>
-      <button class="secondary" onclick="lockDesktop()">🔒</button>
-    </div>
-  </div>
+ <div id="startmenu" class="hidden">
+  <h2>💜 Student OS</h2>
+  <input id="search" placeholder="Search apps..." oninput="searchApps(this.value)">
+  <div id="searchresults"></div>
+  <hr>
+  <button onclick="lockDesktop()">🔒 Lock Desktop</button>
+ </div>
 </div>
-<div id="toast"></div>
 
 <script>
-const apps=[
- {id:"home",name:"Home",icon:"🏠"},
- {id:"chapters",name:"Chapter Tracker",icon:"📚"},
- {id:"flash",name:"Flashcards",icon:"🃏"},
- {id:"mistakes",name:"Mistake Bank",icon:"❌"},
- {id:"revision",name:"Revision",icon:"🔁"},
- {id:"practice",name:"Practice",icon:"🧪"},
- {id:"exam",name:"Exam Simulator",icon:"📝"},
- {id:"notes",name:"Notes",icon:"📒"},
- {id:"calculator",name:"Calculator",icon:"🧮"},
- {id:"settings",name:"Settings",icon:"⚙️"}
-];
-let z=20, windows={}, activeQuiz=null, examTimer=null;
-const store={
- chapters:JSON.parse(localStorage.getItem("hub_ch")||"[]"),
- flash:JSON.parse(localStorage.getItem("hub_fc")||"[]"),
- mistakes:JSON.parse(localStorage.getItem("hub_mi")||"[]"),
- revisions:JSON.parse(localStorage.getItem("hub_re")||"[]"),
- questions:JSON.parse(localStorage.getItem("hub_q")||"[]"),
- notes:localStorage.getItem("hub_notes")||""
-};
-function save(){
- for(let k of ["chapters","flash","mistakes","revisions","questions"])
- localStorage.setItem("hub_"+({chapters:"ch",flash:"fc",mistakes:"mi",revisions:"re",questions:"q"}[k]),JSON.stringify(store[k]));
- localStorage.setItem("hub_notes",store.notes);
+const $=id=>document.getElementById(id);
+const get=(k,d=[])=>{try{return JSON.parse(localStorage.getItem("os_"+k))||d}catch{return d}};
+const save=(k,v)=>localStorage.setItem("os_"+k,JSON.stringify(v));
+
+let chapters=get("chapters"),flash=get("flash"),mistakes=get("mistakes"),
+revision=get("revision"),questions=get("questions"),notes=get("notes",{}),
+opened={},z=10;
+
+function clock(){
+ let d=new Date();
+ $("clock").textContent=d.toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
+ $("barclock").textContent=d.toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
+ $("date").textContent=d.toLocaleDateString([], {weekday:"long",day:"numeric",month:"long",year:"numeric"});
 }
-function updateClock(){
- const d=new Date();
- document.getElementById("clock").textContent=d.toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});
- document.getElementById("date").textContent=d.toLocaleDateString([],{weekday:"long",month:"long",day:"numeric",year:"numeric"});
- document.getElementById("taskclock").textContent=d.toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});
- document.getElementById("wdate").textContent=d.toLocaleDateString([],{weekday:"long",month:"long",day:"numeric"});
-}
-setInterval(updateClock,1000);updateClock();
+clock();setInterval(clock,1000);
 
 function enterDesktop(){
- document.getElementById("lock").style.display="none";
- document.getElementById("desktop").style.display="block";
+ $("lock").classList.add("hidden");
+ $("desktop").classList.remove("hidden");
+ toggleStart(false);
 }
+
 function lockDesktop(){
- document.getElementById("desktop").style.display="none";
- document.getElementById("lock").style.display="flex";
- document.getElementById("startmenu").classList.remove("show");
+ $("desktop").classList.add("hidden");
+ $("lock").classList.remove("hidden");
+ $("startmenu").classList.add("hidden");
 }
-function toggleStart(){document.getElementById("startmenu").classList.toggle("show")}
-function buildIcons(){
- const ic=document.getElementById("icons"),st=document.getElementById("startapps");
- ic.innerHTML="";st.innerHTML="";
- apps.forEach(a=>{
-  let b=document.createElement("button");b.className="desktop-icon";
-  b.innerHTML=`<span>${a.icon}</span><span>${a.name}</span>`;
-  b.onclick=()=>openApp(a.id);ic.appendChild(b);
-  let s=document.createElement("button");s.className="startapp";
-  s.innerHTML=`<span style="font-size:26px">${a.icon}</span><span>${a.name}</span>`;
-  s.onclick=()=>{openApp(a.id);toggleStartIfOpen()};st.appendChild(s);
+
+function toggleStart(force){
+ if(force===false){$("startmenu").classList.add("hidden");return}
+ $("startmenu").classList.toggle("hidden");
+}
+
+function searchApps(v){
+ let apps={chapters:"📚 Chapters",flash:"🃏 Flashcards",mistakes:"❌ Mistakes",
+ revision:"🔁 Revision",practice:"🧪 Practice",exam:"📝 Exam",notes:"📒 Notes",settings:"⚙️ Settings"};
+ $("searchresults").innerHTML="";
+ Object.entries(apps).filter(([k,n])=>n.toLowerCase().includes(v.toLowerCase()))
+ .forEach(([k,n])=>{
+  let b=document.createElement("button");b.textContent=n;b.style.margin="5px";
+  b.onclick=()=>openApp(k);$("searchresults").appendChild(b);
  });
 }
-buildIcons();
-function toggleStartIfOpen(){document.getElementById("startmenu").classList.remove("show")}
-function searchApps(q){
- document.querySelectorAll("#startapps .startapp").forEach(b=>b.style.display=b.textContent.toLowerCase().includes(q.toLowerCase())?"flex":"none");
+
+function openApp(name){
+ $("startmenu").classList.add("hidden");
+ if(opened[name]){opened[name].style.zIndex=++z;return}
+ let titles={chapters:"Chapter Tracker",flash:"Flashcards",mistakes:"Mistake Bank",
+ revision:"Revision Scheduler",practice:"Practice Arena",exam:"Exam Simulator",
+ notes:"Study Notes",settings:"Desktop Settings"};
+ let w=document.createElement("div");
+ w.className="window";w.style.zIndex=++z;
+ w.innerHTML=`<div class="winhead">
+ <b>${titles[name]}</b>
+ <div><button onclick="minApp('${name}')">−</button>
+ <button class="close" onclick="closeApp('${name}')">×</button></div>
+ </div><div class="winbody" id="body_${name}"></div>`;
+ $("windows").appendChild(w);opened[name]=w;
+ drag(w);
+ render(name);
+ updateRunning();
 }
-function toast(msg){
- let t=document.getElementById("toast");t.textContent=msg;t.style.display="block";
- setTimeout(()=>t.style.display="none",2200);
+
+function closeApp(n){
+ if(opened[n]){opened[n].remove();delete opened[n];updateRunning()}
 }
-function openApp(id){
- if(windows[id]){windows[id].style.display="flex";windows[id].style.zIndex=++z;return}
- const a=apps.find(x=>x.id===id);
- const w=document.createElement("div");w.className="window";w.style.zIndex=++z;
- w.style.left=(100+Math.random()*180)+"px";w.style.top=(70+Math.random()*100)+"px";
- w.innerHTML=`<div class="wtitle"><span>${a.icon} ${a.name}</span><div class="wcontrols"><button onclick="minimize('${id}')">—</button><button onclick="maximize('${id}')">□</button><button class="close" onclick="closeApp('${id}')">✕</button></div></div><div class="wbody" id="body_${id}"></div>`;
- document.getElementById("desktop").appendChild(w);windows[id]=w;
- w.addEventListener("mousedown",()=>w.style.zIndex=++z);
- drag(w,w.querySelector(".wtitle"));
- renderApp(id);
- updateTaskApps();
+function minApp(n){
+ if(opened[n])opened[n].style.display="none";
+ updateRunning();
 }
-function drag(w,h){
- h.addEventListener("mousedown",e=>{
-  if(e.target.closest("button"))return;
-  if(w.classList.contains("maximized"))return;
-  let sx=e.clientX,sy=e.clientY,ox=w.offsetLeft,oy=w.offsetTop;
-  document.onmousemove=ev=>{w.style.left=ox+ev.clientX-sx+"px";w.style.top=oy+ev.clientY-sy+"px"};
-  document.onmouseup=()=>{document.onmousemove=null;document.onmouseup=null};
+function updateRunning(){
+ $("running").innerHTML="";
+ Object.keys(opened).forEach(n=>{
+  let b=document.createElement("button");
+  b.textContent=n;b.onclick=()=>{opened[n].style.display="block";opened[n].style.zIndex=++z};
+  $("running").appendChild(b);
  });
 }
-function minimize(id){if(windows[id])windows[id].style.display="none";updateTaskApps()}
-function maximize(id){if(windows[id])windows[id].classList.toggle("maximized")}
-function closeApp(id){if(windows[id]){windows[id].remove();delete windows[id]}updateTaskApps()}
-function updateTaskApps(){
- let t=document.getElementById("taskapps");t.innerHTML="";
- Object.keys(windows).forEach(id=>{
- let b=document.createElement("button");b.className="taskapp";b.textContent=apps.find(a=>a.id===id).icon;
- b.title=apps.find(a=>a.id===id).name;
- b.onclick=()=>{windows[id].style.display="flex";windows[id].style.zIndex=++z};
- t.appendChild(b);
- });
+function drag(w){
+ let h=w.querySelector(".winhead"),ox,oy,m=false;
+ h.onmousedown=e=>{
+  if(e.target.tagName==="BUTTON")return;
+  m=true;ox=e.clientX-w.offsetLeft;oy=e.clientY-w.offsetTop;w.style.zIndex=++z
+ };
+ document.onmousemove=e=>{
+  if(!m)return;
+  w.style.left=Math.max(0,e.clientX-ox)+"px";
+  w.style.top=Math.max(0,e.clientY-oy)+"px";
+ };
+ document.onmouseup=()=>m=false;
 }
-function renderApp(id){
- let b=document.getElementById("body_"+id);if(!b)return;
- if(id==="home")b.innerHTML=homeHTML();
- if(id==="chapters")b.innerHTML=chaptersHTML();
- if(id==="flash")b.innerHTML=flashHTML();
- if(id==="mistakes")b.innerHTML=mistakesHTML();
- if(id==="revision")b.innerHTML=revisionHTML();
- if(id==="practice")b.innerHTML=practiceHTML();
- if(id==="exam")b.innerHTML=examHTML();
- if(id==="notes")b.innerHTML=notesHTML();
- if(id==="calculator")b.innerHTML=calcHTML();
- if(id==="settings")b.innerHTML=settingsHTML();
+function render(n){
+ let b=$("body_"+n);
+ if(n==="chapters")chapterUI(b);
+ if(n==="flash")flashUI(b);
+ if(n==="mistakes")mistakeUI(b);
+ if(n==="revision")revisionUI(b);
+ if(n==="practice")practiceUI(b);
+ if(n==="exam")examUI(b);
+ if(n==="notes")notesUI(b);
+ if(n==="settings")settingsUI(b);
 }
-function homeHTML(){
- let total=store.chapters.length,master=store.chapters.filter(x=>x.status==="Mastered").length;
- let due=store.revisions.filter(x=>x.date<=today()).length;
- let pct=total?Math.round(master/total*100):0;
- return `<h2>Welcome to your Study Desktop 💜</h2><p>Make today count, one chapter at a time.</p>
- <div class="grid2"><div class="card"><h3>📚 Chapters</h3><h2>${total}</h2></div><div class="card"><h3>🏆 Mastered</h3><h2>${master}</h2></div><div class="card"><h3>🔁 Due</h3><h2>${due}</h2></div><div class="card"><h3>🃏 Flashcards</h3><h2>${store.flash.length}</h2></div></div>
- <div class="card"><h3>Progress</h3><div class="progress"><div style="width:${pct}%"></div></div><p>${pct}% chapters mastered</p></div>
- <h3>Quick Launch</h3><div class="grid2">${apps.slice(1,7).map(a=>`<button class="secondary" onclick="openApp('${a.id}')">${a.icon} ${a.name}</button>`).join("")}</div>`;
+
+function chapterUI(b){
+ b.innerHTML=`<div class="row">
+ <select id="cs"><option>Physics</option><option>Chemistry</option><option>Maths</option><option>English</option><option>Computer Science</option></select>
+ <input id="cn" placeholder="Chapter name"></div>
+ <button onclick="addChapter()">+ Add Chapter</button>
+ <div id="clist"></div>`;
+ drawChapters();
 }
-function chaptersHTML(){
- return `<h2>📚 Chapter Tracker</h2><div class="row"><select id="chsub">${subjects()}</select><input id="chname" placeholder="Chapter name"></div><button onclick="addChapter()">+ Add Chapter</button><hr><div id="chlist">${store.chapters.map((c,i)=>chapterItem(c,i)).join("")||"No chapters yet."}</div>`;
-}
-const subs=["Physics","Chemistry","Maths","English","Computer Science"];
-function subjects(){return subs.map(s=>`<option>${s}</option>`).join("")}
-function chapterItem(c,i){return `<div class="item"><div><b>${c.subject}</b><br>${c.name}<br><span class="pill">${c.status}</span></div><div><select onchange="statusChapter(${i},this.value)"><option ${c.status==="Learning"?"selected":""}>Learning</option><option ${c.status==="Practising"?"selected":""}>Practising</option><option ${c.status==="Revised"?"selected":""}>Revised</option><option ${c.status==="Mastered"?"selected":""}>Mastered</option></select><button class="danger" onclick="delChapter(${i})">✕</button></div></div>`}
 function addChapter(){
- let n=document.getElementById("chname").value.trim(),s=document.getElementById("chsub").value;
- if(!n)return toast("Enter chapter name!");
- store.chapters.push({subject:s,name:n,status:"Learning"});save();renderApp("chapters");refresh("home");toast("Chapter added!");
+ let s=$("cs").value,n=$("cn").value.trim();if(!n)return;
+ chapters.push({s,n,status:"Learning"});save("chapters",chapters);$("cn").value="";drawChapters();
 }
-function statusChapter(i,v){store.chapters[i].status=v;save();renderApp("chapters");refresh("home")}
-function delChapter(i){store.chapters.splice(i,1);save();renderApp("chapters");refresh("home")}
-function refresh(id){if(windows[id])renderApp(id)}
-function flashHTML(){return `<h2>🃏 Flashcards</h2><div class="row"><select id="fcsub">${subjects()}</select><input id="fcq" placeholder="Question"></div><textarea id="fca" placeholder="Answer" rows="3"></textarea><button onclick="addFlash()">+ Save Card</button><hr>${store.flash.map((f,i)=>`<div class="card"><b>${f.subject}</b><p>${f.q}</p><button class="secondary" onclick="revealFC(${i})">Reveal Answer</button><div id="ans${i}" style="display:none;margin-top:10px">${f.a}</div><button class="danger" onclick="delFC(${i})">Delete</button></div>`).join("")||"No flashcards yet."}`}
-function addFlash(){let q=document.getElementById("fcq").value.trim(),a=document.getElementById("fca").value.trim();if(!q||!a)return toast("Fill both fields");store.flash.push({subject:document.getElementById("fcsub").value,q,a});save();renderApp("flash")}
-function revealFC(i){let e=document.getElementById("ans"+i);e.style.display=e.style.display==="none"?"block":"none"}
-function delFC(i){store.flash.splice(i,1);save();renderApp("flash")}
-function mistakesHTML(){return `<h2>❌ Mistake Bank</h2><div class="row"><select id="misub">${subjects()}</select><input id="miq" placeholder="Question/topic"></div><textarea id="mireason" placeholder="What went wrong?"></textarea><textarea id="micorrect" placeholder="Correct concept / solution"></textarea><button onclick="addMistake()">+ Save Mistake</button><hr>${store.mistakes.map((m,i)=>`<div class="card"><b>${m.subject} · ${m.q}</b><p><b>Reason:</b> ${m.reason}</p><p><b>Correction:</b> ${m.correct}</p><button class="secondary" onclick="addRevFromMistake(${i})">🔁 Revise</button><button class="danger" onclick="delMistake(${i})">Delete</button></div>`).join("")||"No mistakes saved."}`}
-function addMistake(){let q=document.getElementById("miq").value.trim(),r=document.getElementById("mireason").value.trim(),c=document.getElementById("micorrect").value.trim();if(!q)return toast("Enter a question");store.mistakes.push({subject:document.getElementById("misub").value,q,reason:r,correct:c});save();renderApp("mistakes")}
-function delMistake(i){store.mistakes.splice(i,1);save();renderApp("mistakes")}
-function addRevFromMistake(i){store.revisions.push({subject:store.mistakes[i].subject,name:store.mistakes[i].q,date:today()});save();renderApp("revision");toast("Added to revision!")}
-function today(){return new Date().toISOString().slice(0,10)}
-function revisionHTML(){return `<h2>🔁 Revision Planner</h2><div class="row"><select id="resub">${subjects()}</select><input id="rename" placeholder="Topic"></div><div class="row"><input id="redate" type="date" value="${today()}"></div><button onclick="addRevision()">+ Schedule</button><hr>${store.revisions.map((r,i)=>`<div class="item"><div><b>${r.subject}</b><br>${r.name}<br><span class="pill">${r.date}</span></div><div><button onclick="doneRev(${i})">✓ Done</button><button class="danger" onclick="delRev(${i})">✕</button></div></div>`).join("")||"Nothing scheduled."}`}
-function addRevision(){let n=document.getElementById("rename").value.trim();if(!n)return toast("Enter topic");store.revisions.push({subject:document.getElementById("resub").value,name:n,date:document.getElementById("redate").value||today()});save();renderApp("revision");refresh("home")}
-function doneRev(i){store.revisions.splice(i,1);save();renderApp("revision");refresh("home")}
-function delRev(i){doneRev(i)}
-function practiceHTML(){return `<h2>🧪 Practice Arena</h2><div class="row"><select id="qsub">${subjects()}</select><input id="qq" placeholder="Question"></div><div class="row"><input id="o0" placeholder="Option A"><input id="o1" placeholder="Option B"></div><div class="row"><input id="o2" placeholder="Option C"><input id="o3" placeholder="Option D"></div><select id="correct"><option value="0">Correct: A</option><option value="1">Correct: B</option><option value="2">Correct: C</option><option value="3">Correct: D</option></select><button onclick="addQuestion()">+ Add MCQ</button><hr><p>${store.questions.length} questions saved</p><button onclick="runPractice()">▶ Start Practice</button><div id="quiz"></div><hr>${store.questions.map((q,i)=>`<div class="item"><span>${q.subject}: ${q.q}</span><button class="danger" onclick="delQ(${i})">✕</button></div>`).join("")}`}
-function addQuestion(){let q=document.getElementById("qq").value.trim(),o=[0,1,2,3].map(i=>document.getElementById("o"+i).value.trim());if(!q||o.some(x=>!x))return toast("Fill question and all options");store.questions.push({subject:document.getElementById("qsub").value,q,o,c:+document.getElementById("correct").value});save();renderApp("practice");toast("MCQ saved!")}
-function delQ(i){store.questions.splice(i,1);save();renderApp("practice")}
-function runPractice(){let qs=[...store.questions];if(!qs.length)return toast("Add MCQs first!");let score=0,i=0,el=document.getElementById("quiz");function draw(){if(i>=qs.length){el.innerHTML=`<div class="card"><h2>Quiz Finished 🎉</h2><p>Score: ${score}/${qs.length}</p></div>`;return}let q=qs[i];el.innerHTML=`<div class="card"><h3>${i+1}/${qs.length}: ${q.q}</h3>${q.o.map((o,j)=>`<button class="secondary" style="display:block;width:100%;margin:5px 0;text-align:left" onclick="pick(${j})">${String.fromCharCode(65+j)}. ${o}</button>`).join("")}</div>`}window.pick=j=>{if(j===qs[i].c)score++;else store.mistakes.push({subject:qs[i].subject,q:qs[i].q,reason:"Practice mistake",correct:qs[i].o[qs[i].c]});i++;save();draw()};draw()}
-function examHTML(){return `<h2>📝 Exam Simulator</h2><p>Create MCQs in Practice first. Exam is a timed run through saved questions.</p><div class="row"><label>Time per question (seconds)<input id="examtime" type="number" value="30" min="5"></label></div><button onclick="startExam()">🚀 Start Exam</button><div id="examarea"></div>`}
-function startExam(){
- if(!store.questions.length)return toast("Add MCQs in Practice first!");
- let qs=[...store.questions],i=0,score=0,seconds=+(document.getElementById("examtime")?.value||30),remaining=seconds,el=document.getElementById("examarea");
- if(examTimer)clearInterval(examTimer);
- function finish(){clearInterval(examTimer);examTimer=null;el.innerHTML=`<div class="card"><h2>Exam completed 🎉</h2><p>Score: ${score}/${qs.length}</p><p>Accuracy: ${Math.round(score/qs.length*100)}%</p><button onclick="startExam()">Try again</button></div>`}
- function draw(){if(i>=qs.length){finish();return}let q=qs[i];el.innerHTML=`<div class="card"><h3>Question ${i+1}/${qs.length}</h3><p>⏳ ${remaining}s</p><h3>${q.q}</h3>${q.o.map((o,j)=>`<button class="secondary" style="display:block;width:100%;margin:5px 0;text-align:left" onclick="examPick(${j})">${String.fromCharCode(65+j)}. ${o}</button>`).join("")}</div>`}
- window.examPick=j=>{if(j===qs[i].c)score++;else store.mistakes.push({subject:qs[i].subject,q:qs[i].q,reason:"Exam error",correct:qs[i].o[qs[i].c]});i++;remaining=seconds;save();draw()};
- examTimer=setInterval(()=>{remaining--;if(remaining<=0){i++;remaining=seconds;if(i>=qs.length)finish();else draw()}else draw()},1000);draw();
+function drawChapters(){
+ let el=$("clist");if(!el)return;
+ el.innerHTML="";
+ chapters.forEach((c,i)=>{
+ let d=document.createElement("div");d.className="card";
+ d.innerHTML=`<b>${c.s}</b> — ${c.n}<br>
+ <select onchange="chapterStatus(${i},this.value)">
+ <option ${c.status==="Learning"?"selected":""}>Learning</option>
+ <option ${c.status==="Practising"?"selected":""}>Practising</option>
+ <option ${c.status==="Revised"?"selected":""}>Revised</option>
+ <option ${c.status==="Mastered"?"selected":""}>Mastered</option>
+ </select><button class="close" onclick="delChapter(${i})">Delete</button>`;
+ el.appendChild(d);
+ });
 }
-function notesHTML(){return `<h2>📒 Notes</h2><textarea id="notearea" rows="15" placeholder="Write your study notes here...">${store.notes}</textarea><button onclick="saveNotes()">💾 Save Notes</button>`}
-function saveNotes(){store.notes=document.getElementById("notearea").value;save();toast("Notes saved!")}
-function calcHTML(){return `<h2>🧮 Calculator</h2><input id="calin" placeholder="Example: (12+8)*5" ><button onclick="calculate()">Calculate</button><div class="card" id="calout">Result</div><p class="small">Basic arithmetic only.</p>`}
-function calculate(){try{let s=document.getElementById("calin").value;if(!/^[0-9+\\-*/().%\\s]+$/.test(s))throw 1;let result=Function('"use strict";return ('+s+')')();document.getElementById("calout").textContent=result}catch(e){document.getElementById("calout").textContent="Invalid expression"}}
-function settingsHTML(){return `<h2>⚙️ Settings</h2><h3>Accent Colour</h3><input type="color" id="colour" value="#9875df" onchange="changeColor(this.value)"><h3>Wallpaper</h3><select onchange="wall(this.value)"><option value="1">Lavender</option><option value="2">Blue</option><option value="3">Peach</option><option value="4">Mint</option></select><hr><button class="secondary" onclick="lockDesktop()">🔒 Lock screen</button><button class="danger" onclick="clearAll()">Reset all study data</button><p class="small">Reset permanently clears this website's locally saved study data.</p>`}
-function changeColor(v){document.documentElement.style.setProperty("--accent",v)}
-function wall(v){let b=document.getElementById("desktop");let styles={1:"linear-gradient(135deg,#e9ddff,#d5e7ff,#f6e5ff)",2:"linear-gradient(135deg,#cde8ff,#e4f1ff,#d8d9ff)",3:"linear-gradient(135deg,#ffe4d8,#fff1e7,#ffdce8)",4:"linear-gradient(135deg,#d7f5e9,#e7fff2,#d3edff)"};b.style.background=styles[v]}
-function clearAll(){if(confirm("Delete ALL saved study data?")){Object.keys(store).forEach(k=>store[k]=k==="notes"?"":[]);save();Object.keys(windows).forEach(closeApp);toast("Study data reset.")}}
+function chapterStatus(i,v){chapters[i].status=v;save("chapters",chapters)}
+function delChapter(i){chapters.splice(i,1);save("chapters",chapters);drawChapters()}
+
+function flashUI(b){
+ b.innerHTML=`<input id="fq" placeholder="Question">
+ <textarea id="fa" placeholder="Answer"></textarea>
+ <button onclick="addFlash()">Save Card</button><div id="flist"></div>`;
+ drawFlash();
+}
+function addFlash(){
+ if(!$("fq").value.trim()||!$("fa").value.trim())return;
+ flash.push({q:$("fq").value,a:$("fa").value});
+ save("flash",flash);$("fq").value="";$("fa").value="";drawFlash();
+}
+function drawFlash(){
+ let e=$("flist");if(!e)return;e.innerHTML="";
+ flash.forEach((f,i)=>{
+ let d=document.createElement("div");d.className="card";
+ d.innerHTML=`<b>${f.q}</b><br><button onclick="this.nextElementSibling.classList.toggle('hidden')">Reveal Answer</button>
+ <p class="hidden">${f.a}</p><button class="close" onclick="delFlash(${i})">Delete</button>`;
+ e.appendChild(d);
+ });
+}
+function delFlash(i){flash.splice(i,1);save("flash",flash);drawFlash()}
+
+function mistakeUI(b){
+ b.innerHTML=`<input id="miq" placeholder="Question / Mistake">
+ <input id="mic" placeholder="Chapter">
+ <textarea id="mir" placeholder="Why was it wrong?"></textarea>
+ <textarea id="mif" placeholder="Correct approach"></textarea>
+ <button onclick="addMistake()">Save Mistake</button><div id="milist"></div>`;
+ drawMistakes();
+}
+function addMistake(){
+ if(!$("miq").value.trim())return;
+ mistakes.push({q:$("miq").value,c:$("mic").value,r:$("mir").value,f:$("mif").value});
+ save("mistakes",mistakes);
+ ["miq","mic","mir","mif"].forEach(x=>$(x).value="");drawMistakes();
+}
+function drawMistakes(){
+ let e=$("milist");if(!e)return;e.innerHTML="";
+ mistakes.forEach((m,i)=>{
+ let d=document.createElement("div");d.className="card";
+ d.innerHTML=`<b>${m.q}</b><p>Chapter: ${m.c}</p><p>Reason: ${m.r}</p><p>Correction: ${m.f}</p>
+ <button onclick="mistakeToRevision(${i})">Add Revision</button>
+ <button class="close" onclick="delMistake(${i})">Delete</button>`;
+ e.appendChild(d);
+ });
+}
+function delMistake(i){mistakes.splice(i,1);save("mistakes",mistakes);drawMistakes()}
+function mistakeToRevision(i){
+ revision.push({t:mistakes[i].q,d:new Date().toISOString().slice(0,10),done:false});
+ save("revision",revision);alert("Added to revision!");
+}
+
+function revisionUI(b){
+ b.innerHTML=`<input id="rt" placeholder="Topic">
+ <input id="rd" type="date">
+ <button onclick="addRevision()">Schedule</button><div id="rlist"></div>`;
+ drawRevision();
+}
+function addRevision(){
+ if(!$("rt").value.trim())return;
+ revision.push({t:$("rt").value,d:$("rd").value,done:false});
+ save("revision",revision);$("rt").value="";drawRevision();
+}
+function drawRevision(){
+ let e=$("rlist");if(!e)return;e.innerHTML="";
+ revision.forEach((r,i)=>{
+ let d=document.createElement("div");d.className="card";
+ d.innerHTML=`<b>${r.t}</b> — ${r.d||"No date"} ${r.done?"✔️":""}
+ <button onclick="revDone(${i})">Done</button>
+ <button class="close" onclick="delRev(${i})">Delete</button>`;
+ e.appendChild(d);
+ });
+}
+function revDone(i){revision[i].done=true;save("revision",revision);drawRevision()}
+function delRev(i){revision.splice(i,1);save("revision",revision);drawRevision()}
+
+function practiceUI(b){
+ b.innerHTML=`<select id="qs"><option>Physics</option><option>Chemistry</option><option>Maths</option><option>English</option><option>Computer Science</option></select>
+ <input id="qq" placeholder="Question">
+ <input id="q1" placeholder="Option A">
+ <input id="q2" placeholder="Option B">
+ <input id="q3" placeholder="Option C">
+ <input id="q4" placeholder="Option D">
+ <select id="qcorrect"><option>0</option><option>1</option><option>2</option><option>3</option></select>
+ <p class="small">Correct option: 0=A, 1=B, 2=C, 3=D</p>
+ <button onclick="addQuestion()">Add MCQ</button>
+ <button onclick="runPractice()">Start Practice</button><div id="qlist"></div>`;
+ drawQuestions();
+}
+function addQuestion(){
+ if(!$("qq").value.trim())return;
+ questions.push({s:$("qs").value,q:$("qq").value,
+ o:[$("q1").value,$("q2").value,$("q3").value,$("q4").value],
+ c:+$("qcorrect").value});
+ save("questions",questions);
+ ["qq","q1","q2","q3","q4"].forEach(x=>$(x).value="");drawQuestions();
+}
+function drawQuestions(){
+ let e=$("qlist");if(!e)return;e.innerHTML="";
+ questions.forEach((q,i)=>{
+ let d=document.createElement("div");d.className="card";
+ d.textContent=q.s+" — "+q.q;
+ let x=document.createElement("button");x.textContent="Delete";x.className="close";x.onclick=()=>{questions.splice(i,1);save("questions",questions);drawQuestions()};
+ d.appendChild(x);e.appendChild(d);
+ });
+}
+function runPractice(){
+ let pool=questions.slice();if(!pool.length){alert("Add questions first!");return}
+ let score=0,i=0;
+ let e=$("qlist");e.innerHTML="";
+ function next(){
+  if(i>=pool.length){e.innerHTML=`<h2>Score: ${score}/${pool.length}</h2>`;return}
+  let q=pool[i];
+  e.innerHTML=`<div class="card"><b>${i+1}. ${q.q}</b></div>`;
+  q.o.forEach((o,j)=>{
+   let b=document.createElement("button");b.style.display="block";b.style.margin="8px 0";b.textContent=o||("Option "+(j+1));
+   b.onclick=()=>{
+    if(j===q.c)score++;
+    else mistakes.push({q:q.q,c:q.s,r:"Practice incorrect answer",f:q.o[q.c]});
+    save("mistakes",mistakes);i++;next();
+   };e.appendChild(b);
+  });
+ }
+ next();
+}
+
+function examUI(b){
+ b.innerHTML=`<p>Exam simulator uses saved MCQs.</p>
+ <label>Duration (minutes)</label><input id="etime" type="number" value="10">
+ <button onclick="runExam()">Start Exam</button><div id="examout"></div>`;
+}
+function runExam(){
+ let pool=questions.slice();if(!pool.length){alert("Add MCQs in Practice first.");return}
+ let duration=Math.max(1,+$("etime").value||10)*60;
+ let e=$("examout"),score=0,i=0,finished=false;
+ let timer;
+ function finish(){
+  if(finished)return;finished=true;clearInterval(timer);
+  e.innerHTML=`<h2>Exam finished!</h2><p>Score: ${score}/${pool.length}</p><p>Accuracy: ${Math.round(score/pool.length*100)}%</p>`;
+ }
+ function draw(){
+  if(finished)return;
+  if(i>=pool.length){finish();return}
+  let q=pool[i];e.innerHTML=`<p>Time left: ${duration}s</p><b>${i+1}/${pool.length} — ${q.q}</b>`;
+  q.o.forEach((o,j)=>{
+   let b=document.createElement("button");b.style.display="block";b.style.margin="8px";
+   b.textContent=o||("Option "+(j+1));
+   b.onclick=()=>{
+    if(finished)return;
+    if(j===q.c)score++;
+    else{mistakes.push({q:q.q,c:q.s,r:"Exam incorrect answer",f:q.o[q.c]});save("mistakes",mistakes)}
+    i++;draw();
+   };e.appendChild(b);
+  });
+ }
+ timer=setInterval(()=>{if(finished)return;duration--;if(duration<=0)finish();else draw()},1000);
+ draw();
+}
+
+function notesUI(b){
+ b.innerHTML=`<select id="ns"><option>Physics</option><option>Chemistry</option><option>Maths</option><option>English</option><option>Computer Science</option></select>
+ <textarea id="nt" rows="12" placeholder="Your notes..."></textarea>
+ <button onclick="saveNotes()">Save Notes</button>`;
+ $("ns").onchange=loadNotes;$("nt").oninput=()=>saveNotes();
+ loadNotes();
+}
+function loadNotes(){$("nt").value=notes[$("ns").value]||""}
+function saveNotes(){notes[$("ns").value]=$("nt").value;save("notes",notes)}
+
+function settingsUI(b){
+ b.innerHTML=`<h3>Desktop Settings</h3>
+ <button onclick="changeBg('#d8c7ff','#f5e9ff','#b5c9ff')">Lavender</button>
+ <button onclick="changeBg('#d5f5e3','#f2fffa','#b3dfc7')">Mint</button>
+ <button onclick="changeBg('#ffe0ed','#fff3f8','#f5bcd5')">Pink</button>
+ <button onclick="changeBg('#d8e9ff','#eff7ff','#b8d1ff')">Blue</button>
+ <hr><button onclick="lockDesktop()">Lock Screen</button>
+ <button onclick="backup()">Export Backup</button>
+ <button onclick="restore()">Import Backup</button>
+ <p class="small">Data is stored in this browser.</p>`;
+}
+function changeBg(a,b,c){$("desktop").style.background=`linear-gradient(135deg,${a},${b},${c})`}
+function backup(){
+ let data={chapters,flash,mistakes,revision,questions,notes};
+ let blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+ let a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="student-os-backup.json";a.click();
+ URL.revokeObjectURL(a.href);
+}
+function restore(){
+ let i=document.createElement("input");i.type="file";i.accept=".json";
+ i.onchange=()=>{
+  let f=i.files[0];if(!f)return;
+  let r=new FileReader();
+  r.onload=()=>{
+   try{
+    let d=JSON.parse(r.result);
+    chapters=d.chapters||[];flash=d.flash||[];mistakes=d.mistakes||[];
+    revision=d.revision||[];questions=d.questions||[];notes=d.notes||{};
+    save("chapters",chapters);save("flash",flash);save("mistakes",mistakes);
+    save("revision",revision);save("questions",questions);save("notes",notes);
+    alert("Backup restored!");
+   }catch{alert("Invalid backup file")}
+  };r.readAsText(f);
+ };i.click();
+}
 </script>
 </body>
 </html>
