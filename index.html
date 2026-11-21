@@ -1,443 +1,448 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Student OS 💜</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Students Hub</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:Segoe UI,Arial;color:#32264a}
-button,input,select,textarea{font:inherit}
-button{cursor:pointer;border:0;border-radius:10px;padding:10px;background:#8b70d5;color:white}
-button:hover{filter:brightness(.94)}
-input,select,textarea{padding:10px;border:1px solid #ddd;border-radius:10px;width:100%;margin:5px 0}
-.screen{position:fixed;inset:0}
+:root{
+--accent:#c7b5ff;
+--text:#29243b;
+--glass:rgba(255,255,255,.78);
+}
+body{
+margin:0;font-family:Segoe UI,Arial,sans-serif;
+color:var(--text);min-height:100vh;
+background:linear-gradient(135deg,#e8ddff,#d8edff,#fbe4ef);
+background-size:cover;background-position:center;
+transition:.3s;
+}
+body.dark{
+--text:#f1edff;
+--glass:rgba(28,25,45,.82);
+background:linear-gradient(135deg,#151425,#29223f,#172c40);
+}
+button,input,textarea,select{font:inherit}
+button{
+border:none;border-radius:12px;padding:10px 14px;
+cursor:pointer;background:var(--accent);color:#302445;
+transition:.2s;
+}
+button:hover{transform:translateY(-2px);filter:brightness(1.04)}
+.desk{
+min-height:100vh;padding:24px 24px 90px;
+}
+.topbar{
+display:flex;justify-content:space-between;
+align-items:center;flex-wrap:wrap;gap:12px;
+}
+.brand{font-size:25px;font-weight:800}
+.datebox{padding:12px 18px;background:var(--glass);
+backdrop-filter:blur(15px);border-radius:18px}
+.desktop{
+display:grid;grid-template-columns:repeat(3,minmax(230px,1fr));
+gap:18px;margin-top:25px;align-items:start;
+}
+.widget{
+background:var(--glass);backdrop-filter:blur(18px);
+border:1px solid rgba(255,255,255,.25);
+padding:20px;border-radius:23px;
+box-shadow:0 12px 40px rgba(40,25,70,.10);
+min-width:0;
+}
+.widget h3{margin:0 0 14px}
+.widget.dragging{opacity:.5}
+.draghead{cursor:grab}
+.wide{grid-column:span 2}
+input,textarea,select{
+width:100%;padding:12px;border-radius:12px;
+border:1px solid #cfc4e9;margin:7px 0;
+background:rgba(255,255,255,.85);color:#29243b;
+}
+textarea{resize:vertical;min-height:80px}
+.small{font-size:13px;opacity:.75}
+.task{
+display:flex;gap:8px;align-items:center;
+padding:9px 0;border-bottom:1px solid rgba(120,100,150,.15);
+}
+.task span{flex:1;overflow-wrap:anywhere}
+.task button{padding:6px 10px}
+.progress{
+height:10px;background:rgba(130,110,170,.2);
+border-radius:20px;overflow:hidden;margin:12px 0;
+}
+.progress div{height:100%;width:0;background:#8b70dc;transition:.3s}
+#clock{font-size:60px;font-weight:800;text-align:center;
+margin:12px 0;letter-spacing:2px}
+.focusOverlay{
+position:fixed;inset:0;z-index:999;
+background:linear-gradient(135deg,#211c37,#332653,#24384b);
+color:white;display:none;align-items:center;justify-content:center;
+flex-direction:column;text-align:center;padding:20px;
+}
+.focusOverlay.show{display:flex}
+.focusOverlay #focusClock{font-size:clamp(60px,12vw,120px);
+font-weight:800}
+.focusOverlay button{margin:7px}
+.focusOverlay input{max-width:350px}
+.wallpapers{display:flex;gap:9px;flex-wrap:wrap}
+.wall{
+width:60px;height:60px;border-radius:13px;cursor:pointer;
+border:2px solid transparent;
+}
+.wall:hover{border-color:white}
+.bottom{
+position:fixed;bottom:15px;left:50%;transform:translateX(-50%);
+background:var(--glass);backdrop-filter:blur(20px);
+border:1px solid rgba(255,255,255,.3);
+border-radius:20px;padding:10px 15px;
+display:flex;gap:10px;flex-wrap:wrap;justify-content:center;
+z-index:20;box-shadow:0 8px 30px rgba(0,0,0,.1);
+}
+.bottom button{font-size:14px}
 .hidden{display:none!important}
-#lock{
- background:linear-gradient(140deg,#d8c9ff,#f6eaff,#b9c8ff);
- display:flex;align-items:center;justify-content:center;text-align:center
+@media(max-width:900px){
+.desktop{grid-template-columns:repeat(2,minmax(220px,1fr))}
+.wide{grid-column:span 2}
 }
-.lockbox{background:#ffffffb9;padding:40px;border-radius:25px;width:min(420px,90%)}
-#clock{font-size:60px;font-weight:700}
-#desktop{
- background:linear-gradient(135deg,#d8c7ff,#f5e9ff,#b5c9ff);
- overflow:hidden
+@media(max-width:600px){
+.desk{padding:15px 12px 110px}
+.desktop{grid-template-columns:1fr}
+.wide{grid-column:span 1}
+.topbar{align-items:flex-start}
+.bottom{width:94%;bottom:8px}
 }
-.icons{display:grid;grid-template-columns:90px;gap:10px;padding:20px}
-.icon{padding:14px;text-align:center;color:#38294f;cursor:pointer;border-radius:15px}
-.icon:hover{background:#ffffff70}
-.icon span{font-size:34px;display:block;margin-bottom:5px}
-#taskbar{
- position:absolute;bottom:0;width:100%;height:55px;
- background:#ffffffaa;backdrop-filter:blur(15px);
- display:flex;align-items:center;justify-content:space-between;padding:8px 15px
-}
-#startmenu{
- position:absolute;bottom:65px;left:10px;width:300px;
- background:#ffffffed;padding:20px;border-radius:20px;
- box-shadow:0 8px 30px #5553
-}
-.window{
- position:absolute;top:10%;left:20%;width:min(650px,90%);
- max-height:80%;overflow:auto;background:#fff;border-radius:18px;
- box-shadow:0 10px 40px #55447755
-}
-.winhead{
- background:#eee6ff;padding:12px;display:flex;
- justify-content:space-between;align-items:center;position:sticky;top:0
-}
-.winbody{padding:16px}
-.close{background:#d75c83}
-.card{background:#f8f5ff;padding:12px;border-radius:13px;margin:8px 0}
-.row{display:flex;gap:8px;flex-wrap:wrap}
-.row>*{flex:1}
-.small{font-size:12px;color:#746887}
-#toast{position:absolute;bottom:75px;right:20px;background:#483568;color:white;padding:12px;border-radius:12px}
 </style>
 </head>
-<body>
 
-<!-- WELCOME / LOCK SCREEN -->
-<div id="lock" class="screen">
- <div class="lockbox">
-  <div id="clock">00:00</div>
-  <h2 id="date"></h2>
-  <h1>Welcome to Student OS 💜</h1>
-  <p>Your personal study desktop</p>
-  <button onclick="enterDesktop()" style="font-size:18px;padding:15px 25px">
-   Enter Desktop →
-  </button>
- </div>
+<body>
+<div class="desk">
+<div class="topbar">
+<div>
+<div class="brand">✦ Students Hub</div>
+<div class="small">Your personal study desktop</div>
+</div>
+<div class="datebox" id="date"></div>
 </div>
 
-<!-- DESKTOP -->
-<div id="desktop" class="screen hidden">
- <div class="icons">
-  <div class="icon" onclick="openApp('chapters')"><span>📚</span>Chapters</div>
-  <div class="icon" onclick="openApp('flash')"><span>🃏</span>Flashcards</div>
-  <div class="icon" onclick="openApp('mistakes')"><span>❌</span>Mistakes</div>
-  <div class="icon" onclick="openApp('revision')"><span>🔁</span>Revision</div>
-  <div class="icon" onclick="openApp('practice')"><span>🧪</span>Practice</div>
-  <div class="icon" onclick="openApp('exam')"><span>📝</span>Exam</div>
-  <div class="icon" onclick="openApp('notes')"><span>📒</span>Notes</div>
-  <div class="icon" onclick="openApp('settings')"><span>⚙️</span>Settings</div>
- </div>
+<div class="desktop" id="desktop">
 
- <div id="windows"></div>
+<!-- FOCUS WIDGET -->
+<div class="widget" draggable="true" id="w-focus">
+<h3 class="draghead">🌙 Deep Focus</h3>
+<div class="small">Ready for a focus session?</div>
+<div id="clock">25:00</div>
+<div style="display:flex;gap:8px;flex-wrap:wrap">
+<button onclick="startTimer()">▶ Start</button>
+<button onclick="pauseTimer()">⏸ Pause</button>
+<button onclick="resetTimer()">↺ Reset</button>
+<button onclick="openFocus()">⛶ Fullscreen</button>
+</div>
+</div>
 
- <div id="taskbar">
-  <button onclick="toggleStart()">⊞ Start</button>
-  <div id="running" class="row"></div>
-  <div id="barclock">00:00</div>
- </div>
+<!-- QUICK NOTES -->
+<div class="widget" draggable="true" id="w-notes">
+<h3 class="draghead">📝 Quick Notes</h3>
+<textarea id="notes" placeholder="Write anything here..."></textarea>
+<button onclick="saveNotes()">Save Notes</button>
+<span class="small" id="notesStatus"></span>
+</div>
 
- <div id="startmenu" class="hidden">
-  <h2>💜 Student OS</h2>
-  <input id="search" placeholder="Search apps..." oninput="searchApps(this.value)">
-  <div id="searchresults"></div>
-  <hr>
-  <button onclick="lockDesktop()">🔒 Lock Desktop</button>
- </div>
+<!-- PLANNER -->
+<div class="widget" draggable="true" id="w-planner">
+<h3 class="draghead">📋 Today's Tasks</h3>
+<input id="taskInput" placeholder="Add a task...">
+<button onclick="addTask()">+ Add task</button>
+<div id="taskList"></div>
+<div class="progress"><div id="taskProgress"></div></div>
+<div class="small" id="taskCount"></div>
+</div>
+
+<!-- CHAPTER TRACKER -->
+<div class="widget wide" draggable="true" id="w-chapters">
+<h3 class="draghead">📚 Chapter Tracker</h3>
+<select id="subject">
+<option>Physics</option><option>Chemistry</option>
+<option>Mathematics</option><option>English</option>
+<option>Computer Science</option>
+</select>
+<input id="chapterInput" placeholder="Chapter name">
+<button onclick="addChapter()">+ Add Chapter</button>
+<div id="chapters"></div>
+</div>
+
+<!-- CUSTOMIZATION -->
+<div class="widget" draggable="true" id="w-custom">
+<h3 class="draghead">🎨 Customize Desk</h3>
+<div class="small">Wallpaper</div>
+<div class="wallpapers">
+<div class="wall" style="background:linear-gradient(135deg,#e8ddff,#fbe4ef)" onclick="setWallpaper(0)"></div>
+<div class="wall" style="background:linear-gradient(135deg,#b9e6ff,#c9f5df)" onclick="setWallpaper(1)"></div>
+<div class="wall" style="background:linear-gradient(135deg,#ffc8df,#ffdfba)" onclick="setWallpaper(2)"></div>
+<div class="wall" style="background:linear-gradient(135deg,#212136,#41305e)" onclick="setWallpaper(3)"></div>
+<div class="wall" style="background:linear-gradient(135deg,#d5e7c8,#9cb8a0)" onclick="setWallpaper(4)"></div>
+<div class="wall" style="background:linear-gradient(135deg,#b7c8f7,#e3c6ed)" onclick="setWallpaper(5)"></div>
+</div>
+<hr style="opacity:.2;margin:15px 0">
+<label class="small">Accent Colour</label>
+<input type="color" id="accentPicker" value="#c7b5ff" onchange="setAccent(this.value)">
+<button onclick="toggleDark()" style="margin-top:10px">🌗 Toggle Dark Mode</button>
+</div>
+
+<!-- PROGRESS -->
+<div class="widget" draggable="true" id="w-progress">
+<h3 class="draghead">📊 My Progress</h3>
+<div id="progressStats">Loading...</div>
+<div class="progress"><div id="chapterProgress"></div></div>
+<div class="small" id="chapterStats"></div>
+</div>
+
+<!-- WIDGET SETTINGS -->
+<div class="widget" draggable="true" id="w-settings">
+<h3 class="draghead">🖥️ Desktop Settings</h3>
+<div class="small">Hide/show widgets</div>
+<div id="widgetToggles"></div>
+<hr style="opacity:.2">
+<button onclick="resetDesk()">↺ Reset Desktop Layout</button>
+</div>
+
+</div>
+</div>
+
+<!-- FOCUS FULLSCREEN -->
+<div class="focusOverlay" id="focusOverlay">
+<div style="font-size:25px">🌙 DEEP FOCUS</div>
+<input id="focusTask" placeholder="What are you focusing on?">
+<div id="focusClock">25:00</div>
+<div class="small" style="color:white">One task. One session. Your pace.</div>
+<div>
+<button onclick="startTimer()">▶ Start</button>
+<button onclick="pauseTimer()">⏸ Pause</button>
+<button onclick="resetTimer()">↺ Reset</button>
+<button onclick="closeFocus()">✕ Exit Focus</button>
+</div>
+</div>
+
+<div class="bottom">
+<button onclick="openFocus()">🌙 Focus</button>
+<button onclick="document.getElementById('w-planner').scrollIntoView({behavior:'smooth'})">📋 Tasks</button>
+<button onclick="document.getElementById('w-chapters').scrollIntoView({behavior:'smooth'})">📚 Chapters</button>
+<button onclick="document.getElementById('w-custom').scrollIntoView({behavior:'smooth'})">🎨 Desk</button>
 </div>
 
 <script>
 const $=id=>document.getElementById(id);
-const get=(k,d=[])=>{try{return JSON.parse(localStorage.getItem("os_"+k))||d}catch{return d}};
-const save=(k,v)=>localStorage.setItem("os_"+k,JSON.stringify(v));
+const get=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}};
+const put=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
 
-let chapters=get("chapters"),flash=get("flash"),mistakes=get("mistakes"),
-revision=get("revision"),questions=get("questions"),notes=get("notes",{}),
-opened={},z=10;
+$("date").textContent=new Date().toLocaleDateString(undefined,{
+weekday:"long",day:"numeric",month:"long",year:"numeric"
+});
 
-function clock(){
- let d=new Date();
- $("clock").textContent=d.toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
- $("barclock").textContent=d.toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
- $("date").textContent=d.toLocaleDateString([], {weekday:"long",day:"numeric",month:"long",year:"numeric"});
-}
-clock();setInterval(clock,1000);
+let seconds=25*60, interval=null, running=false;
 
-function enterDesktop(){
- $("lock").classList.add("hidden");
- $("desktop").classList.remove("hidden");
- toggleStart(false);
+function displayTimer(){
+let m=Math.floor(seconds/60),s=seconds%60;
+let val=String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
+$("clock").textContent=val;
+$("focusClock").textContent=val;
 }
+function startTimer(){
+if(running)return;
+running=true;
+interval=setInterval(()=>{
+if(seconds>0){seconds--;displayTimer()}
+else{
+pauseTimer();
+alert("Focus session complete! Take a moment to rest.");
+}
+},1000);
+}
+function pauseTimer(){clearInterval(interval);interval=null;running=false}
+function resetTimer(){pauseTimer();seconds=25*60;displayTimer()}
+function openFocus(){$("focusOverlay").classList.add("show")}
+function closeFocus(){$("focusOverlay").classList.remove("show")}
+displayTimer();
 
-function lockDesktop(){
- $("desktop").classList.add("hidden");
- $("lock").classList.remove("hidden");
- $("startmenu").classList.add("hidden");
+let savedNotes=get("sh_notes","");
+$("notes").value=savedNotes;
+function saveNotes(){
+put("sh_notes",$("notes").value);
+$("notesStatus").textContent=" ✓ Saved";
 }
+$("notes").addEventListener("input",()=>{
+put("sh_notes",$("notes").value);
+$("notesStatus").textContent=" ✓ Autosaved";
+});
 
-function toggleStart(force){
- if(force===false){$("startmenu").classList.add("hidden");return}
- $("startmenu").classList.toggle("hidden");
+let tasks=get("sh_tasks",[]);
+function renderTasks(){
+$("taskList").innerHTML="";
+tasks.forEach((t,i)=>{
+let div=document.createElement("div");
+div.className="task";
+let cb=document.createElement("input");
+cb.type="checkbox";cb.style.width="auto";cb.checked=t.done;
+cb.onchange=()=>{tasks[i].done=cb.checked;put("sh_tasks",tasks);renderTasks()};
+let span=document.createElement("span");
+span.textContent=t.text;
+if(t.done)span.style.textDecoration="line-through";
+let del=document.createElement("button");
+del.textContent="×";
+del.onclick=()=>{tasks.splice(i,1);put("sh_tasks",tasks);renderTasks()};
+div.append(cb,span,del);
+$("taskList").append(div);
+});
+let done=tasks.filter(t=>t.done).length;
+$("taskProgress").style.width=(tasks.length?done/tasks.length*100:0)+"%";
+$("taskCount").textContent=done+" / "+tasks.length+" tasks completed";
 }
+function addTask(){
+let v=$("taskInput").value.trim();
+if(!v)return;
+tasks.push({text:v,done:false});
+put("sh_tasks",tasks);
+$("taskInput").value="";
+renderTasks();
+}
+$("taskInput").addEventListener("keydown",e=>{if(e.key==="Enter")addTask()});
+renderTasks();
 
-function searchApps(v){
- let apps={chapters:"📚 Chapters",flash:"🃏 Flashcards",mistakes:"❌ Mistakes",
- revision:"🔁 Revision",practice:"🧪 Practice",exam:"📝 Exam",notes:"📒 Notes",settings:"⚙️ Settings"};
- $("searchresults").innerHTML="";
- Object.entries(apps).filter(([k,n])=>n.toLowerCase().includes(v.toLowerCase()))
- .forEach(([k,n])=>{
-  let b=document.createElement("button");b.textContent=n;b.style.margin="5px";
-  b.onclick=()=>openApp(k);$("searchresults").appendChild(b);
- });
-}
-
-function openApp(name){
- $("startmenu").classList.add("hidden");
- if(opened[name]){opened[name].style.zIndex=++z;return}
- let titles={chapters:"Chapter Tracker",flash:"Flashcards",mistakes:"Mistake Bank",
- revision:"Revision Scheduler",practice:"Practice Arena",exam:"Exam Simulator",
- notes:"Study Notes",settings:"Desktop Settings"};
- let w=document.createElement("div");
- w.className="window";w.style.zIndex=++z;
- w.innerHTML=`<div class="winhead">
- <b>${titles[name]}</b>
- <div><button onclick="minApp('${name}')">−</button>
- <button class="close" onclick="closeApp('${name}')">×</button></div>
- </div><div class="winbody" id="body_${name}"></div>`;
- $("windows").appendChild(w);opened[name]=w;
- drag(w);
- render(name);
- updateRunning();
-}
-
-function closeApp(n){
- if(opened[n]){opened[n].remove();delete opened[n];updateRunning()}
-}
-function minApp(n){
- if(opened[n])opened[n].style.display="none";
- updateRunning();
-}
-function updateRunning(){
- $("running").innerHTML="";
- Object.keys(opened).forEach(n=>{
-  let b=document.createElement("button");
-  b.textContent=n;b.onclick=()=>{opened[n].style.display="block";opened[n].style.zIndex=++z};
-  $("running").appendChild(b);
- });
-}
-function drag(w){
- let h=w.querySelector(".winhead"),ox,oy,m=false;
- h.onmousedown=e=>{
-  if(e.target.tagName==="BUTTON")return;
-  m=true;ox=e.clientX-w.offsetLeft;oy=e.clientY-w.offsetTop;w.style.zIndex=++z
- };
- document.onmousemove=e=>{
-  if(!m)return;
-  w.style.left=Math.max(0,e.clientX-ox)+"px";
-  w.style.top=Math.max(0,e.clientY-oy)+"px";
- };
- document.onmouseup=()=>m=false;
-}
-function render(n){
- let b=$("body_"+n);
- if(n==="chapters")chapterUI(b);
- if(n==="flash")flashUI(b);
- if(n==="mistakes")mistakeUI(b);
- if(n==="revision")revisionUI(b);
- if(n==="practice")practiceUI(b);
- if(n==="exam")examUI(b);
- if(n==="notes")notesUI(b);
- if(n==="settings")settingsUI(b);
-}
-
-function chapterUI(b){
- b.innerHTML=`<div class="row">
- <select id="cs"><option>Physics</option><option>Chemistry</option><option>Maths</option><option>English</option><option>Computer Science</option></select>
- <input id="cn" placeholder="Chapter name"></div>
- <button onclick="addChapter()">+ Add Chapter</button>
- <div id="clist"></div>`;
- drawChapters();
+let chapters=get("sh_chapters",[]);
+function renderChapters(){
+$("chapters").innerHTML="";
+chapters.forEach((c,i)=>{
+let div=document.createElement("div");
+div.className="task";
+let span=document.createElement("span");
+span.textContent=c.subject+" — "+c.name;
+let select=document.createElement("select");
+select.style.width="150px";
+["Not Started","In Progress","Completed"].forEach(s=>{
+let o=document.createElement("option");
+o.textContent=s;o.value=s;o.selected=c.status===s;
+select.append(o);
+});
+select.onchange=()=>{chapters[i].status=select.value;put("sh_chapters",chapters);renderChapters();renderStats()};
+let del=document.createElement("button");
+del.textContent="×";
+del.onclick=()=>{chapters.splice(i,1);put("sh_chapters",chapters);renderChapters();renderStats()};
+div.append(span,select,del);
+$("chapters").append(div);
+});
+renderStats();
 }
 function addChapter(){
- let s=$("cs").value,n=$("cn").value.trim();if(!n)return;
- chapters.push({s,n,status:"Learning"});save("chapters",chapters);$("cn").value="";drawChapters();
+let name=$("chapterInput").value.trim();
+if(!name)return;
+chapters.push({subject:$("subject").value,name,status:"Not Started"});
+put("sh_chapters",chapters);
+$("chapterInput").value="";
+renderChapters();
 }
-function drawChapters(){
- let el=$("clist");if(!el)return;
- el.innerHTML="";
- chapters.forEach((c,i)=>{
- let d=document.createElement("div");d.className="card";
- d.innerHTML=`<b>${c.s}</b> — ${c.n}<br>
- <select onchange="chapterStatus(${i},this.value)">
- <option ${c.status==="Learning"?"selected":""}>Learning</option>
- <option ${c.status==="Practising"?"selected":""}>Practising</option>
- <option ${c.status==="Revised"?"selected":""}>Revised</option>
- <option ${c.status==="Mastered"?"selected":""}>Mastered</option>
- </select><button class="close" onclick="delChapter(${i})">Delete</button>`;
- el.appendChild(d);
- });
+function renderStats(){
+let total=chapters.length,done=chapters.filter(c=>c.status==="Completed").length;
+$("chapterProgress").style.width=(total?done/total*100:0)+"%";
+$("chapterStats").textContent=done+" of "+total+" chapters completed";
+$("progressStats").textContent=total?Math.round(done/total*100)+"% chapter completion":"Add chapters to begin";
 }
-function chapterStatus(i,v){chapters[i].status=v;save("chapters",chapters)}
-function delChapter(i){chapters.splice(i,1);save("chapters",chapters);drawChapters()}
+renderChapters();
 
-function flashUI(b){
- b.innerHTML=`<input id="fq" placeholder="Question">
- <textarea id="fa" placeholder="Answer"></textarea>
- <button onclick="addFlash()">Save Card</button><div id="flist"></div>`;
- drawFlash();
+const wallpapers=[
+"linear-gradient(135deg,#e8ddff,#d8edff,#fbe4ef)",
+"linear-gradient(135deg,#b9e6ff,#c9f5df)",
+"linear-gradient(135deg,#ffc8df,#ffdfba)",
+"linear-gradient(135deg,#212136,#41305e)",
+"linear-gradient(135deg,#d5e7c8,#9cb8a0)",
+"linear-gradient(135deg,#b7c8f7,#e3c6ed)"
+];
+function setWallpaper(i){
+document.body.style.background=wallpapers[i];
+put("sh_wall",i);
 }
-function addFlash(){
- if(!$("fq").value.trim()||!$("fa").value.trim())return;
- flash.push({q:$("fq").value,a:$("fa").value});
- save("flash",flash);$("fq").value="";$("fa").value="";drawFlash();
-}
-function drawFlash(){
- let e=$("flist");if(!e)return;e.innerHTML="";
- flash.forEach((f,i)=>{
- let d=document.createElement("div");d.className="card";
- d.innerHTML=`<b>${f.q}</b><br><button onclick="this.nextElementSibling.classList.toggle('hidden')">Reveal Answer</button>
- <p class="hidden">${f.a}</p><button class="close" onclick="delFlash(${i})">Delete</button>`;
- e.appendChild(d);
- });
-}
-function delFlash(i){flash.splice(i,1);save("flash",flash);drawFlash()}
+let wall=get("sh_wall",0);
+setWallpaper(wall);
 
-function mistakeUI(b){
- b.innerHTML=`<input id="miq" placeholder="Question / Mistake">
- <input id="mic" placeholder="Chapter">
- <textarea id="mir" placeholder="Why was it wrong?"></textarea>
- <textarea id="mif" placeholder="Correct approach"></textarea>
- <button onclick="addMistake()">Save Mistake</button><div id="milist"></div>`;
- drawMistakes();
+function setAccent(v){
+document.documentElement.style.setProperty("--accent",v);
+put("sh_accent",v);
 }
-function addMistake(){
- if(!$("miq").value.trim())return;
- mistakes.push({q:$("miq").value,c:$("mic").value,r:$("mir").value,f:$("mif").value});
- save("mistakes",mistakes);
- ["miq","mic","mir","mif"].forEach(x=>$(x).value="");drawMistakes();
-}
-function drawMistakes(){
- let e=$("milist");if(!e)return;e.innerHTML="";
- mistakes.forEach((m,i)=>{
- let d=document.createElement("div");d.className="card";
- d.innerHTML=`<b>${m.q}</b><p>Chapter: ${m.c}</p><p>Reason: ${m.r}</p><p>Correction: ${m.f}</p>
- <button onclick="mistakeToRevision(${i})">Add Revision</button>
- <button class="close" onclick="delMistake(${i})">Delete</button>`;
- e.appendChild(d);
- });
-}
-function delMistake(i){mistakes.splice(i,1);save("mistakes",mistakes);drawMistakes()}
-function mistakeToRevision(i){
- revision.push({t:mistakes[i].q,d:new Date().toISOString().slice(0,10),done:false});
- save("revision",revision);alert("Added to revision!");
-}
+$("accentPicker").value=get("sh_accent","#c7b5ff");
+setAccent($("accentPicker").value);
 
-function revisionUI(b){
- b.innerHTML=`<input id="rt" placeholder="Topic">
- <input id="rd" type="date">
- <button onclick="addRevision()">Schedule</button><div id="rlist"></div>`;
- drawRevision();
+function toggleDark(){
+document.body.classList.toggle("dark");
+put("sh_dark",document.body.classList.contains("dark"));
 }
-function addRevision(){
- if(!$("rt").value.trim())return;
- revision.push({t:$("rt").value,d:$("rd").value,done:false});
- save("revision",revision);$("rt").value="";drawRevision();
-}
-function drawRevision(){
- let e=$("rlist");if(!e)return;e.innerHTML="";
- revision.forEach((r,i)=>{
- let d=document.createElement("div");d.className="card";
- d.innerHTML=`<b>${r.t}</b> — ${r.d||"No date"} ${r.done?"✔️":""}
- <button onclick="revDone(${i})">Done</button>
- <button class="close" onclick="delRev(${i})">Delete</button>`;
- e.appendChild(d);
- });
-}
-function revDone(i){revision[i].done=true;save("revision",revision);drawRevision()}
-function delRev(i){revision.splice(i,1);save("revision",revision);drawRevision()}
+if(get("sh_dark",false))document.body.classList.add("dark");
 
-function practiceUI(b){
- b.innerHTML=`<select id="qs"><option>Physics</option><option>Chemistry</option><option>Maths</option><option>English</option><option>Computer Science</option></select>
- <input id="qq" placeholder="Question">
- <input id="q1" placeholder="Option A">
- <input id="q2" placeholder="Option B">
- <input id="q3" placeholder="Option C">
- <input id="q4" placeholder="Option D">
- <select id="qcorrect"><option>0</option><option>1</option><option>2</option><option>3</option></select>
- <p class="small">Correct option: 0=A, 1=B, 2=C, 3=D</p>
- <button onclick="addQuestion()">Add MCQ</button>
- <button onclick="runPractice()">Start Practice</button><div id="qlist"></div>`;
- drawQuestions();
+let hiddenWidgets=get("sh_hidden",[]);
+function renderToggles(){
+$("widgetToggles").innerHTML="";
+document.querySelectorAll(".desktop .widget").forEach(w=>{
+let label=document.createElement("label");
+label.className="task";
+let cb=document.createElement("input");
+cb.type="checkbox";cb.style.width="auto";
+cb.checked=!hiddenWidgets.includes(w.id);
+cb.onchange=()=>{
+if(cb.checked)hiddenWidgets=hiddenWidgets.filter(x=>x!==w.id);
+else hiddenWidgets.push(w.id);
+put("sh_hidden",hiddenWidgets);
+applyHidden();
+};
+label.append(cb,document.createTextNode(w.id.replace("w-","").replace(/-/g," ")));
+$("widgetToggles").append(label);
+});
 }
-function addQuestion(){
- if(!$("qq").value.trim())return;
- questions.push({s:$("qs").value,q:$("qq").value,
- o:[$("q1").value,$("q2").value,$("q3").value,$("q4").value],
- c:+$("qcorrect").value});
- save("questions",questions);
- ["qq","q1","q2","q3","q4"].forEach(x=>$(x).value="");drawQuestions();
+function applyHidden(){
+document.querySelectorAll(".desktop .widget").forEach(w=>{
+w.classList.toggle("hidden",hiddenWidgets.includes(w.id));
+});
 }
-function drawQuestions(){
- let e=$("qlist");if(!e)return;e.innerHTML="";
- questions.forEach((q,i)=>{
- let d=document.createElement("div");d.className="card";
- d.textContent=q.s+" — "+q.q;
- let x=document.createElement("button");x.textContent="Delete";x.className="close";x.onclick=()=>{questions.splice(i,1);save("questions",questions);drawQuestions()};
- d.appendChild(x);e.appendChild(d);
- });
+renderToggles();applyHidden();
+
+let order=get("sh_order",[]);
+function applyOrder(){
+order.forEach(id=>{
+let el=$(id);
+if(el) $("desktop").append(el);
+});
 }
-function runPractice(){
- let pool=questions.slice();if(!pool.length){alert("Add questions first!");return}
- let score=0,i=0;
- let e=$("qlist");e.innerHTML="";
- function next(){
-  if(i>=pool.length){e.innerHTML=`<h2>Score: ${score}/${pool.length}</h2>`;return}
-  let q=pool[i];
-  e.innerHTML=`<div class="card"><b>${i+1}. ${q.q}</b></div>`;
-  q.o.forEach((o,j)=>{
-   let b=document.createElement("button");b.style.display="block";b.style.margin="8px 0";b.textContent=o||("Option "+(j+1));
-   b.onclick=()=>{
-    if(j===q.c)score++;
-    else mistakes.push({q:q.q,c:q.s,r:"Practice incorrect answer",f:q.o[q.c]});
-    save("mistakes",mistakes);i++;next();
-   };e.appendChild(b);
-  });
- }
- next();
+applyOrder();
+
+function resetDesk(){
+if(!confirm("Reset widget order and visibility?"))return;
+localStorage.removeItem("sh_order");
+localStorage.removeItem("sh_hidden");
+location.reload();
 }
 
-function examUI(b){
- b.innerHTML=`<p>Exam simulator uses saved MCQs.</p>
- <label>Duration (minutes)</label><input id="etime" type="number" value="10">
- <button onclick="runExam()">Start Exam</button><div id="examout"></div>`;
-}
-function runExam(){
- let pool=questions.slice();if(!pool.length){alert("Add MCQs in Practice first.");return}
- let duration=Math.max(1,+$("etime").value||10)*60;
- let e=$("examout"),score=0,i=0,finished=false;
- let timer;
- function finish(){
-  if(finished)return;finished=true;clearInterval(timer);
-  e.innerHTML=`<h2>Exam finished!</h2><p>Score: ${score}/${pool.length}</p><p>Accuracy: ${Math.round(score/pool.length*100)}%</p>`;
- }
- function draw(){
-  if(finished)return;
-  if(i>=pool.length){finish();return}
-  let q=pool[i];e.innerHTML=`<p>Time left: ${duration}s</p><b>${i+1}/${pool.length} — ${q.q}</b>`;
-  q.o.forEach((o,j)=>{
-   let b=document.createElement("button");b.style.display="block";b.style.margin="8px";
-   b.textContent=o||("Option "+(j+1));
-   b.onclick=()=>{
-    if(finished)return;
-    if(j===q.c)score++;
-    else{mistakes.push({q:q.q,c:q.s,r:"Exam incorrect answer",f:q.o[q.c]});save("mistakes",mistakes)}
-    i++;draw();
-   };e.appendChild(b);
-  });
- }
- timer=setInterval(()=>{if(finished)return;duration--;if(duration<=0)finish();else draw()},1000);
- draw();
-}
+let dragged=null;
+document.querySelectorAll(".desktop .widget").forEach(w=>{
+w.addEventListener("dragstart",e=>{
+dragged=w;
+w.classList.add("dragging");
+e.dataTransfer.setData("text/plain",w.id);
+});
+w.addEventListener("dragend",()=>{
+w.classList.remove("dragging");
+dragged=null;
+});
+w.addEventListener("dragover",e=>e.preventDefault());
+w.addEventListener("drop",e=>{
+e.preventDefault();
+if(!dragged||dragged===w)return;
+let all=[...$("desktop").children];
+let a=all.indexOf(dragged),b=all.indexOf(w);
+if(a<b)w.after(dragged);else w.before(dragged);
+order=[...$("desktop").children].map(x=>x.id);
+put("sh_order",order);
+});
+});
 
-function notesUI(b){
- b.innerHTML=`<select id="ns"><option>Physics</option><option>Chemistry</option><option>Maths</option><option>English</option><option>Computer Science</option></select>
- <textarea id="nt" rows="12" placeholder="Your notes..."></textarea>
- <button onclick="saveNotes()">Save Notes</button>`;
- $("ns").onchange=loadNotes;$("nt").oninput=()=>saveNotes();
- loadNotes();
-}
-function loadNotes(){$("nt").value=notes[$("ns").value]||""}
-function saveNotes(){notes[$("ns").value]=$("nt").value;save("notes",notes)}
-
-function settingsUI(b){
- b.innerHTML=`<h3>Desktop Settings</h3>
- <button onclick="changeBg('#d8c7ff','#f5e9ff','#b5c9ff')">Lavender</button>
- <button onclick="changeBg('#d5f5e3','#f2fffa','#b3dfc7')">Mint</button>
- <button onclick="changeBg('#ffe0ed','#fff3f8','#f5bcd5')">Pink</button>
- <button onclick="changeBg('#d8e9ff','#eff7ff','#b8d1ff')">Blue</button>
- <hr><button onclick="lockDesktop()">Lock Screen</button>
- <button onclick="backup()">Export Backup</button>
- <button onclick="restore()">Import Backup</button>
- <p class="small">Data is stored in this browser.</p>`;
-}
-function changeBg(a,b,c){$("desktop").style.background=`linear-gradient(135deg,${a},${b},${c})`}
-function backup(){
- let data={chapters,flash,mistakes,revision,questions,notes};
- let blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
- let a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="student-os-backup.json";a.click();
- URL.revokeObjectURL(a.href);
-}
-function restore(){
- let i=document.createElement("input");i.type="file";i.accept=".json";
- i.onchange=()=>{
-  let f=i.files[0];if(!f)return;
-  let r=new FileReader();
-  r.onload=()=>{
-   try{
-    let d=JSON.parse(r.result);
-    chapters=d.chapters||[];flash=d.flash||[];mistakes=d.mistakes||[];
-    revision=d.revision||[];questions=d.questions||[];notes=d.notes||{};
-    save("chapters",chapters);save("flash",flash);save("mistakes",mistakes);
-    save("revision",revision);save("questions",questions);save("notes",notes);
-    alert("Backup restored!");
-   }catch{alert("Invalid backup file")}
-  };r.readAsText(f);
- };i.click();
-}
 </script>
 </body>
 </html>
