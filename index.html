@@ -7,47 +7,123 @@
 <title>Mini Desktop 💜</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial;color:#49365f}
-#desktop{height:100vh;background:linear-gradient(135deg,#d8c9ff,#bde0ff,#f8d9eb);padding:15px;position:relative;overflow:hidden}
-.icons{display:grid;grid-template-columns:85px;gap:5px}
-.icon{background:transparent;border:0;padding:10px;border-radius:12px;cursor:pointer;color:#49365f;font-size:14px}
+body{margin:0;font-family:Arial,sans-serif;color:#49365f}
+#desktop{
+height:100vh;position:relative;overflow:hidden;
+padding:15px;padding-bottom:65px;
+background:linear-gradient(135deg,#d8c9ff,#bde0ff,#f8d9eb);
+}
+#icons{display:grid;grid-template-columns:85px;gap:3px}
+.icon{
+border:0;background:transparent;border-radius:14px;
+padding:10px;cursor:pointer;color:inherit;
+}
 .icon:hover{background:#ffffff70}
-.icon span{display:block;font-size:32px;margin-bottom:5px}
-.win{display:none;position:absolute;top:70px;left:110px;width:min(400px,90vw);height:min(420px,75vh);background:#fff;border-radius:16px;box-shadow:0 8px 30px #5555;overflow:hidden;z-index:5}
-.head{background:#e6d9ff;padding:12px;display:flex;justify-content:space-between;font-weight:bold}
-.head button{border:0;border-radius:8px;padding:5px 10px;cursor:pointer}
-.body{padding:15px;overflow:auto;height:calc(100% - 44px)}
-button.action{background:#a78bdb;color:white;border:0;border-radius:9px;padding:10px;margin:4px;cursor:pointer}
-input,textarea{width:100%;padding:10px;margin:5px 0;border:1px solid #ddd;border-radius:9px}
-textarea{min-height:80px}
-.note{background:#eee5ff;padding:10px;border-radius:10px;margin:10px 0;overflow-wrap:anywhere}
-#bar{position:absolute;bottom:0;height:55px;width:100%;left:0;background:#ffffffbb;display:flex;justify-content:center;align-items:center;gap:8px;z-index:999;padding:5px}
-#bar button{border:0;border-radius:10px;padding:10px;cursor:pointer}
-#clock{position:absolute;right:10px;font-size:12px}
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
-.grid button{padding:14px;border:0;border-radius:10px;background:#e9ddff;cursor:pointer;font-size:17px}
-.wall{display:block;width:100%;padding:20px;border:0;border-radius:10px;margin:8px 0;cursor:pointer}
+.icon span{display:block;font-size:30px;margin-bottom:6px}
+.win{
+display:none;position:absolute;top:80px;left:110px;
+width:min(420px,94vw);height:min(450px,78vh);
+background:var(--panel,#fff);border-radius:16px;
+box-shadow:0 10px 35px #5555;overflow:hidden;z-index:10;
+}
+.head{
+background:var(--head,#e6d9ff);padding:11px;
+display:flex;justify-content:space-between;
+align-items:center;font-weight:bold;
+cursor:grab;user-select:none;
+}
+.head:active{cursor:grabbing}
+.head button{
+border:0;border-radius:8px;padding:5px 9px;
+cursor:pointer;margin-left:3px;
+}
+.body{padding:14px;overflow:auto;height:calc(100% - 43px)}
+.action{
+background:var(--accent,#a78bdb);color:white;
+border:0;border-radius:10px;padding:10px;
+margin:4px;cursor:pointer;
+}
+.action:hover{filter:brightness(.9)}
+input,textarea,select{
+width:100%;padding:10px;margin:6px 0;
+border:1px solid #ddd;border-radius:10px;
+background:white;color:#49365f;
+}
+textarea{min-height:90px}
+.note{padding:10px;background:var(--head,#eee5ff);
+border-radius:10px;margin:10px 0;overflow-wrap:anywhere}
+#bar{
+position:absolute;bottom:0;left:0;width:100%;height:58px;
+display:flex;align-items:center;justify-content:center;
+gap:6px;background:#ffffffb9;backdrop-filter:blur(12px);
+z-index:9999;padding:4px;flex-wrap:wrap;
+}
+#bar button{
+border:0;border-radius:10px;padding:9px;
+background:#ffffffcc;cursor:pointer;color:#49365f;
+}
+#bar button:hover{background:#e6d9ff}
+#clock{position:absolute;right:8px;font-size:11px;text-align:right}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
+.grid button{padding:14px;border:0;border-radius:10px;
+background:var(--head,#e9ddff);cursor:pointer;font-size:17px}
+.wall{display:block;width:100%;padding:20px;border:0;
+border-radius:12px;margin:8px 0;cursor:pointer}
+#launcher{
+display:none;position:absolute;top:50%;left:50%;
+transform:translate(-50%,-50%);
+width:min(380px,94vw);max-height:80vh;overflow:auto;
+background:var(--panel,#fff);padding:18px;border-radius:20px;
+box-shadow:0 15px 40px #3336;z-index:8000;
+}
+#launcherApps button{
+width:100%;padding:12px;margin:4px 0;
+border:0;border-radius:10px;background:var(--head,#eee);
+cursor:pointer;text-align:left;
+}
+#welcome{
+position:absolute;inset:0;background:linear-gradient(135deg,#8e74cb,#c6a8ec,#a8c9f6);
+display:flex;align-items:center;justify-content:center;
+z-index:10000;text-align:center;color:white;padding:20px;
+}
+#welcomeBox{max-width:400px}
+#welcome button{
+border:0;border-radius:14px;padding:14px 22px;
+cursor:pointer;background:white;color:#7256a7;font-weight:bold;
+}
+#widgetBox{background:var(--head,#eee5ff);
+padding:12px;border-radius:12px;margin-bottom:10px}
+#quote{min-height:55px}
+.pinrow{display:flex;justify-content:space-between;align-items:center;
+padding:8px;border-radius:10px;background:var(--head,#eee5ff);margin:6px 0}
+#themePreview{height:40px;border-radius:12px}
 </style>
 </head>
 <body>
+
 <div id="desktop">
 
-<div class="icons">
+<div id="icons">
 <button class="icon" onclick="openW('notes')"><span>📝</span>Notes</button>
-<button class="icon" onclick="openW('files')"><span>📁</span>My Files</button>
+<button class="icon" onclick="openW('files')"><span>📁</span>Files</button>
 <button class="icon" onclick="openW('calc')"><span>🧮</span>Calculator</button>
 <button class="icon" onclick="openW('timer')"><span>⏱️</span>Timer</button>
 <button class="icon" onclick="openW('calendar')"><span>📅</span>Calendar</button>
 <button class="icon" onclick="openW('wall')"><span>🎨</span>Wallpapers</button>
 <button class="icon" onclick="openW('trash')"><span>🗑️</span>Trash</button>
+<button class="icon" onclick="openW('settings')"><span>⚙️</span>Settings</button>
+<button class="icon" onclick="toggleLauncher()"><span>🔍</span>Search</button>
 </div>
 
 <!-- NOTES -->
 <div class="win" id="notes">
-<div class="head">📝 Notes <span><button onclick="minW('notes')">—</button><button onclick="closeW('notes')">✕</button></span></div>
+<div class="head">📝 Notes <span>
+<button onclick="minW('notes')">—</button>
+<button onclick="closeW('notes')">✕</button>
+</span></div>
 <div class="body">
 <input id="nt" placeholder="Title">
-<textarea id="nb" placeholder="Write your note..."></textarea>
+<textarea id="nb" placeholder="Write a note..."></textarea>
 <button class="action" onclick="saveNote()">Save</button>
 <button class="action" onclick="clearNote()">Clear</button>
 <div id="notesList"></div>
@@ -56,13 +132,19 @@ textarea{min-height:80px}
 
 <!-- FILES -->
 <div class="win" id="files">
-<div class="head">📁 My Files <span><button onclick="minW('files')">—</button><button onclick="closeW('files')">✕</button></span></div>
-<div class="body"><h3>Saved notes</h3><div id="filesList"></div></div>
+<div class="head">📁 Files <span>
+<button onclick="minW('files')">—</button>
+<button onclick="closeW('files')">✕</button>
+</span></div>
+<div class="body"><div id="filesList"></div></div>
 </div>
 
 <!-- CALCULATOR -->
 <div class="win" id="calc">
-<div class="head">🧮 Calculator <span><button onclick="minW('calc')">—</button><button onclick="closeW('calc')">✕</button></span></div>
+<div class="head">🧮 Calculator <span>
+<button onclick="minW('calc')">—</button>
+<button onclick="closeW('calc')">✕</button>
+</span></div>
 <div class="body">
 <input id="cd" value="0" readonly style="font-size:25px;text-align:right">
 <div class="grid">
@@ -77,7 +159,10 @@ textarea{min-height:80px}
 
 <!-- TIMER -->
 <div class="win" id="timer">
-<div class="head">⏱️ Timer <span><button onclick="minW('timer')">—</button><button onclick="closeW('timer')">✕</button></span></div>
+<div class="head">⏱️ Focus Timer <span>
+<button onclick="minW('timer')">—</button>
+<button onclick="closeW('timer')">✕</button>
+</span></div>
 <div class="body" style="text-align:center">
 <h1 id="td" style="font-size:50px">25:00</h1>
 <input id="tm" type="number" min="1" max="180" value="25">
@@ -91,15 +176,21 @@ textarea{min-height:80px}
 
 <!-- CALENDAR -->
 <div class="win" id="calendar">
-<div class="head">📅 Calendar <span><button onclick="minW('calendar')">—</button><button onclick="closeW('calendar')">✕</button></span></div>
+<div class="head">📅 Calendar <span>
+<button onclick="minW('calendar')">—</button>
+<button onclick="closeW('calendar')">✕</button>
+</span></div>
 <div class="body" style="text-align:center">
-<h2>Today's date</h2><h3 id="date"></h3><h3 id="day"></h3>
+<h2>Today's Date</h2><h3 id="date"></h3><h3 id="day"></h3>
 </div>
 </div>
 
 <!-- WALLPAPERS -->
 <div class="win" id="wall">
-<div class="head">🎨 Wallpapers <span><button onclick="minW('wall')">—</button><button onclick="closeW('wall')">✕</button></span></div>
+<div class="head">🎨 Wallpapers <span>
+<button onclick="minW('wall')">—</button>
+<button onclick="closeW('wall')">✕</button>
+</span></div>
 <div class="body">
 <button class="wall" style="background:linear-gradient(135deg,#d8c9ff,#bde0ff)" onclick="sw('linear-gradient(135deg,#d8c9ff,#bde0ff)')">💜 Lavender</button>
 <button class="wall" style="background:linear-gradient(135deg,#ffcde5,#fff0bd)" onclick="sw('linear-gradient(135deg,#ffcde5,#fff0bd)')">🌸 Pink</button>
@@ -111,26 +202,99 @@ textarea{min-height:80px}
 
 <!-- TRASH -->
 <div class="win" id="trash">
-<div class="head">🗑️ Trash <span><button onclick="minW('trash')">—</button><button onclick="closeW('trash')">✕</button></span></div>
-<div class="body"><div id="trashList"></div><button class="action" onclick="emptyT()">Empty Trash</button></div>
+<div class="head">🗑️ Trash <span>
+<button onclick="minW('trash')">—</button>
+<button onclick="closeW('trash')">✕</button>
+</span></div>
+<div class="body"><div id="trashList"></div>
+<button class="action" onclick="emptyT()">Empty Trash</button>
+</div>
 </div>
 
+<!-- SETTINGS -->
+<div class="win" id="settings">
+<div class="head">⚙️ Settings <span>
+<button onclick="minW('settings')">—</button>
+<button onclick="closeW('settings')">✕</button>
+</span></div>
+<div class="body">
+
+<h3>🎨 Custom Theme</h3>
+<label>Desktop background</label>
+<input type="color" id="bgColor" value="#d8c9ff" onchange="customTheme()">
+<label>Window color</label>
+<input type="color" id="panelColor" value="#ffffff" onchange="customTheme()">
+<label>Accent color</label>
+<input type="color" id="accentColor" value="#a78bdb" onchange="customTheme()">
+<button class="action" onclick="resetTheme()">Reset Theme</button>
+
+<hr>
+<h3>📌 Pinned Apps</h3>
+<p>Choose which apps appear in your taskbar.</p>
+<div id="pinSettings"></div>
+
+<hr>
+<h3>🔊 Sound</h3>
+<button class="action" onclick="toggleSound()" id="soundSettings">Sound: ON</button>
+</div>
+</div>
+
+<!-- SEARCH LAUNCHER -->
+<div id="launcher">
+<h3>🔍 App Launcher</h3>
+<input id="searchInput" placeholder="Search apps..." oninput="searchApps()">
+<div id="launcherApps"></div>
+<button class="action" onclick="toggleLauncher()">Close</button>
+</div>
+
+<!-- TASKBAR -->
 <div id="bar">
-<button onclick="openW('notes')">📝</button>
-<button onclick="openW('files')">📁</button>
-<button onclick="openW('calc')">🧮</button>
-<button onclick="openW('timer')">⏱️</button>
-<button onclick="openW('calendar')">📅</button>
+<div id="pins"></div>
+<button onclick="toggleLauncher()" title="Search">🔍</button>
+<button onclick="toggleSound()" title="Sound">🔊</button>
 <div id="clock"></div>
 </div>
+
+<!-- WIDGETS -->
+<div id="widgetBox" style="position:absolute;right:15px;top:15px;width:min(220px,45vw);pointer-events:none">
+<div id="dateWidget" style="font-weight:bold"></div>
+<div id="quote" style="font-size:13px;margin-top:8px"></div>
+<div id="focusWidget" style="font-size:12px;margin-top:8px">⏱️ Focus: Ready</div>
+</div>
+
+<!-- WELCOME -->
+<div id="welcome">
+<div id="welcomeBox">
+<div style="font-size:60px">💜</div>
+<h1>Mini Desktop</h1>
+<p>Welcome to your little digital world.</p>
+<p>Notes • Focus • Creativity</p>
+<button onclick="enterDesktop()">Enter Desktop ✨</button>
+</div>
+</div>
+
 </div>
 
 <script>
 const $=x=>document.getElementById(x);
-let N=JSON.parse(localStorage.getItem("notes2")||"[]");
-let T=JSON.parse(localStorage.getItem("trash2")||"[]");
+const appNames={
+notes:"📝 Notes",
+files:"📁 Files",
+calc:"🧮 Calculator",
+timer:"⏱️ Timer",
+calendar:"📅 Calendar",
+wall:"🎨 Wallpapers",
+trash:"🗑️ Trash",
+settings:"⚙️ Settings"
+};
+
+let N=JSON.parse(localStorage.getItem("notes2")||localStorage.getItem("md_notes")||"[]");
+let T=JSON.parse(localStorage.getItem("trash2")||localStorage.getItem("md_trash")||"[]");
+let pins=JSON.parse(localStorage.getItem("pins3")||'["notes","calc","timer","files"]');
+let sound=localStorage.getItem("sound3")!=="off";
 let Z=10;
 
+// WINDOW OPEN/CLOSE
 function openW(id){
 $(id).style.display="block";
 $(id).style.zIndex=++Z;
@@ -138,11 +302,13 @@ $(id).style.zIndex=++Z;
 function closeW(id){$(id).style.display="none"}
 function minW(id){$(id).style.display="none"}
 
+// SAFE TEXT
 function safe(s){
 return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
 
-function save(){
+// NOTES & FILES
+function persist(){
 localStorage.setItem("notes2",JSON.stringify(N));
 localStorage.setItem("trash2",JSON.stringify(T));
 render();
@@ -150,36 +316,39 @@ render();
 function saveNote(){
 let a=$("nt").value.trim(),b=$("nb").value.trim();
 if(!a&&!b){alert("Write something first!");return}
-N.unshift({id:Date.now(),a:a||"Untitled",b:b});
-save();clearNote();
+N.unshift({id:Date.now(),a:a||"Untitled",b:b,date:new Date().toLocaleDateString()});
+persist();clearNote();beep();
 }
 function clearNote(){$("nt").value="";$("nb").value=""}
 
 function render(){
 $("notesList").innerHTML=N.map(n=>`
-<div class="note"><b>${safe(n.a)}</b><p>${safe(n.b).replace(/\n/g,"<br>")}</p>
+<div class="note"><b>${safe(n.a||n.title)}</b>
+<p>${safe(n.b||n.body||"").replace(/\n/g,"<br>")}</p>
 <button class="action" onclick="del(${n.id})">Delete</button></div>`).join("");
 
 $("filesList").innerHTML=N.map(n=>`
-<div class="note"><b>📄 ${safe(n.a)}</b><p>${safe(n.b).replace(/\n/g,"<br>")}</p></div>`).join("")||"No saved notes.";
+<div class="note"><b>📄 ${safe(n.a||n.title)}</b>
+<p>${safe(n.b||n.body||"").replace(/\n/g,"<br>")}</p></div>`).join("")||"No saved notes.";
 
 $("trashList").innerHTML=T.map(n=>`
-<div class="note"><b>${safe(n.a)}</b><p>${safe(n.b)}</p>
+<div class="note"><b>${safe(n.a||n.title)}</b>
+<p>${safe(n.b||n.body||"")}</p>
 <button class="action" onclick="restore(${n.id})">Restore</button>
 <button class="action" onclick="pd(${n.id})">Delete forever</button></div>`).join("")||"Trash is empty.";
 }
 function del(id){
 let n=N.find(x=>x.id===id);
-if(n){T.unshift(n);N=N.filter(x=>x.id!==id);save()}
+if(n){T.unshift(n);N=N.filter(x=>x.id!==id);persist();beep()}
 }
 function restore(id){
 let n=T.find(x=>x.id===id);
-if(n){N.unshift(n);T=T.filter(x=>x.id!==id);save()}
+if(n){N.unshift(n);T=T.filter(x=>x.id!==id);persist()}
 }
-function pd(id){T=T.filter(x=>x.id!==id);save()}
-function emptyT(){if(confirm("Empty trash?")){T=[];save()}}
+function pd(id){T=T.filter(x=>x.id!==id);persist()}
+function emptyT(){if(confirm("Empty trash?")){T=[];persist()}}
 
-// Calculator
+// CALCULATOR
 function ci(v){
 let d=$("cd");
 if(d.value==="0"||d.value==="Error")d.value="";
@@ -196,7 +365,7 @@ $("cd").value=String(r);
 }catch(e){$("cd").value="Error"}
 }
 
-// Timer
+// TIMER
 let total=1500,remaining=1500,interval=null;
 function showT(){
 $("td").textContent=Math.floor(remaining/60).toString().padStart(2,"0")+":"+ (remaining%60).toString().padStart(2,"0");
@@ -211,36 +380,181 @@ function startT(){
 if(interval)return;
 if(remaining<=0)remaining=total;
 $("ts").textContent="Focus time 💜";
+$("focusWidget").textContent="⏱️ Focus: In session";
 interval=setInterval(()=>{
 remaining--;showT();
-if(remaining<=0){pauseT();$("ts").textContent="Completed 🎉";alert("Timer complete!")}
+if(remaining<=0){
+pauseT();$("ts").textContent="Completed 🎉";
+$("focusWidget").textContent="⏱️ Focus: Complete";
+beep();alert("Focus session complete!");
+}
 },1000);
 }
-function pauseT(){clearInterval(interval);interval=null}
-function resetT(){pauseT();remaining=total;showT();$("ts").textContent="Ready ✨"}
+function pauseT(){
+clearInterval(interval);interval=null;
+$("focusWidget").textContent="⏱️ Focus: Paused";
+}
+function resetT(){
+pauseT();remaining=total;showT();
+$("ts").textContent="Ready ✨";
+$("focusWidget").textContent="⏱️ Focus: Ready";
+}
 
-// Wallpaper
+// WALLPAPER
 function sw(b){
 $("desktop").style.background=b;
 localStorage.setItem("wall2",b);
 }
 
-// Date and clock
+// CLOCK
 function tick(){
 let d=new Date();
 $("clock").innerHTML=d.toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"})+"<br>"+d.toLocaleDateString();
 $("date").textContent=d.toLocaleDateString([],{day:"numeric",month:"long",year:"numeric"});
 $("day").textContent=d.toLocaleDateString([],{weekday:"long"});
+$("dateWidget").textContent="📅 "+d.toLocaleDateString([],{weekday:"short",day:"numeric",month:"short"});
 }
 tick();setInterval(tick,1000);
 
-if(localStorage.getItem("wall2"))sw(localStorage.getItem("wall2"));
-render();showT();
+// WELCOME
+function enterDesktop(){
+$("welcome").style.display="none";
+localStorage.setItem("welcome3","yes");
+beep();
+}
+if(localStorage.getItem("welcome3")==="yes")$("welcome").style.display="none";
 
-// Bring window to front on click
+// DRAGGABLE WINDOWS (mouse + touch)
 document.querySelectorAll(".win").forEach(w=>{
-w.addEventListener("mousedown",()=>w.style.zIndex=++Z);
+const h=w.querySelector(".head");
+let sx=0,sy=0,ox=0,oy=0,drag=false;
+
+h.addEventListener("pointerdown",e=>{
+if(e.target.closest("button"))return;
+drag=true;
+sx=e.clientX;sy=e.clientY;
+ox=w.offsetLeft;oy=w.offsetTop;
+w.style.zIndex=++Z;
+h.setPointerCapture(e.pointerId);
 });
+h.addEventListener("pointermove",e=>{
+if(!drag)return;
+w.style.left=Math.max(0,ox+e.clientX-sx)+"px";
+w.style.top=Math.max(0,oy+e.clientY-sy)+"px";
+});
+h.addEventListener("pointerup",()=>drag=false);
+h.addEventListener("pointercancel",()=>drag=false);
+w.addEventListener("pointerdown",()=>w.style.zIndex=++Z);
+});
+
+// SEARCH LAUNCHER
+function toggleLauncher(){
+let l=$("launcher");
+l.style.display=l.style.display==="block"?"none":"block";
+if(l.style.display==="block"){
+$("searchInput").value="";
+searchApps();$("searchInput").focus();
+}
+}
+function searchApps(){
+let q=$("searchInput").value.toLowerCase();
+$("launcherApps").innerHTML=Object.keys(appNames)
+.filter(id=>appNames[id].toLowerCase().includes(q)||id.includes(q))
+.map(id=>`<button onclick="openW('${id}');toggleLauncher()">${appNames[id]}</button>`).join("")||"No apps found.";
+}
+searchApps();
+
+// PINNED APPS
+function savePins(){
+localStorage.setItem("pins3",JSON.stringify(pins));
+renderPins();
+}
+function renderPins(){
+$("pins").innerHTML=pins.map(id=>
+`<button title="${id}" onclick="openW('${id}')">${appNames[id].split(" ")[0]}</button>`).join("");
+$("pinSettings").innerHTML=Object.keys(appNames).map(id=>
+`<div class="pinrow">${appNames[id]}<button onclick="pinToggle('${id}')">${pins.includes(id)?"📌 Unpin":"📌 Pin"}</button></div>`).join("");
+}
+function pinToggle(id){
+if(pins.includes(id))pins=pins.filter(x=>x!==id);
+else pins.push(id);
+savePins();
+}
+
+// THEMES
+function customTheme(){
+let bg=$("bgColor").value,panel=$("panelColor").value,accent=$("accentColor").value;
+$("desktop").style.background=bg;
+document.documentElement.style.setProperty("--panel",panel);
+document.documentElement.style.setProperty("--head",bg);
+document.documentElement.style.setProperty("--accent",accent);
+localStorage.setItem("theme3",JSON.stringify({bg,panel,accent}));
+}
+function loadTheme(){
+let t=JSON.parse(localStorage.getItem("theme3")||"null");
+if(!t)return;
+$("bgColor").value=t.bg;
+$("panelColor").value=t.panel;
+$("accentColor").value=t.accent;
+$("desktop").style.background=t.bg;
+document.documentElement.style.setProperty("--panel",t.panel);
+document.documentElement.style.setProperty("--head",t.bg);
+document.documentElement.style.setProperty("--accent",t.accent);
+}
+function resetTheme(){
+localStorage.removeItem("theme3");
+$("bgColor").value="#d8c9ff";
+$("panelColor").value="#ffffff";
+$("accentColor").value="#a78bdb";
+$("desktop").style.background="linear-gradient(135deg,#d8c9ff,#bde0ff,#f8d9eb)";
+document.documentElement.style.setProperty("--panel","#fff");
+document.documentElement.style.setProperty("--head","#e6d9ff");
+document.documentElement.style.setProperty("--accent","#a78bdb");
+}
+
+// SOUND
+function toggleSound(){
+sound=!sound;
+localStorage.setItem("sound3",sound?"on":"off");
+$("soundSettings").textContent="Sound: "+(sound?"ON":"OFF");
+beep();
+}
+function beep(){
+if(!sound)return;
+try{
+let ctx=new (window.AudioContext||window.webkitAudioContext)();
+let osc=ctx.createOscillator(),gain=ctx.createGain();
+osc.connect(gain);gain.connect(ctx.destination);
+osc.frequency.value=650;
+gain.gain.value=.04;
+osc.start();
+osc.stop(ctx.currentTime+.08);
+osc.onended=()=>ctx.close();
+}catch(e){}
+}
+$("soundSettings").textContent="Sound: "+(sound?"ON":"OFF");
+
+// QUOTES
+let quotes=[
+"✨ Small steps still move you forward.",
+"🌷 You can begin again today.",
+"💜 Progress, not perfection.",
+"🌙 Focus on the next step.",
+"📚 Your effort is building your future.",
+"☁️ One task at a time.",
+"🌟 You are allowed to learn slowly."
+];
+let qi=Math.floor(Math.random()*quotes.length);
+function nextQuote(){
+$("quote").textContent=quotes[qi%quotes.length];
+qi++;
+}
+nextQuote();
+setInterval(nextQuote,60000);
+
+// WALLPAPER RESTORE
+if(localStorage.getItem("wall2"))sw(localStorage.getItem("wall2"));
+render();showT();renderPins();loadTheme();
 </script>
 </body>
 </html>
