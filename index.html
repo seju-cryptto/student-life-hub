@@ -1,646 +1,729 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Students Hub ✦</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Students Hub ♡</title>
 <style>
 *{box-sizing:border-box}
 :root{
---accent:#b49aff;--bg:#eeeaff;--text:#29243c;
---panel:rgba(255,255,255,.78);--muted:#8b84a3;
+ --accent:#b18adf;--bg:#f5effb;--ink:#50445f;
+ --glass:rgba(255,255,255,.78);--shadow:0 12px 40px #78619c22;
 }
 body{
-margin:0;font-family:Segoe UI,Arial,sans-serif;color:var(--text);
-background:linear-gradient(135deg,#e9e3ff,#f6e9f9,#e1edff);
-height:100vh;overflow:hidden;transition:.3s;
-}
-body.dark{
---bg:#151323;--text:#eee9ff;--panel:rgba(36,30,54,.85);
---muted:#b4aaca;
-background:linear-gradient(135deg,#151323,#21182f,#182335);
+ margin:0;font-family:"Segoe UI",sans-serif;color:var(--ink);
+ background:var(--bg);overflow:hidden;transition:.3s;
 }
 button,input,textarea,select{font:inherit}
 button{
-border:0;padding:9px 13px;border-radius:12px;
-background:var(--accent);color:#fff;cursor:pointer;
-transition:.2s;
+ border:0;border-radius:12px;padding:9px 14px;
+ background:var(--accent);color:white;cursor:pointer;
+ transition:.2s;
 }
-button:hover{filter:brightness(1.08);transform:translateY(-1px)}
-button.secondary{background:rgba(150,130,190,.16);color:var(--text)}
-button.danger{background:#e77c95}
+button:hover{filter:brightness(1.06);transform:translateY(-1px)}
+button.secondary{background:#eee5f7;color:#655477}
+button.danger{background:#f2b7c9;color:#633d52}
 input,textarea,select{
-background:rgba(150,130,190,.12);color:var(--text);
-border:1px solid rgba(150,130,190,.18);border-radius:12px;
-padding:10px;outline:none;width:100%;
+ width:100%;padding:10px;border:1px solid #e5d9f1;
+ border-radius:12px;background:#fff9;outline:none;color:var(--ink);
 }
-textarea{resize:vertical;min-height:80px}
-select option{color:#222}
-::-webkit-scrollbar{width:6px}
-::-webkit-scrollbar-thumb{background:var(--accent);border-radius:9px}
+textarea{min-height:90px;resize:vertical}
+hr{border:0;border-top:1px solid #e8def1;margin:15px 0}
 #lock{
-position:fixed;inset:0;z-index:1000;display:flex;
-flex-direction:column;justify-content:center;align-items:center;
-background:linear-gradient(135deg,#c7b5ff,#f3d8ef,#c6e4ff);
-color:#31234e;text-align:center;
+ position:fixed;inset:0;z-index:1000;
+ display:flex;align-items:center;justify-content:center;
+ background:linear-gradient(135deg,#e8dafa,#fdf2ee,#e4e9ff);
 }
-#lock h1{font-size:clamp(30px,5vw,55px);margin:10px}
-#lock .clock{font-size:clamp(45px,8vw,90px);font-weight:200}
-#lock p{letter-spacing:2px}
-.lock-card{padding:40px;border-radius:30px;background:rgba(255,255,255,.3);backdrop-filter:blur(20px)}
+.lockcard{
+ text-align:center;padding:40px;width:min(450px,92%);
+ background:#ffffffb9;border:1px solid #fff;border-radius:30px;
+ box-shadow:var(--shadow);backdrop-filter:blur(15px);
+}
+.lockcard h1{font-size:36px;margin:12px}
+.lockcard p{color:#847291}
 #desktop{
-height:100vh;width:100vw;position:relative;padding:18px;
-background-size:cover;background-position:center;
+ position:fixed;inset:0;
+ background:linear-gradient(145deg,#e9defa,#f8f0f4,#e5eaf9);
+ background-size:cover;background-position:center;
 }
-#desktopIcons{
-display:grid;grid-template-columns:90px;gap:10px;
-align-content:start;position:absolute;top:20px;left:18px;
+#desktop:before{
+ content:"";position:absolute;inset:0;pointer-events:none;
+ background:radial-gradient(circle at 15% 20%,#ffffff55,transparent 35%),
+ radial-gradient(circle at 85% 75%,#d4c5f255,transparent 35%);
+}
+#topbar{
+ position:absolute;top:12px;left:15px;right:15px;
+ height:45px;background:#ffffff88;backdrop-filter:blur(15px);
+ border-radius:18px;display:flex;align-items:center;
+ justify-content:space-between;padding:0 16px;z-index:30;
+ box-shadow:var(--shadow);
+}
+#topbar .brand{font-weight:800}
+#clock{font-size:13px}
+#icons{
+ position:absolute;top:80px;left:18px;display:grid;
+ grid-template-columns:repeat(2,85px);gap:14px;z-index:2;
 }
 .dicon{
-width:85px;min-height:82px;border-radius:18px;
-display:flex;flex-direction:column;align-items:center;
-justify-content:center;gap:5px;color:var(--text);
-cursor:pointer;text-align:center;padding:8px;
-background:rgba(255,255,255,.16);backdrop-filter:blur(8px);
+ cursor:pointer;text-align:center;padding:9px;border-radius:18px;
+ color:#59486a;text-shadow:0 1px 2px #fff;
 }
-.dicon:hover{background:rgba(255,255,255,.35)}
-.dicon .emoji{font-size:30px}
-.dicon small{font-size:12px;text-shadow:0 1px 8px rgba(255,255,255,.3)}
-#widgets{
-position:absolute;right:24px;top:20px;width:230px;
-display:flex;flex-direction:column;gap:12px;
-}
-.widget{
-background:var(--panel);backdrop-filter:blur(18px);
-border:1px solid rgba(255,255,255,.4);
-border-radius:20px;padding:15px;box-shadow:0 8px 30px rgba(40,20,80,.08);
-}
-#dock{
-position:absolute;bottom:14px;left:50%;transform:translateX(-50%);
-display:flex;gap:8px;padding:10px;
-background:rgba(255,255,255,.3);backdrop-filter:blur(20px);
-border:1px solid rgba(255,255,255,.4);border-radius:22px;
-max-width:95vw;overflow:auto;
-}
-.dockbtn{font-size:20px;padding:10px;border-radius:14px;background:rgba(255,255,255,.4);color:var(--text)}
+.dicon:hover{background:#ffffff65}
+.dicon .emoji{font-size:31px;display:block;margin-bottom:5px}
+.dicon span:last-child{font-size:12px}
 .window{
-position:absolute;width:min(580px,90vw);height:min(590px,78vh);
-background:var(--panel);backdrop-filter:blur(24px);
-border:1px solid rgba(255,255,255,.4);
-border-radius:22px;box-shadow:0 25px 65px rgba(35,20,65,.22);
-display:flex;flex-direction:column;overflow:hidden;
+ position:absolute;width:450px;max-width:94vw;
+ height:500px;max-height:78vh;
+ background:var(--glass);backdrop-filter:blur(22px);
+ border:1px solid #ffffffb5;border-radius:23px;
+ box-shadow:0 20px 60px #57456b27;
+ display:none;overflow:hidden;z-index:10;
 }
-.window.hidden{display:none}
-.winhead{
-height:48px;flex-shrink:0;padding:10px 14px;
-display:flex;align-items:center;justify-content:space-between;
-background:rgba(255,255,255,.12);cursor:grab;
-border-bottom:1px solid rgba(150,130,190,.12);
+.window.open{display:flex;flex-direction:column}
+.whead{
+ height:48px;min-height:48px;display:flex;align-items:center;
+ justify-content:space-between;padding:0 15px;
+ background:#ffffff55;border-bottom:1px solid #fff8;
+ cursor:grab;user-select:none;
 }
-.winhead:active{cursor:grabbing}
-.winhead .controls{display:flex;gap:6px}
-.winhead .controls button{padding:5px 9px;border-radius:8px}
-.winbody{padding:17px;overflow:auto;flex:1}
-#taskbar{
-position:absolute;top:0;right:0;left:0;height:35px;
-display:flex;align-items:center;justify-content:flex-end;
-padding:0 18px;gap:15px;pointer-events:none;
-color:var(--text);font-size:13px;
+.whead strong{font-size:14px}
+.wcontrols{display:flex;gap:6px}
+.wcontrols button{padding:5px 10px;border-radius:10px}
+.wbody{padding:16px;overflow:auto;flex:1}
+.wbody h3{margin-top:4px}
+#dock{
+ position:absolute;bottom:14px;left:50%;transform:translateX(-50%);
+ padding:10px 14px;border-radius:23px;
+ display:flex;gap:8px;background:#ffffff9a;
+ backdrop-filter:blur(20px);box-shadow:var(--shadow);
+ z-index:40;
 }
-#taskbar span{pointer-events:auto}
-.card{
-background:rgba(150,130,190,.10);
-border:1px solid rgba(150,130,190,.13);
-border-radius:18px;padding:14px;margin-bottom:12px;
+#dock button{padding:11px;font-size:19px;background:#fff;color:#68527e}
+#widget{
+ position:absolute;right:25px;top:80px;width:235px;
+ padding:17px;background:#ffffff80;backdrop-filter:blur(15px);
+ border-radius:22px;box-shadow:var(--shadow);z-index:2;
 }
-.row{display:flex;gap:10px;align-items:center}
+#widget h3{margin:0 0 7px}
+#widget p{font-size:13px}
+.small{font-size:12px;opacity:.7}
+.row{display:flex;gap:8px;align-items:center}
 .row>*{flex:1}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
-h2{margin:0 0 15px;font-size:20px}
-h3{margin:0 0 8px;font-size:16px}
-p{line-height:1.5}
-small,.muted{color:var(--muted)}
-.bar{height:9px;background:rgba(150,130,190,.15);border-radius:10px;overflow:hidden;margin:8px 0}
-.bar>div{height:100%;background:var(--accent);border-radius:10px;transition:.3s}
-.item{display:flex;align-items:center;gap:9px;padding:10px;border-radius:14px;background:rgba(150,130,190,.08);margin:7px 0}
-.item .content{flex:1;min-width:0;overflow-wrap:anywhere}
-.item button{padding:6px 10px}
-.item input[type=checkbox]{width:auto}
-.badge{background:rgba(150,130,190,.18);border-radius:20px;padding:5px 9px;font-size:12px}
-.note{background:rgba(255,255,255,.18);border-radius:16px;padding:12px;margin:8px 0}
-.wall{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.wallnote{border-radius:18px;padding:18px;min-height:130px;background:rgba(210,190,255,.25);border:1px solid rgba(150,130,190,.2);overflow-wrap:anywhere}
-.wallnote:nth-child(3n){background:rgba(255,205,225,.25)}
-.wallnote:nth-child(3n+1){background:rgba(200,230,255,.25)}
-.wallnote textarea{background:transparent;border:0}
-.calc{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.calc button{font-size:18px;padding:16px 5px}
-.calcdisplay{text-align:right;font-size:28px;padding:18px;border-radius:15px;background:rgba(150,130,190,.12);margin-bottom:12px;overflow:auto}
-.themebtn{height:50px;border-radius:14px}
-.focusbig{text-align:center;font-size:55px;margin:25px 0}
-.foot{font-size:11px;text-align:center;opacity:.6;padding:5px}
+.stack{display:flex;flex-direction:column;gap:10px}
+.card{
+ background:#fff9;border:1px solid #fff;
+ padding:13px;border-radius:17px;margin-bottom:10px;
+ box-shadow:0 4px 14px #78619c0a;
+}
+.task{display:flex;align-items:center;gap:9px}
+.task input{width:auto}
+.task.done span{text-decoration:line-through;opacity:.55}
+.tag{font-size:11px;background:#eadff5;padding:5px 8px;border-radius:10px}
+.bar{height:9px;background:#e9def4;border-radius:20px;overflow:hidden}
+.bar div{height:100%;background:var(--accent);transition:.3s}
+.note{
+ background:#fff4c9;padding:15px;border-radius:17px;
+ box-shadow:2px 6px 12px #7772;margin:8px 0;
+}
+.note.pink{background:#ffe0ec}
+.note.blue{background:#e0eaff}
+.note.green{background:#e0f4e4}
+.flash{
+ min-height:150px;display:flex;align-items:center;
+ justify-content:center;text-align:center;padding:25px;
+ background:linear-gradient(135deg,#e9ddfa,#ffe8ee);
+ border-radius:22px;font-size:19px;cursor:pointer;
+}
+.pet{text-align:center;font-size:75px;cursor:pointer}
+.mini{padding:5px 9px;font-size:12px}
+.listbtn{margin:4px 0}
+#focusOverlay{
+ position:fixed;inset:0;z-index:900;display:none;
+ background:linear-gradient(135deg,#e9defa,#f9e7ef);
+ align-items:center;justify-content:center;text-align:center;
+}
+#focusOverlay.active{display:flex}
+#focusOverlay h1{font-size:55px}
+#focusOverlay .timer{font-size:85px;font-weight:800}
+.closefocus{position:absolute;top:20px;right:20px}
 #toast{
-position:absolute;bottom:90px;right:25px;background:var(--panel);
-border:1px solid rgba(255,255,255,.4);padding:13px 18px;
-border-radius:18px;display:none;z-index:800;box-shadow:0 5px 25px #0001;
+ position:fixed;bottom:90px;left:50%;transform:translateX(-50%);
+ background:#69527f;color:white;padding:12px 20px;
+ border-radius:16px;display:none;z-index:9999;
 }
+.badgecard{display:inline-block;margin:4px;padding:10px;background:#f2e7fb;border-radius:13px}
+#petfloat{
+ position:absolute;bottom:90px;right:25px;font-size:45px;
+ cursor:pointer;z-index:5;animation:bob 2s infinite ease-in-out;
+}
+@keyframes bob{50%{transform:translateY(-8px)}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
 @media(max-width:700px){
-#widgets{display:none}
-.window{width:94vw;left:3vw!important;top:10vh!important;height:75vh}
-#desktopIcons{grid-template-columns:90px}
-#dock{gap:4px}.dockbtn{padding:8px}
+ #widget{display:none}
+ #icons{grid-template-columns:repeat(2,75px)}
+ .window{left:3%!important;top:75px!important;width:94%!important;height:75vh!important}
+ #dock{gap:4px}
+ #dock button{padding:8px}
 }
+body.dark{
+ --ink:#e9defa;--glass:rgba(44,35,59,.85);
+ --bg:#30283b;
+}
+body.dark #desktop{
+ background:linear-gradient(135deg,#30283b,#49384f,#353a55);
+}
+body.dark #topbar,body.dark #widget,body.dark #dock{
+ background:#40334eeb;color:#eee;
+}
+body.dark input,body.dark textarea,body.dark select{
+ background:#463954;color:#fff;
+}
+body.dark .card,body.dark .note{background:#574564;color:#fff}
+body.dark .dicon{color:white}
 </style>
 </head>
 <body>
 
 <div id="lock">
-<div class="lock-card">
-<p>✦ YOUR PERSONAL STUDY SPACE ✦</p>
-<div class="clock" id="lockClock">00:00</div>
-<div id="lockDate"></div>
-<h1>Students Hub</h1>
-<p>YOUR SPACE. YOUR GOALS. YOUR JOURNEY.</p>
-<button onclick="enterDesktop()" style="padding:15px 30px;font-size:16px">Enter Desktop ✦</button>
-</div>
+ <div class="lockcard">
+  <div style="font-size:65px">🌷</div>
+  <p>YOUR PERSONAL STUDY SPACE</p>
+  <h1>Students Hub ♡</h1>
+  <p id="lockdate"></p>
+  <p>dream • study • grow</p>
+  <button onclick="enter()">Enter my desktop ✨</button>
+  <p class="small">a little space for your big dreams</p>
+ </div>
 </div>
 
 <div id="desktop">
-<div id="taskbar">
-<span id="taskClock"></span>
-<span onclick="openWin('settings')" style="cursor:pointer">⚙</span>
+ <div id="topbar">
+  <div class="brand">☁ Students Hub</div>
+  <div id="clock"></div>
+  <button class="secondary mini" onclick="openWin('settings')">⚙</button>
+ </div>
+
+ <div id="icons">
+  <div class="dicon" onclick="openWin('tasks')"><span class="emoji">📝</span><span>Tasks</span></div>
+  <div class="dicon" onclick="openWin('planner')"><span class="emoji">📅</span><span>Planner</span></div>
+  <div class="dicon" onclick="openWin('flash')"><span class="emoji">🧠</span><span>Flashcards</span></div>
+  <div class="dicon" onclick="openWin('exam')"><span class="emoji">🎓</span><span>Exam Center</span></div>
+  <div class="dicon" onclick="openWin('chapters')"><span class="emoji">📚</span><span>Chapters</span></div>
+  <div class="dicon" onclick="openWin('notes')"><span class="emoji">📓</span><span>Notes</span></div>
+  <div class="dicon" onclick="openWin('dreams')"><span class="emoji">🌠</span><span>Dream Board</span></div>
+  <div class="dicon" onclick="openWin('journal')"><span class="emoji">📔</span><span>Journal</span></div>
+  <div class="dicon" onclick="openWin('coach')"><span class="emoji">🪄</span><span>Study Coach</span></div>
+  <div class="dicon" onclick="openWin('sticky')"><span class="emoji">📌</span><span>Sticky Notes</span></div>
+  <div class="dicon" onclick="openWin('analytics')"><span class="emoji">📊</span><span>Analytics</span></div>
+  <div class="dicon" onclick="openWin('vault')"><span class="emoji">🗂️</span><span>Vault</span></div>
+  <div class="dicon" onclick="openWin('calc')"><span class="emoji">🔢</span><span>Calculator</span></div>
+  <div class="dicon" onclick="openWin('focus')"><span class="emoji">🌙</span><span>Focus Room</span></div>
+ </div>
+
+ <div id="widget">
+  <h3>☁️ Today's mood</h3>
+  <p id="quote">One small step at a time.</p>
+  <hr>
+  <p>✨ Level <b id="level">1</b></p>
+  <div class="bar"><div id="xpbar" style="width:0%"></div></div>
+  <p class="small"><span id="xptext">0 XP</span></p>
+  <p>🌷 <span id="taskwidget">0</span> tasks completed</p>
+ </div>
+
+ <div id="petfloat" onclick="petTalk()" title="Click your pet">🐰</div>
+
+ <!-- Windows -->
+
+ <div class="window" id="tasks" style="left:240px;top:100px">
+  <div class="whead"><strong>📝 My Tasks</strong><div class="wcontrols"><button onclick="minWin('tasks')">−</button><button onclick="closeWin('tasks')">×</button></div></div>
+  <div class="wbody">
+   <div class="row"><input id="taskinput" placeholder="Add a task..."><button onclick="addTask()">Add +</button></div>
+   <p id="taskprogress"></p><div class="bar"><div id="taskbar"></div></div>
+   <div id="tasklist"></div>
+  </div>
+ </div>
+
+ <div class="window" id="planner" style="left:300px;top:110px">
+  <div class="whead"><strong>📅 Weekly Planner</strong><div class="wcontrols"><button onclick="minWin('planner')">−</button><button onclick="closeWin('planner')">×</button></div></div>
+  <div class="wbody">
+   <input type="date" id="plandate">
+   <input id="planinput" placeholder="Study block / activity" style="margin-top:10px">
+   <div class="row" style="margin-top:10px"><input id="plantime" placeholder="Time e.g. 4 PM"><button onclick="addPlan()">Add</button></div>
+   <div id="planlist"></div>
+  </div>
+ </div>
+
+ <div class="window" id="flash" style="left:350px;top:130px">
+  <div class="whead"><strong>🧠 Flashcards</strong><div class="wcontrols"><button onclick="minWin('flash')">−</button><button onclick="closeWin('flash')">×</button></div></div>
+  <div class="wbody">
+   <input id="fq" placeholder="Question / front of card">
+   <textarea id="fa" placeholder="Answer / back of card"></textarea>
+   <button onclick="addFlash()">Add Flashcard</button>
+   <hr>
+   <div id="flasharea"></div>
+   <div class="row"><button class="secondary" onclick="prevFlash()">← Previous</button><button onclick="nextFlash()">Next →</button></div>
+   <p id="flashcount" style="text-align:center"></p>
+  </div>
+ </div>
+
+ <div class="window" id="exam" style="left:390px;top:80px">
+  <div class="whead"><strong>🎓 Exam Command Center</strong><div class="wcontrols"><button onclick="minWin('exam')">−</button><button onclick="closeWin('exam')">×</button></div></div>
+  <div class="wbody">
+   <input id="examname" placeholder="Exam name">
+   <div class="row" style="margin-top:10px"><input id="examdate" type="date"><button onclick="addExam()">Add exam</button></div>
+   <div id="examlist"></div>
+  </div>
+ </div>
+
+ <div class="window" id="chapters" style="left:180px;top:120px">
+  <div class="whead"><strong>📚 Chapter Tracker</strong><div class="wcontrols"><button onclick="minWin('chapters')">−</button><button onclick="closeWin('chapters')">×</button></div></div>
+  <div class="wbody">
+   <div class="row"><select id="subject"><option>Physics</option><option>Chemistry</option><option>Maths</option><option>English</option><option>Computer Science</option></select><input id="chapterinput" placeholder="Chapter name"></div>
+   <button onclick="addChapter()" style="margin-top:10px">Add Chapter</button>
+   <div id="chapterlist"></div>
+  </div>
+ </div>
+
+ <div class="window" id="notes" style="left:240px;top:150px">
+  <div class="whead"><strong>📓 Notes Studio</strong><div class="wcontrols"><button onclick="minWin('notes')">−</button><button onclick="closeWin('notes')">×</button></div></div>
+  <div class="wbody">
+   <input id="notetitle" placeholder="Note title">
+   <textarea id="notecontent" placeholder="Write your notes here..." style="height:200px;margin-top:10px"></textarea>
+   <button onclick="saveNote()">Save Note</button>
+   <div id="noteslist"></div>
+  </div>
+ </div>
+
+ <div class="window" id="dreams" style="left:330px;top:150px">
+  <div class="whead"><strong>🌠 Dream Board</strong><div class="wcontrols"><button onclick="minWin('dreams')">−</button><button onclick="closeWin('dreams')">×</button></div></div>
+  <div class="wbody">
+   <input id="dreamtitle" placeholder="Your dream">
+   <textarea id="dreamdesc" placeholder="Why does it matter?"></textarea>
+   <button onclick="addDream()">Add Dream</button>
+   <hr>
+   <div id="dreamlist"></div>
+   <hr><h3>💌 Letter to future me</h3>
+   <textarea id="letter" placeholder="Write a letter to your future self..."></textarea>
+   <button onclick="saveLetter()">Save letter</button>
+  </div>
+ </div>
+
+ <div class="window" id="journal" style="left:300px;top:100px">
+  <div class="whead"><strong>📔 Study Journal</strong><div class="wcontrols"><button onclick="minWin('journal')">−</button><button onclick="closeWin('journal')">×</button></div></div>
+  <div class="wbody">
+   <input type="date" id="jdate">
+   <textarea id="jentry" placeholder="What did I learn today?"></textarea>
+   <button onclick="saveJournal()">Save Entry</button>
+   <div id="journallist"></div>
+  </div>
+ </div>
+
+ <div class="window" id="coach" style="left:450px;top:120px">
+  <div class="whead"><strong>🪄 Study Coach</strong><div class="wcontrols"><button onclick="minWin('coach')">−</button><button onclick="closeWin('coach')">×</button></div></div>
+  <div class="wbody">
+   <div class="card"><h3>✨ Your study report</h3><div id="coachreport"></div></div>
+   <button onclick="coachRefresh()">Refresh advice</button>
+   <div class="card"><h3>🎯 Suggested session</h3><div id="coachsuggest"></div></div>
+  </div>
+ </div>
+
+ <div class="window" id="sticky" style="left:500px;top:180px">
+  <div class="whead"><strong>📌 Sticky Notes</strong><div class="wcontrols"><button onclick="minWin('sticky')">−</button><button onclick="closeWin('sticky')">×</button></div></div>
+  <div class="wbody">
+   <textarea id="sticktext" placeholder="Write a quick reminder..."></textarea>
+   <select id="stickcolor"><option value="note">Yellow</option><option value="pink">Pink</option><option value="blue">Blue</option><option value="green">Green</option></select>
+   <button onclick="addSticky()" style="margin-top:10px">Pin note</button>
+   <div id="stickylist"></div>
+  </div>
+ </div>
+
+ <div class="window" id="analytics" style="left:400px;top:100px">
+  <div class="whead"><strong>📊 Progress Analytics</strong><div class="wcontrols"><button onclick="minWin('analytics')">−</button><button onclick="closeWin('analytics')">×</button></div></div>
+  <div class="wbody"><div id="stats"></div><div id="badges"></div></div>
+ </div>
+
+ <div class="window" id="vault" style="left:200px;top:160px">
+  <div class="whead"><strong>🗂️ Study Vault</strong><div class="wcontrols"><button onclick="minWin('vault')">−</button><button onclick="closeWin('vault')">×</button></div></div>
+  <div class="wbody">
+   <input id="vtitle" placeholder="Resource name">
+   <input id="vurl" placeholder="Link (https://...)" style="margin-top:10px">
+   <select id="vsubject" style="margin-top:10px"><option>Physics</option><option>Chemistry</option><option>Maths</option><option>English</option><option>Computer Science</option><option>Other</option></select>
+   <button onclick="addVault()" style="margin-top:10px">Save Resource</button>
+   <div id="vaultlist"></div>
+  </div>
+ </div>
+
+ <div class="window" id="calc" style="left:550px;top:120px;width:310px;height:380px">
+  <div class="whead"><strong>🔢 Calculator</strong><div class="wcontrols"><button onclick="minWin('calc')">−</button><button onclick="closeWin('calc')">×</button></div></div>
+  <div class="wbody">
+   <input id="calcinput" placeholder="Enter arithmetic expression">
+   <button onclick="calculate()" style="margin-top:10px">Calculate =</button>
+   <div class="card" id="calcresult">Result appears here</div>
+  </div>
+ </div>
+
+ <div class="window" id="focus" style="left:400px;top:140px;width:330px;height:390px">
+  <div class="whead"><strong>🌙 Focus Room</strong><div class="wcontrols"><button onclick="minWin('focus')">−</button><button onclick="closeWin('focus')">×</button></div></div>
+  <div class="wbody" style="text-align:center">
+   <h3>Time to focus ♡</h3>
+   <select id="fmins" onchange="setTimer()" style="margin:10px 0"><option value="25">25 minutes</option><option value="45">45 minutes</option><option value="60">60 minutes</option></select>
+   <div style="font-size:55px;font-weight:800" id="ftimer">25:00</div>
+   <div class="row"><button onclick="startTimer()">Start</button><button class="secondary" onclick="pauseTimer()">Pause</button><button class="secondary" onclick="resetTimer()">Reset</button></div>
+   <button class="secondary" style="margin-top:15px" onclick="fullFocus()">Full Focus Screen</button>
+   <p class="small">One thing at a time. ♡</p>
+  </div>
+ </div>
+
+ <div class="window" id="settings" style="left:300px;top:120px;width:360px;height:430px">
+  <div class="whead"><strong>⚙️ Desktop Studio</strong><div class="wcontrols"><button onclick="minWin('settings')">−</button><button onclick="closeWin('settings')">×</button></div></div>
+  <div class="wbody">
+   <h3>🎨 Theme</h3>
+   <div class="row"><button class="secondary" onclick="theme('#b18adf','#f5effb')">Lavender</button><button class="secondary" onclick="theme('#d88ca9','#fff0f4')">Pink</button></div>
+   <div class="row" style="margin-top:8px"><button class="secondary" onclick="theme('#91a8d5','#eef3ff')">Blue</button><button class="secondary" onclick="theme('#8bb7a2','#eff8f1')">Mint</button></div>
+   <input type="color" id="customcolor" onchange="customTheme()" style="margin-top:10px">
+   <button class="secondary" onclick="toggleDark()" style="margin-top:10px">🌙 Toggle dark mode</button>
+   <hr>
+   <h3>🖼️ Wallpapers</h3>
+   <button class="secondary" onclick="wallpaper(1)">Clouds</button>
+   <button class="secondary" onclick="wallpaper(2)">Stars</button>
+   <button class="secondary" onclick="wallpaper(3)">Garden</button>
+   <button class="secondary" onclick="wallpaper(4)">Plain</button>
+   <hr>
+   <button class="secondary" onclick="layoutReset()">Reset window positions</button>
+   <button class="secondary" onclick="exportData()">Backup data</button>
+   <label style="display:block;margin-top:10px">Restore backup<input type="file" id="restorefile" accept=".json" onchange="restoreData(event)"></label>
+   <button class="danger" style="margin-top:10px" onclick="resetAll()">Reset all data</button>
+  </div>
+ </div>
+
+ <div id="dock">
+  <button title="Tasks" onclick="openWin('tasks')">📝</button>
+  <button title="Planner" onclick="openWin('planner')">📅</button>
+  <button title="Flashcards" onclick="openWin('flash')">🧠</button>
+  <button title="Exam" onclick="openWin('exam')">🎓</button>
+  <button title="Notes" onclick="openWin('notes')">📓</button>
+  <button title="Focus" onclick="openWin('focus')">🌙</button>
+  <button title="Settings" onclick="openWin('settings')">⚙️</button>
+ </div>
 </div>
 
-<div id="desktopIcons">
-<div class="dicon" onclick="openWin('focus')"><span class="emoji">⏳</span><small>Deep Focus</small></div>
-<div class="dicon" onclick="openWin('notes')"><span class="emoji">📝</span><small>Notes</small></div>
-<div class="dicon" onclick="openWin('tasks')"><span class="emoji">☑️</span><small>Tasks</small></div>
-<div class="dicon" onclick="openWin('chapters')"><span class="emoji">📚</span><small>Chapters</small></div>
-<div class="dicon" onclick="openWin('dream')"><span class="emoji">🌌</span><small>Dream Board</small></div>
-<div class="dicon" onclick="openWin('journal')"><span class="emoji">📔</span><small>Journal</small></div>
-<div class="dicon" onclick="openWin('analytics')"><span class="emoji">📊</span><small>Analytics</small></div>
-<div class="dicon" onclick="openWin('vault')"><span class="emoji">📁</span><small>Study Vault</small></div>
-<div class="dicon" onclick="openWin('calc')"><span class="emoji">🧮</span><small>Calculator</small></div>
-<div class="dicon" onclick="openWin('notify')"><span class="emoji">🔔</span><small>Notifications</small></div>
-<div class="dicon" onclick="openWin('settings')"><span class="emoji">🎨</span><small>Customize</small></div>
+<div id="focusOverlay">
+ <button class="closefocus" onclick="exitFullFocus()">Exit ✕</button>
+ <div><p>🌙 DEEP FOCUS</p><h1>Stay with it ♡</h1><div class="timer" id="fulltimer">25:00</div><p>One step closer to your dream.</p></div>
 </div>
-
-<div id="widgets">
-<div class="widget">
-<small>✦ YOUR DAY</small>
-<h2 id="widgetDate"></h2>
-<div id="widgetClock" style="font-size:26px"></div>
-</div>
-<div class="widget">
-<small>✦ DAILY QUOTE</small>
-<p id="quote"></p>
-<button class="secondary" onclick="newQuote()">Next quote ↻</button>
-</div>
-<div class="widget">
-<small>✦ TASK PROGRESS</small>
-<div id="widgetProgress"></div>
-</div>
-<div class="widget">
-<small>✦ QUICK NOTE</small>
-<textarea id="quicknote" placeholder="A thought to remember..." oninput="save('quicknote',this.value)"></textarea>
-</div>
-</div>
-
-<div id="dock">
-<button class="dockbtn" onclick="openWin('focus')" title="Focus">⏳</button>
-<button class="dockbtn" onclick="openWin('notes')" title="Notes">📝</button>
-<button class="dockbtn" onclick="openWin('tasks')" title="Tasks">☑️</button>
-<button class="dockbtn" onclick="openWin('chapters')" title="Chapters">📚</button>
-<button class="dockbtn" onclick="openWin('dream')" title="Dreams">🌌</button>
-<button class="dockbtn" onclick="openWin('journal')" title="Journal">📔</button>
-<button class="dockbtn" onclick="openWin('analytics')" title="Analytics">📊</button>
-<button class="dockbtn" onclick="openWin('vault')" title="Vault">📁</button>
-<button class="dockbtn" onclick="openWin('calc')" title="Calculator">🧮</button>
-<button class="dockbtn" onclick="openWin('notify')" title="Notifications">🔔</button>
-</div>
-
 <div id="toast"></div>
 
-<!-- WINDOWS -->
-<div class="window hidden" id="focus" style="top:12%;left:30%">
-<div class="winhead"><b>⏳ Deep Focus</b><div class="controls"><button class="secondary" onclick="minWin('focus')">−</button><button class="danger" onclick="closeWin('focus')">×</button></div></div>
-<div class="winbody">
-<div class="card">
-<h3>Choose your session</h3>
-<div class="grid3">
-<button class="secondary" onclick="setTimer(25)">25 min</button>
-<button class="secondary" onclick="setTimer(45)">45 min</button>
-<button class="secondary" onclick="setTimer(60)">60 min</button>
-</div>
-<div class="focusbig" id="timerDisplay">25:00</div>
-<div class="grid3">
-<button onclick="startTimer()">Start</button>
-<button class="secondary" onclick="pauseTimer()">Pause</button>
-<button class="secondary" onclick="resetTimer()">Reset</button>
-</div>
-</div>
-<div class="card">
-<button class="secondary" onclick="toggleFocusMode()">⛶ Focus Screen</button>
-<p class="muted">Choose a session and focus on one thing at a time.</p>
-</div>
-</div></div>
-
-<div class="window hidden" id="notes" style="top:8%;left:35%">
-<div class="winhead"><b>📝 Notes</b><div class="controls"><button class="secondary" onclick="minWin('notes')">−</button><button class="danger" onclick="closeWin('notes')">×</button></div></div>
-<div class="winbody">
-<h2>My Notes ✦</h2>
-<textarea id="mainnotes" style="height:260px" placeholder="Write anything here..." oninput="save('mainnotes',this.value)"></textarea>
-<div class="row"><button onclick="saveNotes()">Save</button><button class="secondary" onclick="clearNotes()">Clear notes</button></div>
-<p class="muted">Autosaved locally in your browser.</p>
-</div></div>
-
-<div class="window hidden" id="tasks" style="top:13%;left:20%">
-<div class="winhead"><b>☑️ Task Manager</b><div class="controls"><button class="secondary" onclick="minWin('tasks')">−</button><button class="danger" onclick="closeWin('tasks')">×</button></div></div>
-<div class="winbody">
-<h2>My Tasks ✦</h2>
-<div class="row"><input id="taskInput" placeholder="Add a new task..."><button onclick="addTask()">Add</button></div>
-<div id="taskList"></div><div id="taskStats"></div>
-</div></div>
-
-<div class="window hidden" id="chapters" style="top:10%;left:40%">
-<div class="winhead"><b>📚 Chapter Tracker</b><div class="controls"><button class="secondary" onclick="minWin('chapters')">−</button><button class="danger" onclick="closeWin('chapters')">×</button></div></div>
-<div class="winbody">
-<h2>Chapter Tracker ✦</h2>
-<div class="row"><select id="subject"><option>Physics</option><option>Chemistry</option><option>Mathematics</option><option>English</option><option>Computer Science</option></select><input id="chapterInput" placeholder="Chapter name"></div>
-<button onclick="addChapter()" style="margin-top:10px">Add chapter</button>
-<div id="chapterList"></div>
-</div></div>
-
-<!-- DREAM BOARD -->
-<div class="window hidden" id="dream" style="top:7%;left:25%;width:min(720px,94vw)">
-<div class="winhead"><b>🌌 Dream Board — My Universe</b><div class="controls"><button class="secondary" onclick="minWin('dream')">−</button><button class="danger" onclick="closeWin('dream')">×</button></div></div>
-<div class="winbody">
-<div class="card">
-<h2>✦ Create your dream ✦</h2>
-<input id="dreamTitle" placeholder="What do you dream of?" style="margin-bottom:10px">
-<textarea id="dreamDesc" placeholder="Why does this matter to you?"></textarea>
-<div class="row" style="margin-top:10px">
-<input id="dreamDate" type="date">
-<select id="dreamTheme"><option value="lav">Lavender</option><option value="pink">Rose</option><option value="blue">Sky</option><option value="gold">Sunshine</option></select>
-</div>
-<button style="margin-top:10px" onclick="addDream()">Add to my universe ✦</button>
-</div>
-<div class="card">
-<h3>💌 Letter to Future Me</h3>
-<textarea id="futureLetter" placeholder="Dear future me..."></textarea>
-<button onclick="saveLetter()" style="margin-top:8px">Save letter</button>
-</div>
-<div class="card">
-<h3>✨ Daily affirmation</h3>
-<textarea id="affirmation" placeholder="Today I want to remind myself..." oninput="save('affirmation',this.value)"></textarea>
-</div>
-<h3>🌠 My Dream Wall</h3>
-<div id="dreamList" class="wall"></div>
-</div></div>
-
-<!-- JOURNAL -->
-<div class="window hidden" id="journal" style="top:9%;left:31%">
-<div class="winhead"><b>📔 Study Journal</b><div class="controls"><button class="secondary" onclick="minWin('journal')">−</button><button class="danger" onclick="closeWin('journal')">×</button></div></div>
-<div class="winbody">
-<h2>Daily Journal ✦</h2>
-<input id="journalDate" type="date">
-<textarea id="journalEntry" placeholder="What did I study today? What went well? What will I do tomorrow?" style="min-height:180px"></textarea>
-<button onclick="saveJournal()" style="margin-top:8px">Save Entry</button>
-<h3 style="margin-top:20px">Previous entries</h3><div id="journalList"></div>
-</div></div>
-
-<!-- ANALYTICS -->
-<div class="window hidden" id="analytics" style="top:9%;left:35%">
-<div class="winhead"><b>📊 Study Analytics</b><div class="controls"><button class="secondary" onclick="minWin('analytics')">−</button><button class="danger" onclick="closeWin('analytics')">×</button></div></div>
-<div class="winbody">
-<h2>Your progress ✦</h2>
-<div class="grid2">
-<div class="card"><small>TASKS DONE</small><h2 id="aTasks">0</h2></div>
-<div class="card"><small>CHAPTERS DONE</small><h2 id="aChapters">0</h2></div>
-<div class="card"><small>DREAMS</small><h2 id="aDreams">0</h2></div>
-<div class="card"><small>JOURNAL ENTRIES</small><h2 id="aJournal">0</h2></div>
-</div>
-<div class="card"><h3>Task completion</h3><div class="bar"><div id="aTaskBar"></div></div><p id="aTaskText"></p></div>
-<div class="card"><h3>Chapter completion</h3><div class="bar"><div id="aChapterBar"></div></div><p id="aChapterText"></p></div>
-<div class="card"><h3>Dream progress</h3><div class="bar"><div id="aDreamBar"></div></div><p id="aDreamText"></p></div>
-<button onclick="refreshAnalytics()">Refresh stats ↻</button>
-</div></div>
-
-<!-- VAULT -->
-<div class="window hidden" id="vault" style="top:10%;left:23%">
-<div class="winhead"><b>📁 Study Vault</b><div class="controls"><button class="secondary" onclick="minWin('vault')">−</button><button class="danger" onclick="closeWin('vault')">×</button></div></div>
-<div class="winbody">
-<h2>My Study Vault ✦</h2>
-<div class="card">
-<input id="vaultTitle" placeholder="Resource title">
-<select id="vaultSubject" style="margin-top:8px"><option>Physics</option><option>Chemistry</option><option>Mathematics</option><option>English</option><option>Computer Science</option><option>Other</option></select>
-<input id="vaultUrl" placeholder="Link (optional)" style="margin-top:8px">
-<textarea id="vaultDesc" placeholder="Description" style="margin-top:8px"></textarea>
-<button onclick="addVault()" style="margin-top:8px">Save Resource</button>
-</div>
-<select id="vaultFilter" onchange="renderVault()"><option>All</option><option>Physics</option><option>Chemistry</option><option>Mathematics</option><option>English</option><option>Computer Science</option><option>Other</option></select>
-<div id="vaultList"></div>
-</div></div>
-
-<!-- CALCULATOR -->
-<div class="window hidden" id="calc" style="top:20%;left:45%;width:300px;height:410px">
-<div class="winhead"><b>🧮 Calculator</b><div class="controls"><button class="secondary" onclick="minWin('calc')">−</button><button class="danger" onclick="closeWin('calc')">×</button></div></div>
-<div class="winbody">
-<div class="calcdisplay" id="calcDisplay">0</div>
-<div class="calc">
-<button onclick="calcInput('7')">7</button><button onclick="calcInput('8')">8</button><button onclick="calcInput('9')">9</button><button onclick="calcInput('/')">÷</button>
-<button onclick="calcInput('4')">4</button><button onclick="calcInput('5')">5</button><button onclick="calcInput('6')">6</button><button onclick="calcInput('*')">×</button>
-<button onclick="calcInput('1')">1</button><button onclick="calcInput('2')">2</button><button onclick="calcInput('3')">3</button><button onclick="calcInput('-')">−</button>
-<button onclick="calcInput('0')">0</button><button onclick="calcInput('.')">.</button><button onclick="calcClear()">C</button><button onclick="calcInput('+')">+</button>
-<button class="secondary" onclick="calcBack()">⌫</button><button onclick="calcInput('(')">(</button><button onclick="calcInput(')')">)</button><button onclick="calcEquals()">=</button>
-</div>
-</div></div>
-
-<!-- NOTIFICATIONS -->
-<div class="window hidden" id="notify" style="top:12%;left:37%">
-<div class="winhead"><b>🔔 Notification Center</b><div class="controls"><button class="secondary" onclick="minWin('notify')">−</button><button class="danger" onclick="closeWin('notify')">×</button></div></div>
-<div class="winbody">
-<h2>Notifications ✦</h2>
-<button class="secondary" onclick="clearNotifications()">Clear all</button>
-<div id="notificationList"></div>
-</div></div>
-
-<!-- SETTINGS -->
-<div class="window hidden" id="settings" style="top:12%;left:28%">
-<div class="winhead"><b>🎨 Desktop Studio</b><div class="controls"><button class="secondary" onclick="minWin('settings')">−</button><button class="danger" onclick="closeWin('settings')">×</button></div></div>
-<div class="winbody">
-<h2>Customize your universe ✦</h2>
-<h3>Desktop themes</h3>
-<div class="grid2">
-<button class="themebtn" onclick="wallpaper(0)" style="background:linear-gradient(135deg,#e7dcff,#f9e4ef);color:#444">Lavender</button>
-<button class="themebtn" onclick="wallpaper(1)" style="background:linear-gradient(135deg,#172038,#34244d)">Midnight</button>
-<button class="themebtn" onclick="wallpaper(2)" style="background:linear-gradient(135deg,#d6f0ff,#e4e0ff);color:#444">Sky</button>
-<button class="themebtn" onclick="wallpaper(3)" style="background:linear-gradient(135deg,#ffe1e8,#fff1d8);color:#444">Rose</button>
-<button class="themebtn" onclick="wallpaper(4)" style="background:linear-gradient(135deg,#d4f2df,#e5f1ff);color:#444">Mint</button>
-<button class="themebtn" onclick="wallpaper(5)" style="background:linear-gradient(135deg,#f8dfbd,#f5e9ce);color:#444">Warm</button>
-</div>
-<h3 style="margin-top:20px">Accent color</h3><input type="color" id="accentPicker" onchange="setAccent(this.value)" style="height:50px">
-<h3 style="margin-top:20px">Appearance</h3>
-<button onclick="toggleDark()">Toggle dark mode 🌙</button>
-<h3 style="margin-top:20px">Desktop Layout</h3>
-<button class="secondary" onclick="toggleWidgets()">Toggle desktop widgets</button>
-<button class="secondary" onclick="resetLayout()" style="margin-top:8px">Reset window layout</button>
-<h3 style="margin-top:20px">Data Backup</h3>
-<button onclick="exportData()">Download backup JSON</button>
-<button class="secondary" onclick="importData()" style="margin-top:8px">Restore backup JSON</button>
-<button class="danger" onclick="resetAll()" style="margin-top:8px">Reset all website data</button>
-</div></div>
-
-</div>
 <script>
 const $=id=>document.getElementById(id);
-const get=(k,d=null)=>{try{let v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch{return d}};
-const save=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
-let tasks=get("tasks",[]),chapters=get("chapters",[]),dreams=get("dreams",[]),
-vault=get("vault",[]),journal=get("journal",{}),notifications=get("notifications",[]);
+const get=(k,d=[])=>{try{return JSON.parse(localStorage.getItem("sh_"+k))??d}catch{return d}};
+const save=(k,v)=>localStorage.setItem("sh_"+k,JSON.stringify(v));
+let xp=get("xp",0),tasks=get("tasks"),plans=get("plans"),flashes=get("flashes"),
+ exams=get("exams"),chapters=get("chapters"),notes=get("notes"),dreams=get("dreams"),
+ journal=get("journal"),stickies=get("stickies"),vault=get("vault"),flashIndex=0;
+let timerSeconds=1500,timerInterval=null,timerRunning=false;
+let z=20;
 
-function enterDesktop(){$("lock").style.display="none";notify("Welcome back ✦")}
-function clock(){
-let d=new Date();
-$("lockClock").textContent=d.toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
-$("lockDate").textContent=d.toLocaleDateString(undefined,{weekday:"long",month:"long",day:"numeric",year:"numeric"});
-$("taskClock").textContent=d.toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
-$("widgetClock").textContent=d.toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
-$("widgetDate").textContent=d.toLocaleDateString(undefined,{weekday:"short",month:"short",day:"numeric"});
-}
-clock();setInterval(clock,1000);
+function toast(t){$("toast").textContent=t;$("toast").style.display="block";setTimeout(()=>{$("toast").style.display="none"},2200)}
+function enter(){$("lock").style.display="none";renderAll();openWin("tasks")}
+$("lockdate").textContent=new Date().toLocaleDateString(undefined,{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+function clock(){ $("clock").textContent=new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"})}
+setInterval(clock,1000);clock();
 
-let quotes=["Small steps still move you forward ✦","Your future is built one day at a time.","Progress, not perfection.","You are allowed to learn at your own pace.","Start where you are. Keep going.","One focused hour can change your day.","Consistency is a quiet superpower.","Make today count in your own way.","Every chapter begins somewhere.","Your effort matters, even when unseen."];
-function newQuote(){$("quote").textContent=quotes[Math.floor(Math.random()*quotes.length)]}
-newQuote();
+const quotes=["One small step at a time. 🌷","You are building your future. ✨","Progress, not perfection. ☁️","Your dreams deserve effort. ♡","Be proud of how far you have come. 🌸","Keep showing up for yourself. 💜"];
+$("quote").textContent=quotes[new Date().getDate()%quotes.length];
 
-let z=10;
 function openWin(id){
-let w=$(id);w.classList.remove("hidden");w.style.zIndex=++z;
-if(id==="tasks")renderTasks();
-if(id==="chapters")renderChapters();
-if(id==="dream")renderDreams();
-if(id==="journal")renderJournalList();
-if(id==="analytics")refreshAnalytics();
-if(id==="vault")renderVault();
-if(id==="notify")renderNotifications();
+ const w=$(id);w.classList.add("open");w.style.zIndex=++z;
+ if(id==="analytics")renderStats();
+ if(id==="coach")coachRefresh();
+ if(id==="focus")updateTimer();
 }
-function closeWin(id){$(id).classList.add("hidden")}
+function closeWin(id){$(id).classList.remove("open")}
 function minWin(id){closeWin(id)}
+function layoutReset(){
+ document.querySelectorAll(".window").forEach((w,i)=>{
+ w.style.left=(150+(i%4)*40)+"px";w.style.top=(80+(i%5)*30)+"px";
+ });
+ toast("Window positions reset ♡");
+}
 document.querySelectorAll(".window").forEach(w=>{
-w.addEventListener("pointerdown",()=>w.style.zIndex=++z);
-let h=w.querySelector(".winhead");
-h.addEventListener("pointerdown",e=>{
-if(e.target.tagName==="BUTTON"||window.innerWidth<700)return;
-e.preventDefault();w.style.zIndex=++z;
-let sx=e.clientX,sy=e.clientY,ox=w.offsetLeft,oy=w.offsetTop;
-h.setPointerCapture(e.pointerId);
-function move(ev){w.style.left=Math.max(0,Math.min(window.innerWidth-w.offsetWidth,ox+ev.clientX-sx))+"px";w.style.top=Math.max(35,Math.min(window.innerHeight-w.offsetHeight-60,oy+ev.clientY-sy))+"px"}
-function end(){h.removeEventListener("pointermove",move);h.removeEventListener("pointerup",end)}
-h.addEventListener("pointermove",move);h.addEventListener("pointerup",end);
+ const h=w.querySelector(".whead");
+ let dragging=false,ox=0,oy=0;
+ h.addEventListener("pointerdown",e=>{
+ if(e.target.closest("button"))return;
+ dragging=true;ox=e.clientX-w.offsetLeft;oy=e.clientY-w.offsetTop;h.setPointerCapture(e.pointerId);
+ w.style.zIndex=++z;
+ });
+ h.addEventListener("pointermove",e=>{
+ if(!dragging)return;
+ w.style.left=Math.max(0,e.clientX-ox)+"px";
+ w.style.top=Math.max(0,e.clientY-oy)+"px";
+ });
+ h.addEventListener("pointerup",()=>dragging=false);
+ h.addEventListener("pointercancel",()=>dragging=false);
 });
-});
 
-function toast(msg){
-$("toast").textContent=msg;$("toast").style.display="block";
-setTimeout(()=>{$("toast").style.display="none"},2500);
+function addXP(n){
+ xp+=n;save("xp",xp);updateXP();
 }
-function notify(msg){
-notifications.unshift({msg,date:new Date().toLocaleString()});
-notifications=notifications.slice(0,50);save("notifications",notifications);
-renderNotifications();toast(msg);
+function updateXP(){
+ $("level").textContent=Math.floor(xp/100)+1;
+ $("xptext").textContent=xp+" XP • "+(xp%100)+" / 100 to next level";
+ $("xpbar").style.width=(xp%100)+"%";
 }
-function renderNotifications(){
-$("notificationList").innerHTML=notifications.length?notifications.map(n=>`<div class="item"><div class="content"><b>${esc(n.msg)}</b><small>${esc(n.date)}</small></div></div>`).join(""):"<p class='muted'>No notifications yet.</p>";
-}
-function clearNotifications(){notifications=[];save("notifications",notifications);renderNotifications()}
-function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
-
-let timerSeconds=1500,timerRunning=false,timerInterval=null;
-function setTimer(m){timerSeconds=m*60;updateTimer()}
-function updateTimer(){$("timerDisplay").textContent=String(Math.floor(timerSeconds/60)).padStart(2,"0")+":"+String(timerSeconds%60).padStart(2,"0")}
-function startTimer(){
-if(timerRunning)return;timerRunning=true;
-timerInterval=setInterval(()=>{
-timerSeconds--;
-if(timerSeconds<=0){timerSeconds=0;pauseTimer();updateTimer();notify("Focus session complete ✦");return}
-updateTimer();
-},1000);
-}
-function pauseTimer(){timerRunning=false;clearInterval(timerInterval)}
-function resetTimer(){pauseTimer();timerSeconds=1500;updateTimer()}
-updateTimer();
-function toggleFocusMode(){
-let w=$("focus");w.classList.toggle("focusfullscreen");
-if(w.classList.contains("focusfullscreen")){
-w.style.top="0";w.style.left="0";w.style.width="100vw";w.style.height="100vh";w.style.borderRadius="0";
-}else{w.style.width="min(580px,90vw)";w.style.height="min(590px,78vh)";w.style.top="12%";w.style.left="30%";w.style.borderRadius="22px"}
-}
-
-function saveNotes(){save("mainnotes",$("mainnotes").value);toast("Notes saved ✦")}
-function clearNotes(){if(confirm("Clear your notes?")){$("mainnotes").value="";saveNotes()}}
-$("mainnotes").value=get("mainnotes","");
-$("quicknote").value=get("quicknote","");
-
 function addTask(){
-let v=$("taskInput").value.trim();if(!v)return;
-tasks.push({text:v,done:false});save("tasks",tasks);$("taskInput").value="";
-renderTasks();
+ let t=$("taskinput").value.trim();if(!t)return;
+ tasks.push({text:t,done:false,id:Date.now()});
+ $("taskinput").value="";save("tasks",tasks);renderTasks();
 }
-$("taskInput").addEventListener("keydown",e=>{if(e.key==="Enter")addTask()});
-function toggleTask(i){tasks[i].done=!tasks[i].done;save("tasks",tasks);renderTasks()}
-function delTask(i){tasks.splice(i,1);save("tasks",tasks);renderTasks()}
+function toggleTask(id){
+ let t=tasks.find(x=>x.id===id);if(!t)return;
+ t.done=!t.done;if(t.done)addXP(10);
+ save("tasks",tasks);renderTasks();
+}
+function deleteTask(id){tasks=tasks.filter(x=>x.id!==id);save("tasks",tasks);renderTasks()}
 function renderTasks(){
-$("taskList").innerHTML=tasks.map((t,i)=>`<div class="item"><input type="checkbox" ${t.done?"checked":""} onchange="toggleTask(${i})"><div class="content" style="${t.done?"text-decoration:line-through;opacity:.6":""}">${esc(t.text)}</div><button class="danger" onclick="delTask(${i})">×</button></div>`).join("");
-let done=tasks.filter(t=>t.done).length;
-let pct=tasks.length?Math.round(done/tasks.length*100):0;
-$("taskStats").innerHTML=`<div class="card"><b>${done}/${tasks.length} completed</b><div class="bar"><div style="width:${pct}%"></div></div>${pct}%</div>`;
-$("widgetProgress").innerHTML=`${done}/${tasks.length} tasks<div class="bar"><div style="width:${pct}%"></div></div>`;
-refreshAnalytics();
+ $("tasklist").innerHTML=tasks.map(t=>`<div class="card task ${t.done?"done":""}">
+ <input type="checkbox" ${t.done?"checked":""} onchange="toggleTask(${t.id})">
+ <span style="flex:1">${esc(t.text)}</span><button class="danger mini" onclick="deleteTask(${t.id})">×</button></div>`).join("");
+ let done=tasks.filter(t=>t.done).length,p=tasks.length?done/tasks.length*100:0;
+ $("taskprogress").textContent=done+" / "+tasks.length+" tasks completed";
+ $("taskbar").style.width=p+"%";$("taskwidget").textContent=done;
+}
+
+function addPlan(){
+ let d=$("plandate").value,t=$("planinput").value.trim(),time=$("plantime").value;
+ if(!d||!t){toast("Enter a date and activity");return}
+ plans.push({d,t,time,id:Date.now()});save("plans",plans);
+ $("planinput").value="";renderPlans();
+}
+function deletePlan(id){plans=plans.filter(x=>x.id!==id);save("plans",plans);renderPlans()}
+function renderPlans(){
+ let d=$("plandate").value;
+ $("planlist").innerHTML=plans.filter(x=>!d||x.d===d).sort((a,b)=>(a.time||"").localeCompare(b.time||"")).map(x=>`<div class="card"><b>${esc(x.time||"Any time")}</b> · ${esc(x.t)}<button class="danger mini" style="float:right" onclick="deletePlan(${x.id})">×</button></div>`).join("")||"<p class='small'>No plans for this date.</p>";
+}
+$("plandate").value=new Date().toISOString().slice(0,10);$("plandate").onchange=renderPlans;
+
+function addFlash(){
+ let q=$("fq").value.trim(),a=$("fa").value.trim();if(!q||!a)return;
+ flashes.push({q,a});save("flashes",flashes);$("fq").value="";$("fa").value="";renderFlash();toast("Flashcard saved ♡");
+}
+function showFlash(answer=false){
+ if(!flashes.length){$("flasharea").innerHTML="<p>Add your first flashcard above!</p>";$("flashcount").textContent="0 cards";return}
+ flashIndex=(flashIndex+flashes.length)%flashes.length;
+ let f=flashes[flashIndex];
+ $("flasharea").innerHTML=`<div class="flash" onclick="flipFlash()">${answer?esc(f.a):esc(f.q)}<div class="small" style="position:absolute"></div></div><p class="small" style="text-align:center">Click card to flip</p>`;
+ $("flashcount").textContent=(flashIndex+1)+" / "+flashes.length;
+}
+let flipped=false;
+function flipFlash(){flipped=!flipped;showFlash(flipped)}
+function nextFlash(){flashIndex++;flipped=false;showFlash()}
+function prevFlash(){flashIndex--;flipped=false;showFlash()}
+function renderFlash(){showFlash(false)}
+function deleteFlash(i){flashes.splice(i,1);flashIndex=0;save("flashes",flashes);renderFlash()}
+
+function addExam(){
+ let n=$("examname").value.trim(),d=$("examdate").value;if(!n||!d)return;
+ exams.push({n,d,id:Date.now()});save("exams",exams);$("examname").value="";renderExams();
+}
+function deleteExam(id){exams=exams.filter(x=>x.id!==id);save("exams",exams);renderExams()}
+function renderExams(){
+ exams.sort((a,b)=>a.d.localeCompare(b.d));
+ $("examlist").innerHTML=exams.map(e=>{
+ let days=Math.ceil((new Date(e.d+"T00:00:00")-new Date(new Date().toDateString()))/86400000);
+ return `<div class="card"><b>${esc(e.n)}</b><p>📅 ${e.d} · ${days>=0?days+" days left":"Passed"}</p><button class="danger mini" onclick="deleteExam(${e.id})">Remove</button></div>`;
+ }).join("")||"<p>No upcoming exams.</p>";
 }
 
 function addChapter(){
-let s=$("subject").value,v=$("chapterInput").value.trim();if(!v)return;
-chapters.push({s,text:v,status:"Not Started"});save("chapters",chapters);$("chapterInput").value="";renderChapters();
+ let s=$("subject").value,n=$("chapterinput").value.trim();if(!n)return;
+ chapters.push({s,n,status:"Not Started",id:Date.now()});save("chapters",chapters);$("chapterinput").value="";renderChapters();
 }
-function delChapter(i){chapters.splice(i,1);save("chapters",chapters);renderChapters()}
-function setChapter(i,v){chapters[i].status=v;save("chapters",chapters);renderChapters()}
+function updateChapter(id,v){
+ let c=chapters.find(x=>x.id===id);if(!c)return;
+ if(v==="Completed"&&c.status!=="Completed")addXP(15);
+ c.status=v;save("chapters",chapters);renderChapters();
+}
+function deleteChapter(id){chapters=chapters.filter(x=>x.id!==id);save("chapters",chapters);renderChapters()}
 function renderChapters(){
-$("chapterList").innerHTML=chapters.map((c,i)=>`<div class="item"><div class="content"><small>${esc(c.s)}</small><br>${esc(c.text)}</div><select onchange="setChapter(${i},this.value)" style="width:auto"><option ${c.status==="Not Started"?"selected":""}>Not Started</option><option ${c.status==="In Progress"?"selected":""}>In Progress</option><option ${c.status==="Completed"?"selected":""}>Completed</option></select><button class="danger" onclick="delChapter(${i})">×</button></div>`).join("");
-refreshAnalytics();
+ $("chapterlist").innerHTML=chapters.map(c=>`<div class="card"><b>${esc(c.s)}</b><p>${esc(c.n)}</p><select onchange="updateChapter(${c.id},this.value)"><option ${c.status==="Not Started"?"selected":""}>Not Started</option><option ${c.status==="In Progress"?"selected":""}>In Progress</option><option ${c.status==="Completed"?"selected":""}>Completed</option></select><button class="danger mini" onclick="deleteChapter(${c.id})" style="margin-top:7px">Remove</button></div>`).join("");
+}
+
+function saveNote(){
+ let t=$("notetitle").value.trim(),c=$("notecontent").value.trim();if(!t||!c)return;
+ notes.push({t,c,id:Date.now()});save("notes",notes);$("notetitle").value="";$("notecontent").value="";renderNotes();toast("Note saved ♡");
+}
+function deleteNote(id){notes=notes.filter(x=>x.id!==id);save("notes",notes);renderNotes()}
+function renderNotes(){
+ $("noteslist").innerHTML=notes.map(n=>`<div class="card"><b>${esc(n.t)}</b><p style="white-space:pre-wrap">${esc(n.c)}</p><button class="danger mini" onclick="deleteNote(${n.id})">Delete</button></div>`).join("");
 }
 
 function addDream(){
-let t=$("dreamTitle").value.trim();if(!t)return;
-dreams.push({title:t,desc:$("dreamDesc").value,date:$("dreamDate").value,theme:$("dreamTheme").value,progress:0});
-save("dreams",dreams);$("dreamTitle").value="";$("dreamDesc").value="";$("dreamDate").value="";renderDreams();notify("A new dream added to your wall ✦");
+ let t=$("dreamtitle").value.trim(),d=$("dreamdesc").value.trim();if(!t)return;
+ dreams.push({t,d,p:0,id:Date.now()});save("dreams",dreams);$("dreamtitle").value="";$("dreamdesc").value="";renderDreams();
 }
-function setDreamProgress(i,v){dreams[i].progress=Number(v);save("dreams",dreams);renderDreams()}
-function delDream(i){dreams.splice(i,1);save("dreams",dreams);renderDreams()}
-function editDream(i){
-let t=prompt("Edit dream title",dreams[i].title);if(t===null)return;
-let d=prompt("Edit description",dreams[i].desc);if(d===null)return;
-dreams[i].title=t;dreams[i].desc=d;save("dreams",dreams);renderDreams();
+function setDream(id,v){
+ let d=dreams.find(x=>x.id===id);if(!d)return;d.p=+v;save("dreams",dreams);renderDreams();
 }
+function deleteDream(id){dreams=dreams.filter(x=>x.id!==id);save("dreams",dreams);renderDreams()}
 function renderDreams(){
-let colors={lav:"rgba(210,190,255,.25)",pink:"rgba(255,205,225,.3)",blue:"rgba(200,230,255,.3)",gold:"rgba(255,220,160,.3)"};
-$("dreamList").innerHTML=dreams.map((d,i)=>`<div class="wallnote" style="background:${colors[d.theme]||colors.lav}"><h3>🌠 ${esc(d.title)}</h3><p>${esc(d.desc)}</p><small>${d.date?esc(d.date):"No target date"}</small><div class="bar"><div style="width:${d.progress}%"></div></div><small>${d.progress}% complete</small><input type="range" min="0" max="100" value="${d.progress}" onchange="setDreamProgress(${i},this.value)"><div class="row"><button class="secondary" onclick="editDream(${i})">Edit</button><button class="danger" onclick="delDream(${i})">×</button></div></div>`).join("")||"<p class='muted'>Your dream wall is waiting for its first dream ✦</p>";
-refreshAnalytics();
+ $("dreamlist").innerHTML=dreams.map(d=>`<div class="card"><h3>🌷 ${esc(d.t)}</h3><p>${esc(d.d)}</p><p>${d.p}% completed</p><input type="range" min="0" max="100" value="${d.p}" onchange="setDream(${d.id},this.value)"><button class="danger mini" onclick="deleteDream(${d.id})">Remove</button></div>`).join("");
+ $("letter").value=get("letter","");
 }
-function saveLetter(){save("futureLetter",$("futureLetter").value);notify("Your letter is saved 💌")}
-$("futureLetter").value=get("futureLetter","");
-$("affirmation").value=get("affirmation","");
+function saveLetter(){save("letter",$("letter").value);toast("Letter saved 💌")}
 
 function saveJournal(){
-let d=$("journalDate").value||new Date().toISOString().slice(0,10);
-if(!$("journalEntry").value.trim())return toast("Write something first ✦");
-journal[d]=$("journalEntry").value;save("journal",journal);renderJournalList();notify("Journal entry saved ✦");
+ let d=$("jdate").value,c=$("jentry").value.trim();if(!d||!c)return;
+ let existing=journal.find(x=>x.d===d);
+ if(existing)existing.c=c;else journal.push({d,c});
+ save("journal",journal);$("jentry").value="";renderJournal();toast("Journal saved ♡");
 }
-$("journalDate").value=new Date().toISOString().slice(0,10);
-$("journalDate").addEventListener("change",()=>{$("journalEntry").value=journal[$("journalDate").value]||""});
-function renderJournalList(){
-$("journalList").innerHTML=Object.keys(journal).sort().reverse().map(d=>`<div class="item"><div class="content"><b>${esc(d)}</b><p>${esc(journal[d].slice(0,90))}${journal[d].length>90?"...":""}</p></div><button class="secondary" onclick="loadJournal('${d}')">View</button><button class="danger" onclick="delJournal('${d}')">×</button></div>`).join("")||"<p class='muted'>No entries yet.</p>";
-refreshAnalytics();
+function deleteJournal(d){journal=journal.filter(x=>x.d!==d);save("journal",journal);renderJournal()}
+function renderJournal(){
+ $("journallist").innerHTML=journal.slice().sort((a,b)=>b.d.localeCompare(a.d)).map(j=>`<div class="card"><b>${j.d}</b><p style="white-space:pre-wrap">${esc(j.c)}</p><button class="danger mini" onclick="deleteJournal('${j.d}')">Delete</button></div>`).join("");
 }
-function loadJournal(d){$("journalDate").value=d;$("journalEntry").value=journal[d]||""}
-function delJournal(d){if(confirm("Delete this entry?")){delete journal[d];save("journal",journal);renderJournalList()}}
+$("jdate").value=new Date().toISOString().slice(0,10);
 
+function addSticky(){
+ let c=$("sticktext").value.trim();if(!c)return;
+ stickies.push({c,color:$("stickcolor").value,id:Date.now()});save("stickies",stickies);$("sticktext").value="";renderSticky();
+}
+function deleteSticky(id){stickies=stickies.filter(x=>x.id!==id);save("stickies",stickies);renderSticky()}
+function renderSticky(){
+ $("stickylist").innerHTML=stickies.map(s=>`<div class="note ${s.color}">${esc(s.c)}<button class="danger mini" style="float:right" onclick="deleteSticky(${s.id})">×</button></div>`).join("");
+}
+
+function renderStats(){
+ let td=tasks.filter(t=>t.done).length,ch=chapters.filter(c=>c.status==="Completed").length;
+ let pct=chapters.length?Math.round(ch/chapters.length*100):0;
+ $("stats").innerHTML=`<div class="card"><h3>📝 Tasks</h3>${td}/${tasks.length} complete</div>
+ <div class="card"><h3>📚 Chapters</h3>${ch}/${chapters.length} complete (${pct}%)</div>
+ <div class="card"><h3>🧠 Flashcards</h3>${flashes.length} cards created</div>
+ <div class="card"><h3>🎓 Exams</h3>${exams.length} scheduled</div>
+ <div class="card"><h3>🌠 Dreams</h3>${dreams.length} dreams saved</div>
+ <div class="card"><h3>📔 Journal</h3>${journal.length} entries</div>
+ <div class="card"><h3>✨ XP</h3>${xp} points · Level ${Math.floor(xp/100)+1}</div>`;
+ let b=[];
+ if(td>=1)b.push("🌱 First task");
+ if(td>=5)b.push("🌷 5 tasks");
+ if(td>=10)b.push("⭐ 10 tasks");
+ if(ch>=1)b.push("📚 Chapter finisher");
+ if(flashes.length>=5)b.push("🧠 Flashcard maker");
+ if(xp>=100)b.push("✨ Level up");
+ $("badges").innerHTML="<h3>🏆 Badges</h3>"+(b.map(x=>`<span class="badgecard">${x}</span>`).join("")||"<p>Keep going to unlock badges ♡</p>");
+}
+function coachRefresh(){
+ let done=tasks.filter(x=>x.done).length,unfinished=tasks.filter(x=>!x.done);
+ let pending=chapters.filter(x=>x.status!=="Completed");
+ $("coachreport").innerHTML=`<p>🌷 You have completed <b>${done}</b> tasks.</p><p>📚 ${pending.length} chapters still need revision or work.</p><p>✨ Your level is <b>${Math.floor(xp/100)+1}</b>.</p><p>🧠 ${flashes.length} flashcards are available.</p>`;
+ let suggestions=[];
+ if(unfinished.length)suggestions.push("Finish one pending task: "+unfinished[0].text);
+ if(pending.length)suggestions.push("Revise "+pending[0].n+" in "+pending[0].s);
+ if(!suggestions.length)suggestions.push("Create a new task and plan a focused session!");
+ $("coachsuggest").innerHTML=suggestions.map(x=>`<p>🌸 ${esc(x)}</p>`).join("");
+}
 function addVault(){
-let t=$("vaultTitle").value.trim();if(!t)return;
-let url=$("vaultUrl").value.trim();
-if(url&&!/^https?:\/\//i.test(url)){toast("Link should start with http:// or https://");return}
-vault.push({title:t,s:$("vaultSubject").value,url,desc:$("vaultDesc").value});
-save("vault",vault);$("vaultTitle").value="";$("vaultUrl").value="";$("vaultDesc").value="";renderVault();
+ let t=$("vtitle").value.trim(),u=$("vurl").value.trim(),s=$("vsubject").value;
+ if(!t||!u)return;
+ if(!/^https?:\/\//i.test(u)){toast("Enter a valid URL starting with http:// or https://");return}
+ vault.push({t,u,s,id:Date.now()});save("vault",vault);$("vtitle").value="";$("vurl").value="";renderVault();
 }
-function delVault(i){vault.splice(i,1);save("vault",vault);renderVault()}
+function deleteVault(id){vault=vault.filter(x=>x.id!==id);save("vault",vault);renderVault()}
 function renderVault(){
-let f=$("vaultFilter").value;
-let items=vault.filter(v=>f==="All"||v.s===f);
-$("vaultList").innerHTML=items.map(v=>{
-let i=vault.indexOf(v);
-return `<div class="card"><small>${esc(v.s)}</small><h3>${esc(v.title)}</h3><p>${esc(v.desc)}</p>${v.url?`<a href="${esc(v.url)}" target="_blank" rel="noopener" style="color:var(--accent)">Open resource ↗</a>`:""}<button class="danger" onclick="delVault(${i})" style="float:right">Delete</button></div>`
-}).join("")||"<p class='muted'>Your vault is empty.</p>";
+ $("vaultlist").innerHTML=vault.map(v=>`<div class="card"><b>${esc(v.t)}</b><p>${esc(v.s)}</p><a href="${esc(v.u)}" target="_blank" rel="noopener">Open resource ↗</a><button class="danger mini" style="float:right" onclick="deleteVault(${v.id})">Delete</button></div>`).join("");
 }
 
-let calcStr="";
-function calcInput(v){calcStr+=v;$("calcDisplay").textContent=calcStr||"0"}
-function calcClear(){calcStr="";$("calcDisplay").textContent="0"}
-function calcBack(){calcStr=calcStr.slice(0,-1);$("calcDisplay").textContent=calcStr||"0"}
-function calcEquals(){
-try{
-if(!/^[0-9+\-*/().\s]+$/.test(calcStr))throw Error();
-let r=Function('"use strict";return ('+calcStr+')')();
-if(!Number.isFinite(r))throw Error();
-calcStr=String(r);$("calcDisplay").textContent=calcStr;
-}catch{calcStr="";$("calcDisplay").textContent="Error"}
+function calculate(){
+ let e=$("calcinput").value;
+ if(!e||!/^[0-9+\-*/().%\s]+$/.test(e)){toast("Only basic arithmetic allowed");return}
+ try{
+ let r=Function('"use strict";return ('+e+')')();
+ if(!Number.isFinite(r))throw Error();
+ $("calcresult").textContent="Result: "+r;
+ }catch{$("calcresult").textContent="Invalid expression"}
 }
 
-function refreshAnalytics(){
-let td=tasks.filter(t=>t.done).length,cp=chapters.filter(c=>c.status==="Completed").length,
-dp=dreams.filter(d=>d.progress===100).length;
-$("aTasks").textContent=td;$("aChapters").textContent=cp;$("aDreams").textContent=dreams.length;$("aJournal").textContent=Object.keys(journal).length;
-let tp=tasks.length?Math.round(td/tasks.length*100):0,cpp=chapters.length?Math.round(cp/chapters.length*100):0,
-dpp=dreams.length?Math.round(dreams.reduce((a,d)=>a+d.progress,0)/dreams.length):0;
-$("aTaskBar").style.width=tp+"%";$("aTaskText").textContent=tp+"% completed";
-$("aChapterBar").style.width=cpp+"%";$("aChapterText").textContent=cpp+"% completed";
-$("aDreamBar").style.width=dpp+"%";$("aDreamText").textContent=dpp+"% average dream progress";
+function setTimer(){
+ pauseTimer();timerSeconds=+$("fmins").value*60;updateTimer();
 }
-function wallpaper(n){
-let backgrounds=[
-"linear-gradient(135deg,#e9e3ff,#f6e9f9,#e1edff)",
-"linear-gradient(135deg,#151323,#21182f,#182335)",
-"linear-gradient(135deg,#d6f0ff,#e4e0ff,#c6e4ff)",
-"linear-gradient(135deg,#ffe1e8,#fff1d8,#eacbff)",
-"linear-gradient(135deg,#d4f2df,#e5f1ff,#e6ddff)",
-"linear-gradient(135deg,#f8dfbd,#f5e9ce,#ead7ff)"
-];
-$("desktop").style.background=backgrounds[n];save("wallpaper",n);
-if(n===1){document.body.classList.add("dark");save("dark",true)}else{document.body.classList.remove("dark");save("dark",false)}
+function updateTimer(){
+ let m=Math.floor(timerSeconds/60),s=timerSeconds%60;
+ let t=String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
+ $("ftimer").textContent=t;$("fulltimer").textContent=t;
 }
-function setAccent(v){document.documentElement.style.setProperty("--accent",v);save("accent",v)}
+function startTimer(){
+ if(timerRunning)return;
+ timerRunning=true;
+ timerInterval=setInterval(()=>{
+ timerSeconds--;
+ updateTimer();
+ if(timerSeconds<=0){
+ pauseTimer();timerSeconds=0;updateTimer();addXP(25);toast("Focus session completed! +25 XP 🌷");
+ }
+ },1000);
+}
+function pauseTimer(){clearInterval(timerInterval);timerRunning=false}
+function resetTimer(){pauseTimer();timerSeconds=+$("fmins").value*60;updateTimer()}
+function fullFocus(){$("focusOverlay").classList.add("active");updateTimer()}
+function exitFullFocus(){$("focusOverlay").classList.remove("active")}
+
+function theme(a,b){
+ document.documentElement.style.setProperty("--accent",a);
+ document.documentElement.style.setProperty("--bg",b);
+ save("theme",[a,b]);
+}
+function customTheme(){theme($("customcolor").value,"#f5effb")}
 function toggleDark(){document.body.classList.toggle("dark");save("dark",document.body.classList.contains("dark"))}
-function toggleWidgets(){
-$("widgets").style.display=$("widgets").style.display==="none"?"flex":"none";
-save("widgetsHidden",$("widgets").style.display==="none");
+function wallpaper(n){
+ let backgrounds=[
+ "linear-gradient(135deg,#e9defa,#f8f0f4,#e5eaf9)",
+ "linear-gradient(135deg,#d8d4f5,#b9c6e9,#f2d9ec)",
+ "linear-gradient(135deg,#e5f2df,#f8ebda,#e4e9f9)",
+ "linear-gradient(135deg,#f5effb,#fff,#e5eaf9)"
+ ];
+ $("desktop").style.background=backgrounds[n-1];save("wallpaper",n);toast("Wallpaper changed ♡");
 }
-function resetLayout(){
-document.querySelectorAll(".window").forEach(w=>{w.style.left="";w.style.top="";w.style.width="";w.style.height="";});
-toast("Window layout reset ✦");
+function petTalk(){
+ let a=["You can do this! 🐰","One chapter at a time! 🌷","Your dreams are waiting! ✨","Time for a little study! 📚","Proud of your progress! ♡"];
+ toast(a[Math.floor(Math.random()*a.length)]);
 }
+
 function exportData(){
-let obj={};
-for(let i=0;i<localStorage.length;i++){let k=localStorage.key(i);obj[k]=localStorage.getItem(k)}
-let blob=new Blob([JSON.stringify(obj,null,2)],{type:"application/json"});
-let a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="students-hub-backup.json";a.click();URL.revokeObjectURL(a.href);
+ let obj={};
+ Object.keys(localStorage).filter(k=>k.startsWith("sh_")).forEach(k=>obj[k]=localStorage.getItem(k));
+ let blob=new Blob([JSON.stringify(obj,null,2)],{type:"application/json"});
+ let a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="students-hub-backup.json";a.click();URL.revokeObjectURL(a.href);toast("Backup downloaded!");
 }
-function importData(){
-let inp=document.createElement("input");inp.type="file";inp.accept=".json";
-inp.onchange=()=>{
-let file=inp.files[0];if(!file)return;
-let reader=new FileReader();
-reader.onload=()=>{
-try{
-let obj=JSON.parse(reader.result);
-if(!confirm("Restore this backup? This will replace saved website data."))return;
-Object.keys(obj).forEach(k=>localStorage.setItem(k,obj[k]));
-location.reload();
-}catch{toast("Invalid backup file")}
-};
-reader.readAsText(file);
-};inp.click();
+function restoreData(e){
+ let f=e.target.files[0];if(!f)return;
+ let reader=new FileReader();
+ reader.onload=()=>{
+ try{
+ let o=JSON.parse(reader.result);
+ Object.keys(o).filter(k=>k.startsWith("sh_")).forEach(k=>localStorage.setItem(k,o[k]));
+ location.reload();
+ }catch{toast("Invalid backup file")}
+ };
+ reader.readAsText(f);
 }
-function resetAll(){if(confirm("Reset all saved website data? This cannot be undone.")){localStorage.clear();location.reload()}}
-function applySaved(){
-let w=get("wallpaper",0);wallpaper(w);
-let a=get("accent","#b49aff");setAccent(a);$("accentPicker").value=a;
-if(get("dark",false))document.body.classList.add("dark");
-if(get("widgetsHidden",false))$("widgets").style.display="none";
+function resetAll(){
+ if(!confirm("Delete all Students Hub saved data? Download a backup first if needed."))return;
+ Object.keys(localStorage).filter(k=>k.startsWith("sh_")).forEach(k=>localStorage.removeItem(k));location.reload();
 }
-applySaved();
-renderTasks();renderChapters();renderDreams();renderVault();renderJournalList();renderNotifications();
-refreshAnalytics();
+function esc(s){
+ return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+
+function renderAll(){
+ renderTasks();renderPlans();renderFlash();renderExams();renderChapters();renderNotes();renderDreams();renderJournal();renderSticky();renderVault();renderStats();updateXP();
+}
+function loadSaved(){
+ let th=get("theme",null);if(th)theme(th[0],th[1]);
+ if(get("dark",false))document.body.classList.add("dark");
+ let wp=get("wallpaper",1);wallpaper(wp);
+ $("letter").value=get("letter","");
+}
+loadSaved();
 </script>
 </body>
 </html>
