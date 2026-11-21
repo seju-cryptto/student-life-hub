@@ -3,539 +3,539 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Students Hub 3.0</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Students Hub 5.0 💜</title>
 <style>
-*{box-sizing:border-box}
-:root{--bg:#f5f2ff;--card:#fff;--text:#30264a;--accent:#9470d8;--soft:#eee5ff}
-body.ocean{--bg:#eaf6ff;--accent:#338ac2;--soft:#d6efff;--text:#20415b}
-body.rose{--bg:#fff0f5;--accent:#d66a99;--soft:#ffe0eb;--text:#583447}
-body.midnight{--bg:#171827;--card:#24263b;--text:#f0eeff;--accent:#a78bfa;--soft:#37344e}
-body{margin:0;font-family:Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text)}
-button,input,select,textarea{font:inherit}
-button{border:0;border-radius:10px;padding:11px;background:var(--accent);color:white;cursor:pointer}
-button:hover{filter:brightness(.94)}
-input,select,textarea{width:100%;padding:11px;border-radius:10px;border:1px solid #ccc;background:var(--card);color:var(--text);margin:5px 0}
-textarea{min-height:110px}
-.layout{display:flex;min-height:100vh}
-.sidebar{width:230px;background:var(--card);padding:20px;position:sticky;top:0;height:100vh;border-right:1px solid #ddd;flex-shrink:0}
-.logo{font-size:23px;font-weight:bold;margin-bottom:25px;color:var(--accent)}
-.nav button{display:block;width:100%;text-align:left;margin:8px 0;background:transparent;color:var(--text)}
-.nav button:hover,.nav button.active{background:var(--soft);color:var(--accent)}
-.main{flex:1;min-width:0;padding:24px}
-.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-.page{display:none}.page.active{display:block}
-.card{background:var(--card);border-radius:18px;padding:20px;margin:15px 0;box-shadow:0 4px 18px #00000008}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:15px}
-.stat{font-size:30px;font-weight:bold;color:var(--accent)}
-.small{opacity:.7;font-size:13px}
-.task,.plan,.item{background:var(--soft);padding:13px;margin:10px 0;border-radius:12px;overflow-wrap:anywhere}
-.row{display:flex;gap:10px;flex-wrap:wrap}
-.row>*{flex:1;min-width:100px}
-.done{text-decoration:line-through;opacity:.6}
-progress{width:100%;height:15px}
-#clock{font-size:20px;font-weight:bold;color:var(--accent)}
-.badge{display:inline-block;background:var(--soft);padding:8px 12px;border-radius:20px;margin:5px}
-footer{text-align:center;opacity:.65;padding:20px}
-@media(max-width:700px){
-.layout{display:block}
-.sidebar{width:100%;height:auto;position:relative;border-right:0;border-bottom:1px solid #ddd}
-.nav{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
-.nav button{text-align:center;font-size:13px;padding:8px}
-.main{padding:12px}
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+--bg:#f5f3ff;--card:#fff;--text:#292344;
+--accent:#9070dd;--soft:#eee8ff;--muted:#77718b;
+}
+body{font-family:Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:.3s}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer;border:0;border-radius:12px;padding:10px 15px;background:var(--accent);color:white;font-weight:600}
+button:hover{opacity:.88}
+input,textarea,select{padding:11px;border:1px solid #ddd;border-radius:12px;width:100%;background:var(--card);color:var(--text)}
+textarea{min-height:110px;resize:vertical}
+.app{display:flex;min-height:100vh}
+.sidebar{width:245px;background:var(--card);padding:22px 15px;position:sticky;top:0;height:100vh;overflow:auto;border-right:1px solid #e9e4f5}
+.logo{font-size:22px;font-weight:800;margin-bottom:25px;color:var(--accent)}
+.nav button{width:100%;background:transparent;color:var(--text);text-align:left;margin:4px 0;padding:12px}
+.nav button.active,.nav button:hover{background:var(--soft);color:var(--accent)}
+.main{flex:1;padding:25px;min-width:0}
+.top{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;margin-bottom:22px}
+.top h1{font-size:26px}
+.muted{color:var(--muted);font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.card{background:var(--card);padding:20px;border-radius:20px;margin-bottom:18px;box-shadow:0 4px 18px #6751a20b}
+.card h3{margin-bottom:13px}
+.stat{font-size:28px;font-weight:800;color:var(--accent);margin:8px 0}
+.section{display:none}
+.section.active{display:block}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.row>*{flex:1;min-width:120px}
+.progress{height:10px;background:#eae6f5;border-radius:20px;overflow:hidden;margin:10px 0}
+.progress div{height:100%;background:var(--accent);width:0;transition:.4s;border-radius:20px}
+.item{padding:13px;border:1px solid #eee;border-radius:15px;margin:10px 0;background:var(--card)}
+.item .row{align-items:center}
+.item button{padding:8px 10px}
+.small{font-size:13px;color:var(--muted)}
+.tag{display:inline-block;background:var(--soft);color:var(--accent);padding:5px 10px;border-radius:20px;font-size:12px;margin:4px}
+.status{border-radius:10px;padding:7px;font-size:12px;border:1px solid #ddd}
+.danger{background:#e55b6b}
+.ghost{background:var(--soft);color:var(--text)}
+.room{min-height:75vh;border-radius:25px;padding:25px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:18px;background:var(--roombg,var(--bg));transition:.4s}
+.room .clock{font-size:clamp(50px,10vw,100px);font-weight:800;letter-spacing:2px}
+.room button{margin:4px}
+.room input{max-width:280px}
+.themebtn{background:var(--card);color:var(--text);border:1px solid #ddd}
+#taskList,#chapterList,#linkList,#noteList,#planList{margin-top:12px}
+footer{text-align:center;color:var(--muted);padding:20px}
+@media(max-width:800px){
+.app{display:block}
+.sidebar{width:100%;height:auto;position:relative;padding:15px}
+.nav{display:grid;grid-template-columns:repeat(3,1fr)}
+.nav button{font-size:12px;text-align:center;padding:10px 5px}
+.main{padding:15px}
 }
 </style>
 </head>
 <body>
-<div class="layout">
+<div class="app">
 <aside class="sidebar">
 <div class="logo">💜 Students Hub</div>
-<div class="nav">
-<button class="active" onclick="tab('home',this)">🏠 Home</button>
-<button onclick="tab('tasks',this)">✅ Tasks</button>
-<button onclick="tab('planner',this)">📅 Planner</button>
-<button onclick="tab('timetable',this)">🗓 Timetable</button>
-<button onclick="tab('notes',this)">📝 Notes</button>
-<button onclick="tab('focus',this)">⏱ Focus</button>
-<button onclick="tab('achievements',this)">🏆 Awards</button>
-<button onclick="tab('settings',this)">⚙ Settings</button>
+<div class="nav" id="nav">
+<button class="active" data-section="home">🏠 Home</button>
+<button data-section="tasks">✅ Tasks</button>
+<button data-section="tracker">📚 Chapter Tracker</button>
+<button data-section="room">🌙 Study Room</button>
+<button data-section="planner">📅 Planner</button>
+<button data-section="exam">🎯 Exams</button>
+<button data-section="notes">📝 Notes</button>
+<button data-section="journal">📔 Journal</button>
+<button data-section="links">🔗 Quick Links</button>
+<button data-section="settings">⚙️ Settings</button>
 </div>
-<p class="small">Study • Grow • Repeat ✨</p>
 </aside>
 
 <main class="main">
 <div class="top">
 <div>
-<h1 id="heading">Dashboard</h1>
-<p id="date"></p>
+<h1 id="greeting">Welcome back! 💜</h1>
+<p class="muted" id="today"></p>
 </div>
-<div id="clock"></div>
+<div class="row" style="max-width:240px">
+<button class="ghost" onclick="openSection('room')">🌙 Focus now</button>
 </div>
-
-<section id="home" class="page active">
-<div class="card">
-<h2 id="welcome">Welcome to your Student Space ✨</h2>
-<p>Make today a step towards your future.</p>
 </div>
 
+<!-- HOME -->
+<section class="section active" id="home">
 <div class="grid">
-<div class="card"><h3>Tasks completed today</h3><div class="stat" id="todayCount">0</div></div>
-<div class="card"><h3>Total completed</h3><div class="stat" id="totalCount">0</div></div>
-<div class="card"><h3>Pending tasks</h3><div class="stat" id="pendingCount">0</div></div>
-<div class="card"><h3>Study streak</h3><div class="stat" id="streak">0 🔥</div></div>
+<div class="card">
+<p class="muted">Tasks completed</p>
+<div class="stat" id="taskStat">0</div>
+<p class="small">Completed tasks</p>
+</div>
+<div class="card">
+<p class="muted">Chapters completed</p>
+<div class="stat" id="chapterStat">0%</div>
+<p class="small">Overall syllabus progress</p>
+</div>
+<div class="card">
+<p class="muted">Study sessions</p>
+<div class="stat" id="sessionStat">0</div>
+<p class="small">Focus sessions completed</p>
+</div>
+<div class="card">
+<p class="muted">Daily challenge ✨</p>
+<p id="challenge" style="margin:12px 0">Study one topic today!</p>
+<button class="ghost" onclick="newChallenge()">New challenge</button>
+</div>
 </div>
 
 <div class="card">
-<h3>🎯 Daily Goal</h3>
-<progress id="goalProgress" value="0" max="100"></progress>
-<p id="goalLabel"></p>
+<h3>📚 Syllabus progress</h3>
+<div class="progress"><div id="homeProgress"></div></div>
+<p id="progressText" class="muted">0% completed</p>
+<button onclick="openSection('tracker')" style="margin-top:12px">Open Chapter Tracker</button>
 </div>
 
 <div class="card">
-<h2>⚡ Quick Add Task</h2>
+<h3>⚡ Quick Task</h3>
 <div class="row">
 <input id="quickTask" placeholder="What do you need to do?">
-<select id="quickSubject">
-<option>Physics</option><option>Chemistry</option>
-<option>Mathematics</option><option>English</option>
-<option>Computer Science</option><option>Other</option>
-</select>
+<button onclick="addQuickTask()">Add task</button>
 </div>
-<button onclick="quickAdd()">Add task</button>
 </div>
 
 <div class="card">
-<h2>📋 Today's tasks</h2>
-<div id="homeTasks"></div>
-</div>
-
-<div class="card">
-<h2>📚 Today's timetable</h2>
-<div id="todayTimetable"></div>
-</div>
-
-<div class="card">
-<h2>💭 Daily Motivation</h2>
-<p id="quote"></p>
+<h3>🌙 Ready to focus?</h3>
+<p class="muted">Enter your distraction-free Study Room.</p>
+<button onclick="openSection('room')" style="margin-top:12px">Enter Study Room</button>
 </div>
 </section>
 
-<section id="tasks" class="page">
+<!-- TASKS -->
+<section class="section" id="tasks">
 <div class="card">
-<h2>Task Manager</h2>
+<h3>✅ Task Manager</h3>
 <div class="row">
-<input id="taskInput" placeholder="Task name">
-<select id="subject">
-<option>Physics</option><option>Chemistry</option>
-<option>Mathematics</option><option>English</option>
-<option>Computer Science</option><option>Other</option>
+<input id="taskInput" placeholder="Add a new task">
+<select id="taskPriority">
+<option>Normal</option><option>High</option><option>Low</option>
 </select>
+<button onclick="addTask()">Add</button>
 </div>
-<div class="row">
-<select id="priority"><option>Medium</option><option>High</option><option>Low</option></select>
-<button onclick="addTask()">➕ Add</button>
-</div>
-<input id="search" placeholder="Search..." oninput="renderTasks()">
 <div id="taskList"></div>
-<button onclick="clearCompleted()">Clear completed</button>
 </div>
 </section>
 
-<section id="planner" class="page">
+<!-- CHAPTER TRACKER -->
+<section class="section" id="tracker">
 <div class="card">
-<h2>Study Planner</h2>
+<h3>📚 Chapter Tracker</h3>
+<p class="muted">Track your syllabus chapter by chapter.</p>
+<div class="row" style="margin-top:15px">
+<select id="chapterSubject">
+<option>Physics</option><option>Chemistry</option>
+<option>Mathematics</option><option>English</option>
+<option>Computer Science</option><option>Other</option>
+</select>
+<input id="chapterName" placeholder="Chapter name">
+<button onclick="addChapter()">Add chapter</button>
+</div>
+<div class="grid" style="margin-top:15px">
+<div class="card">
+<p class="muted">Total chapters</p><div class="stat" id="totalChapters">0</div>
+</div>
+<div class="card">
+<p class="muted">Completed</p><div class="stat" id="completedChapters">0</div>
+</div>
+<div class="card">
+<p class="muted">In progress</p><div class="stat" id="workingChapters">0</div>
+</div>
+</div>
+<div class="progress"><div id="trackerProgress"></div></div>
+<p class="muted" id="trackerPercent">0% completed</p>
+<div id="chapterList"></div>
+</div>
+</section>
+
+<!-- STUDY ROOM -->
+<section class="section" id="room">
+<div class="room" id="studyRoom">
+<div>
+<h2 id="roomTitle">🌙 Study Room</h2>
+<p class="muted" id="roomSubtitle">Your peaceful corner to focus.</p>
+</div>
+<div class="clock" id="timerDisplay">25:00</div>
+<div class="row" style="max-width:320px">
+<input type="number" id="timerMinutes" value="25" min="1" max="180" placeholder="Minutes">
+<button onclick="setTimer()">Set</button>
+</div>
+<div>
+<button onclick="startTimer()">▶ Start</button>
+<button class="ghost" onclick="pauseTimer()">⏸ Pause</button>
+<button class="ghost" onclick="resetTimer()">↺ Reset</button>
+</div>
+<div>
+<h3>🌈 Room ambience</h3>
+<div class="row">
+<button class="themebtn" onclick="setRoomTheme('lavender')">💜 Lavender</button>
+<button class="themebtn" onclick="setRoomTheme('night')">🌌 Night</button>
+<button class="themebtn" onclick="setRoomTheme('forest')">🌿 Forest</button>
+<button class="themebtn" onclick="setRoomTheme('ocean')">🌊 Ocean</button>
+<button class="themebtn" onclick="setRoomTheme('sunset')">🌅 Sunset</button>
+</div>
+</div>
+<div>
+<input id="roomSubject" placeholder="What are you studying?" oninput="saveRoomSubject()">
+</div>
+<p id="roomSession" class="muted">Focus on one thing at a time ✨</p>
+<button class="ghost" onclick="openSection('home')">← Exit Study Room</button>
+</div>
+</section>
+
+<!-- PLANNER -->
+<section class="section" id="planner">
+<div class="card">
+<h3>📅 Study Planner</h3>
+<div class="row">
 <input type="date" id="planDate">
+<input id="planTask" placeholder="Study plan">
+<button onclick="addPlan()">Add</button>
+</div>
+<div id="planList"></div>
+</div>
+</section>
+
+<!-- EXAMS -->
+<section class="section" id="exam">
+<div class="card">
+<h3>🎯 Exam Countdown</h3>
 <div class="row">
-<input id="planInput" placeholder="Study chapter / topic">
-<select id="planSubject">
+<input id="examName" placeholder="Exam name">
+<input type="date" id="examDate">
+<button onclick="addExam()">Save exam</button>
+</div>
+<div id="examList"></div>
+</div>
+</section>
+
+<!-- NOTES -->
+<section class="section" id="notes">
+<div class="card">
+<h3>📝 Subject Notes</h3>
+<div class="row">
+<select id="noteSubject">
 <option>Physics</option><option>Chemistry</option>
 <option>Mathematics</option><option>English</option>
 <option>Computer Science</option><option>Other</option>
 </select>
+<input id="noteTitle" placeholder="Note title">
 </div>
-<button onclick="addPlan()">Add session</button>
-<div id="plans"></div>
+<textarea id="noteText" placeholder="Write your notes here..." style="margin-top:12px"></textarea>
+<button onclick="addNote()" style="margin-top:12px">Save note</button>
+<div id="noteList"></div>
 </div>
 </section>
 
-<section id="timetable" class="page">
+<!-- JOURNAL -->
+<section class="section" id="journal">
 <div class="card">
-<h2>🗓 Weekly Timetable</h2>
-<p class="small">Add subjects and time slots. Your timetable is saved locally.</p>
-<select id="ttDay">
-<option>Monday</option><option>Tuesday</option>
-<option>Wednesday</option><option>Thursday</option>
-<option>Friday</option><option>Saturday</option><option>Sunday</option>
-</select>
+<h3>📔 Digital Journal</h3>
+<textarea id="journalText" placeholder="Write anything about your day..."></textarea>
+<button onclick="saveJournal()" style="margin-top:10px">Save today's journal</button>
+<div id="journalList"></div>
+</div>
+</section>
+
+<!-- QUICK LINKS -->
+<section class="section" id="links">
+<div class="card">
+<h3>🔗 Quick Links</h3>
 <div class="row">
-<input id="ttTime" type="time">
-<input id="ttSubject" placeholder="Subject / activity">
+<input id="linkTitle" placeholder="Website name">
+<input id="linkUrl" placeholder="https://...">
+<button onclick="addLink()">Add</button>
 </div>
-<button onclick="addTT()">Add slot</button>
-</div>
-<div id="ttList"></div>
-</section>
-
-<section id="notes" class="page">
-<div class="card">
-<h2>Subject Notes</h2>
-<select id="noteSub" onchange="loadNote()">
-<option>Physics</option><option>Chemistry</option>
-<option>Mathematics</option><option>English</option>
-<option>Computer Science</option><option>Other</option>
-</select>
-<textarea id="noteText" placeholder="Your notes..."></textarea>
-<button onclick="saveNote()">Save</button>
-<p id="noteStatus"></p>
+<div id="linkList"></div>
 </div>
 </section>
 
-<section id="focus" class="page">
-<div class="card" style="text-align:center">
-<h2>Focus Room ⏱</h2>
-<div class="stat" id="timer">25:00</div>
-<div class="row">
-<button onclick="setTimer(25)">25 min</button>
-<button onclick="setTimer(50)">50 min</button>
-<button onclick="setTimer(5)">5 min</button>
-</div>
-<div class="row">
-<button onclick="startTimer()">Start</button>
-<button onclick="pauseTimer()">Pause</button>
-<button onclick="resetTimer()">Reset</button>
-</div>
-<p id="timerStatus"></p>
-<label><input type="checkbox" id="sound" style="width:auto" onchange="localStorage.sound=this.checked"> Timer sound</label>
-</div>
-</section>
-
-<section id="achievements" class="page">
+<!-- SETTINGS -->
+<section class="section" id="settings">
 <div class="card">
-<h2>🏆 Achievements</h2>
-<p>Complete tasks to unlock rewards!</p>
-<div id="awards"></div>
-</div>
-<div class="card">
-<h2>📊 Weekly Tracker</h2>
-<div id="weekly"></div>
-</div>
-</section>
-
-<section id="settings" class="page">
-<div class="card">
-<h2>👤 Profile</h2>
-<input id="name" placeholder="Name">
-<input id="className" placeholder="Class">
-<input id="school" placeholder="School">
+<h3>⚙️ Settings</h3>
+<label>Student name</label>
+<input id="profileName" placeholder="Your name" style="margin:8px 0">
 <button onclick="saveProfile()">Save profile</button>
+<hr style="margin:20px 0;border:0;border-top:1px solid #eee">
+<h3>🎨 Dashboard theme</h3>
+<div class="row">
+<button class="themebtn" onclick="setTheme('lavender')">💜 Lavender</button>
+<button class="themebtn" onclick="setTheme('dark')">🌙 Dark</button>
+<button class="themebtn" onclick="setTheme('ocean')">🌊 Ocean</button>
+<button class="themebtn" onclick="setTheme('rose')">🌸 Rose</button>
 </div>
-<div class="card">
-<h2>🎨 Theme</h2>
-<div class="grid">
-<button onclick="changeTheme('')">Lavender 💜</button>
-<button onclick="changeTheme('ocean')">Ocean 🌊</button>
-<button onclick="changeTheme('rose')">Rose 🌸</button>
-<button onclick="changeTheme('midnight')">Midnight 🌙</button>
-</div>
-</div>
-<div class="card">
-<h2>🎯 Daily Goal</h2>
-<input id="goalInput" type="number" min="1" max="50">
-<button onclick="saveGoal()">Save goal</button>
-</div>
-<div class="card">
-<h2>💾 Backup</h2>
-<button onclick="backup()">Download backup</button>
-<input type="file" id="file" accept=".json">
-<button onclick="restore()">Restore backup</button>
-</div>
-<div class="card">
-<h2>Reset</h2>
-<button onclick="resetTasks()">Reset tasks</button>
-<button onclick="resetAll()">Reset everything</button>
+<hr style="margin:20px 0;border:0;border-top:1px solid #eee">
+<h3>💾 Backup & Restore</h3>
+<button onclick="exportData()">Download backup</button>
+<label class="ghost" style="display:inline-block;padding:10px;border-radius:12px;margin:8px;cursor:pointer">
+Restore backup <input type="file" accept=".json" onchange="importData(event)" style="display:none">
+</label>
+<hr style="margin:20px 0;border:0;border-top:1px solid #eee">
+<button class="danger" onclick="resetAll()">Reset all data</button>
 </div>
 </section>
 
-<footer>Students Hub • Your digital student space 💜</footer>
+<footer>Made with 💜 for students | Students Hub 5.0</footer>
 </main>
 </div>
 
 <script>
 const $=id=>document.getElementById(id);
-const key=()=>new Date().toLocaleDateString('en-CA');
-let tasks=JSON.parse(localStorage.tasks||'[]');
-let plans=JSON.parse(localStorage.plans||'[]');
-let timetable=JSON.parse(localStorage.timetable||'[]');
-let notes=JSON.parse(localStorage.notes||'{}');
-let profile=JSON.parse(localStorage.profile||'{}');
-let history=JSON.parse(localStorage.history||'{}');
-let goal=Number(localStorage.goal||3);
-let theme=localStorage.theme||'';
-let seconds=1500,timerInterval=null;
-
-function save(){
-localStorage.tasks=JSON.stringify(tasks);
-localStorage.plans=JSON.stringify(plans);
-localStorage.timetable=JSON.stringify(timetable);
-localStorage.notes=JSON.stringify(notes);
-localStorage.profile=JSON.stringify(profile);
-localStorage.history=JSON.stringify(history);
-localStorage.goal=goal;
+const KEY="studentsHub50";
+let data={tasks:[],chapters:[],plans:[],exams:[],notes:[],journals:[],links:[],sessions:0,profile:"",roomSubject:"",theme:"lavender",roomTheme:"lavender"};
+try{
+let saved=JSON.parse(localStorage.getItem(KEY));
+if(saved)data={...data,...saved};
+}catch(e){}
+function save(){localStorage.setItem(KEY,JSON.stringify(data));renderAll()}
+function openSection(id){
+document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+$(id).classList.add("active");
+document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.section===id));
+if(id==="room"){$("roomSubject").value=data.roomSubject||""}
 }
-function tab(id,btn){
-document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
-$(id).classList.add('active');
-document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));
-if(btn)btn.classList.add('active');
-$('heading').textContent=id==='home'?'Dashboard':id.charAt(0).toUpperCase()+id.slice(1);
-render();
-}
-function safe(s){
-return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-}
-function quickAdd(){
-let t=$('quickTask').value.trim();
-if(!t)return;
-tasks.unshift({id:Date.now(),text:t,subject:$('quickSubject').value,priority:'Medium',done:false,date:null});
-$('quickTask').value='';
-save();render();
+$("nav").addEventListener("click",e=>{
+let b=e.target.closest("button[data-section]");
+if(b)openSection(b.dataset.section);
+});
+function addQuickTask(){
+let v=$("quickTask").value.trim();if(!v)return;
+data.tasks.push({name:v,priority:"Normal",done:false});
+$("quickTask").value="";save();openSection("tasks");
 }
 function addTask(){
-let t=$('taskInput').value.trim();
-if(!t)return;
-tasks.unshift({id:Date.now(),text:t,subject:$('subject').value,priority:$('priority').value,done:false,date:null});
-$('taskInput').value='';
-save();render();
+let v=$("taskInput").value.trim();if(!v)return;
+data.tasks.push({name:v,priority:$("taskPriority").value,done:false});
+$("taskInput").value="";save();
 }
-function toggle(id){
-let t=tasks.find(x=>x.id===id);
-if(!t)return;
-t.done=!t.done;
-t.date=t.done?key():null;
-if(t.done)history[key()]=(history[key()]||0)+1;
-save();render();
-}
-function del(id){
-tasks=tasks.filter(t=>t.id!==id);
-save();render();
-}
-function priorityChange(id,v){
-let t=tasks.find(x=>x.id===id);
-if(t){t.priority=v;save();render();}
-}
-function clearCompleted(){
-tasks=tasks.filter(t=>!t.done);
-save();render();
-}
+function toggleTask(i){data.tasks[i].done=!data.tasks[i].done;save()}
+function deleteTask(i){data.tasks.splice(i,1);save()}
 function renderTasks(){
-let s=$('search').value.toLowerCase();
-$('taskList').innerHTML='';
-tasks.filter(t=>t.text.toLowerCase().includes(s)).forEach(t=>{
-let d=document.createElement('div');
-d.className='task';
-d.innerHTML=`<span class="${t.done?'done':''}"><strong>${safe(t.text)}</strong></span>
-<div class="small">${safe(t.subject)} • ${safe(t.priority)}</div>
+$("taskList").innerHTML=data.tasks.map((t,i)=>`
+<div class="item">
 <div class="row">
-<button onclick="toggle(${t.id})">${t.done?'Undo':'Complete'}</button>
-<select onchange="priorityChange(${t.id},this.value)">
-<option ${t.priority==='Low'?'selected':''}>Low</option>
-<option ${t.priority==='Medium'?'selected':''}>Medium</option>
-<option ${t.priority==='High'?'selected':''}>High</option>
+<div style="flex:3">
+${t.done?"<del>":""}${esc(t.name)}${t.done?"</del>":""}
+<div class="small">Priority: ${esc(t.priority)}</div>
+</div>
+<button class="ghost" onclick="toggleTask(${i})">${t.done?"Undo":"Complete"}</button>
+<button class="danger" onclick="deleteTask(${i})">✕</button>
+</div></div>`).join("")||'<p class="muted">No tasks yet.</p>';
+$("taskStat").textContent=data.tasks.filter(t=>t.done).length;
+}
+function addChapter(){
+let subject=$("chapterSubject").value;
+let name=$("chapterName").value.trim();
+if(!name)return;
+data.chapters.push({subject,name,status:"Not Started"});
+$("chapterName").value="";save();
+}
+function changeChapter(i,v){data.chapters[i].status=v;save()}
+function deleteChapter(i){data.chapters.splice(i,1);save()}
+function renderChapters(){
+$("chapterList").innerHTML=data.chapters.map((c,i)=>`
+<div class="item">
+<div class="row">
+<div style="flex:2">
+<strong>${esc(c.name)}</strong><br>
+<span class="tag">${esc(c.subject)}</span>
+</div>
+<select class="status" onchange="changeChapter(${i},this.value)">
+<option ${c.status==="Not Started"?"selected":""}>Not Started</option>
+<option ${c.status==="In Progress"?"selected":""}>In Progress</option>
+<option ${c.status==="Completed"?"selected":""}>Completed</option>
 </select>
-<button onclick="del(${t.id})">Delete</button></div>`;
-$('taskList').appendChild(d);
-});
+<button class="danger" onclick="deleteChapter(${i})">✕</button>
+</div></div>`).join("")||'<p class="muted">Add your first chapter above!</p>';
+let total=data.chapters.length,completed=data.chapters.filter(c=>c.status==="Completed").length,working=data.chapters.filter(c=>c.status==="In Progress").length;
+let percent=total?Math.round(completed/total*100):0;
+$("totalChapters").textContent=total;$("completedChapters").textContent=completed;$("workingChapters").textContent=working;
+$("trackerProgress").style.width=percent+"%";$("trackerPercent").textContent=percent+"% completed";
+$("chapterStat").textContent=percent+"%";$("homeProgress").style.width=percent+"%";$("progressText").textContent=percent+"% completed";
 }
 function addPlan(){
-let t=$('planInput').value.trim();
-if(!t)return;
-plans.push({id:Date.now(),date:$('planDate').value||key(),text:t,subject:$('planSubject').value});
-$('planInput').value='';
-save();render();
+let date=$("planDate").value,v=$("planTask").value.trim();if(!date||!v)return;
+data.plans.push({date,v,done:false});$("planTask").value="";save();
 }
-function delPlan(id){
-plans=plans.filter(p=>p.id!==id);
-save();render();
-}
+function togglePlan(i){data.plans[i].done=!data.plans[i].done;save()}
+function deletePlan(i){data.plans.splice(i,1);save()}
 function renderPlans(){
-$('plans').innerHTML='';
-plans.sort((a,b)=>a.date.localeCompare(b.date)).forEach(p=>{
-let d=document.createElement('div');
-d.className='plan';
-d.innerHTML=`<strong>${safe(p.date)}</strong> • ${safe(p.subject)}<br>${safe(p.text)}<button onclick="delPlan(${p.id})">Delete</button>`;
-$('plans').appendChild(d);
-});
+$("planList").innerHTML=data.plans.slice().sort((a,b)=>a.date.localeCompare(b.date)).map((p)=>{
+let i=data.plans.indexOf(p);
+return `<div class="item"><div class="row">
+<div style="flex:2"><strong>${esc(p.v)}</strong><div class="small">${esc(p.date)}</div></div>
+<button class="ghost" onclick="togglePlan(${i})">${p.done?"Undo":"Done"}</button>
+<button class="danger" onclick="deletePlan(${i})">✕</button>
+</div></div>`}).join("")||'<p class="muted">Nothing planned yet.</p>';
 }
-function addTT(){
-let s=$('ttSubject').value.trim();
-if(!s)return;
-timetable.push({id:Date.now(),day:$('ttDay').value,time:$('ttTime').value,subject:s});
-$('ttSubject').value='';
-save();render();
+function addExam(){
+let name=$("examName").value.trim(),date=$("examDate").value;if(!name||!date)return;
+data.exams.push({name,date});$("examName").value="";save();
 }
-function delTT(id){
-timetable=timetable.filter(x=>x.id!==id);
-save();render();
+function deleteExam(i){data.exams.splice(i,1);save()}
+function renderExams(){
+$("examList").innerHTML=data.exams.map((e,i)=>{
+let days=Math.ceil((new Date(e.date+"T00:00:00")-new Date(new Date().toDateString()))/86400000);
+return `<div class="item"><strong>${esc(e.name)}</strong><div class="small">${esc(e.date)}</div><div class="stat">${days<0?"Passed":days===0?"TODAY":days+" days left"}</div><button class="danger" onclick="deleteExam(${i})">Delete</button></div>`}).join("")||'<p class="muted">Add an exam countdown.</p>';
 }
-function renderTT(){
-$('ttList').innerHTML='';
-['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'].forEach(day=>{
-let list=timetable.filter(x=>x.day===day).sort((a,b)=>a.time.localeCompare(b.time));
-if(!list.length)return;
-let div=document.createElement('div');
-div.className='card';
-div.innerHTML=`<h3>${day}</h3>`;
-list.forEach(x=>{
-let item=document.createElement('div');
-item.className='item';
-item.innerHTML=`${safe(x.time||'Any time')} — ${safe(x.subject)} <button onclick="delTT(${x.id})">Delete</button>`;
-div.appendChild(item);
-});
-$('ttList').appendChild(div);
-});
+function addNote(){
+let title=$("noteTitle").value.trim(),text=$("noteText").value.trim(),subject=$("noteSubject").value;
+if(!title||!text)return;
+data.notes.push({title,text,subject,date:new Date().toLocaleDateString()});
+$("noteTitle").value="";$("noteText").value="";save();
 }
-function saveProfile(){
-profile={name:$('name').value.trim(),class:$('className').value.trim(),school:$('school').value.trim()};
-save();render();
+function deleteNote(i){data.notes.splice(i,1);save()}
+function renderNotes(){
+$("noteList").innerHTML=data.notes.map((n,i)=>`
+<div class="item"><strong>${esc(n.title)}</strong><span class="tag">${esc(n.subject)}</span>
+<p class="small">${esc(n.date)}</p><p style="white-space:pre-wrap;margin:10px 0">${esc(n.text)}</p>
+<button class="danger" onclick="deleteNote(${i})">Delete</button></div>`).join("")||'<p class="muted">No notes saved.</p>';
 }
-function changeTheme(t){
-theme=t;localStorage.theme=t;document.body.className=t;
+function saveJournal(){
+let v=$("journalText").value.trim();if(!v)return;
+data.journals.unshift({text:v,date:new Date().toLocaleString()});
+$("journalText").value="";save();
 }
-function saveGoal(){
-let n=Number($('goalInput').value);
-if(n<1||n>50)return alert('Choose a goal from 1 to 50');
-goal=n;save();render();
+function deleteJournal(i){data.journals.splice(i,1);save()}
+function renderJournals(){
+$("journalList").innerHTML=data.journals.map((j,i)=>`
+<div class="item"><p class="small">${esc(j.date)}</p><p style="white-space:pre-wrap;margin:10px 0">${esc(j.text)}</p><button class="danger" onclick="deleteJournal(${i})">Delete</button></div>`).join("");
 }
-function loadNote(){
-$('noteText').value=notes[$('noteSub').value]||'';
+function addLink(){
+let title=$("linkTitle").value.trim(),url=$("linkUrl").value.trim();
+if(!title||!url)return;
+try{let u=new URL(url);if(!["https:","http:"].includes(u.protocol))return alert("Only web links are allowed.");data.links.push({title,url:u.href});}
+catch(e){return alert("Enter a valid website link.");}
+$("linkTitle").value="";$("linkUrl").value="";save();
 }
-function saveNote(){
-notes[$('noteSub').value]=$('noteText').value;
-save();$('noteStatus').textContent='Saved 💜';
+function deleteLink(i){data.links.splice(i,1);save()}
+function renderLinks(){
+$("linkList").innerHTML=data.links.map((l,i)=>`
+<div class="item"><div class="row"><div style="flex:2"><strong>${esc(l.title)}</strong></div>
+<button onclick="window.open('${safeUrl(l.url)}','_blank','noopener')">Open</button>
+<button class="danger" onclick="deleteLink(${i})">Delete</button></div></div>`).join("")||'<p class="muted">No links added.</p>';
 }
-function setTimer(n){
-pauseTimer();seconds=n*60;updateTimer();
+function saveProfile(){data.profile=$("profileName").value.trim();save()}
+function saveRoomSubject(){data.roomSubject=$("roomSubject").value;localStorage.setItem(KEY,JSON.stringify(data))}
+function setTheme(t){
+data.theme=t;
+let themes={
+lavender:["#f5f3ff","#fff","#292344","#9070dd","#eee8ff"],
+dark:["#181827","#25253a","#f3f0ff","#ad8cff","#36334d"],
+ocean:["#eaf7ff","#fff","#18364d","#3b9edb","#d9f1ff"],
+rose:["#fff1f6","#fff","#502b43","#d777a4","#ffe0ed"]
+};
+let x=themes[t];
+document.documentElement.style.setProperty("--bg",x[0]);
+document.documentElement.style.setProperty("--card",x[1]);
+document.documentElement.style.setProperty("--text",x[2]);
+document.documentElement.style.setProperty("--accent",x[3]);
+document.documentElement.style.setProperty("--soft",x[4]);
+saveThemeOnly();
 }
+function saveThemeOnly(){localStorage.setItem(KEY,JSON.stringify(data))}
+function setRoomTheme(t){
+data.roomTheme=t;saveThemeOnly();
+let themes={lavender:"#eee8ff",night:"#22243d",forest:"#e0f1e4",ocean:"#dff4ff",sunset:"#fff0df"};
+$("studyRoom").style.setProperty("--roombg",themes[t]);
+$("studyRoom").style.color=t==="night"?"#fff":"var(--text)";
+}
+function newChallenge(){
+let a=["Revise one difficult chapter 📚","Solve 5 extra questions ✍️","Spend 25 minutes distraction-free ⏳","Organise your notes 📝","Review yesterday's learning 🔁","Complete one pending task 🎯","Learn one new concept 💡"];
+$("challenge").textContent=a[Math.floor(Math.random()*a.length)];
+}
+let remaining=25*60,timer=null;
 function updateTimer(){
-$('timer').textContent=String(Math.floor(seconds/60)).padStart(2,'0')+':'+String(seconds%60).padStart(2,'0');
+let m=Math.floor(remaining/60),s=remaining%60;
+$("timerDisplay").textContent=String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
+}
+function setTimer(){
+let v=parseInt($("timerMinutes").value);
+if(!v||v<1||v>180)return alert("Choose 1–180 minutes.");
+pauseTimer();remaining=v*60;updateTimer();
 }
 function startTimer(){
-if(timerInterval)return;
-timerInterval=setInterval(()=>{
-seconds--;updateTimer();
-if(seconds<=0){
-pauseTimer();$('timerStatus').textContent='Focus session completed 🎉';
-if(localStorage.sound==='true')beep();
+if(timer)return;
+if(remaining<=0)resetTimer();
+timer=setInterval(()=>{
+remaining--;updateTimer();
+if(remaining<=0){
+pauseTimer();data.sessions++;save();
+$("roomSession").textContent="Session completed! Great work! ✨";
+alert("Focus session completed! 💜");
 }
 },1000);
 }
-function pauseTimer(){
-clearInterval(timerInterval);timerInterval=null;
+function pauseTimer(){if(timer){clearInterval(timer);timer=null}}
+function resetTimer(){pauseTimer();remaining=25*60;updateTimer();$("roomSession").textContent="Focus on one thing at a time ✨"}
+function exportData(){
+let blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+let a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="students-hub-backup.json";a.click();URL.revokeObjectURL(a.href);
 }
-function resetTimer(){
-pauseTimer();seconds=1500;updateTimer();$('timerStatus').textContent='';
-}
-function beep(){
-try{
-let c=new AudioContext(),o=c.createOscillator(),g=c.createGain();
-o.connect(g);g.connect(c.destination);o.frequency.value=800;g.gain.value=.1;o.start();o.stop(c.currentTime+.5);
-}catch(e){}
-}
-function streakCount(){
-let n=0,d=new Date();
-while(true){
-let k=d.toLocaleDateString('en-CA');
-if((history[k]||0)>0){n++;d.setDate(d.getDate()-1);}
-else break;
-}
-return n;
-}
-function renderHome(){
-let today=tasks.filter(t=>t.done&&t.date===key()).length;
-$('todayCount').textContent=today;
-$('totalCount').textContent=tasks.filter(t=>t.done).length;
-$('pendingCount').textContent=tasks.filter(t=>!t.done).length;
-$('streak').textContent=streakCount()+' 🔥';
-$('goalProgress').value=Math.min(100,today/goal*100);
-$('goalLabel').textContent=today+' / '+goal+' tasks completed';
-$('welcome').textContent=profile.name?'Welcome back, '+profile.name+' 💜':'Welcome to your Student Space ✨';
-$('quote').textContent=['Small progress is still progress.','Your future is built today.','Consistency beats perfection.','Keep learning. Keep growing.','You are capable of great things.','One task at a time.','Make today count.'][new Date().getDay()];
-$('homeTasks').innerHTML='';
-tasks.filter(t=>!t.done).slice(0,5).forEach(t=>{
-let d=document.createElement('div');d.className='task';
-d.innerHTML=`${safe(t.text)} <span class="small">(${safe(t.subject)})</span> <button onclick="toggle(${t.id})">Complete</button>`;
-$('homeTasks').appendChild(d);
-});
-if(!tasks.filter(t=>!t.done).length)$('homeTasks').textContent='All tasks completed! 🎉';
-let day=new Date().toLocaleDateString('en-US',{weekday:'long'});
-$('todayTimetable').innerHTML='';
-timetable.filter(t=>t.day===day).sort((a,b)=>a.time.localeCompare(b.time)).forEach(t=>{
-let d=document.createElement('div');d.className='item';d.textContent=(t.time||'')+' — '+t.subject;$('todayTimetable').appendChild(d);
-});
-if(!$('todayTimetable').innerHTML)$('todayTimetable').textContent='No slots for today yet.';
-}
-function renderAwards(){
-let n=tasks.filter(t=>t.done).length;
-let a=[
-[1,'🌱 First Step','Complete your first task'],
-[5,'⭐ Rising Star','Complete 5 tasks'],
-[10,'🏆 Achiever','Complete 10 tasks'],
-[25,'💎 Diamond','Complete 25 tasks'],
-[50,'🚀 Legend','Complete 50 tasks'],
-[100,'👑 Master','Complete 100 tasks']
-];
-$('awards').innerHTML=a.map(x=>`<div class="badge">${n>=x[0]?'🔓':'🔒'} ${x[1]} — ${x[2]} (${Math.min(n,x[0])}/${x[0]})</div>`).join('');
-let html='';
-for(let i=6;i>=0;i--){
-let d=new Date();d.setDate(d.getDate()-i);
-let k=d.toLocaleDateString('en-CA');
-html+=`<div class="item">${d.toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric'})}: ${history[k]||0} completed <progress value="${history[k]||0}" max="10"></progress></div>`;
-}
-$('weekly').innerHTML=html;
-}
-function backup(){
-let d={tasks,plans,timetable,notes,profile,history,goal,theme};
-let b=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});
-let a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='students-hub-backup.json';a.click();
-}
-function restore(){
-let f=$('file').files[0];if(!f)return alert('Choose a file');
+function importData(e){
+let file=e.target.files[0];if(!file)return;
 let r=new FileReader();
-r.onload=()=>{
-try{
-let d=JSON.parse(r.result);
-tasks=d.tasks||[];plans=d.plans||[];timetable=d.timetable||[];notes=d.notes||{};profile=d.profile||{};history=d.history||{};goal=d.goal||3;theme=d.theme||'';
-localStorage.theme=theme;save();render();alert('Restored!');
-}catch(e){alert('Invalid file');}
-};
-r.readAsText(f);
-}
-function resetTasks(){
-if(confirm('Delete all tasks?')){tasks=[];history={};save();render();}
+r.onload=()=>{try{let d=JSON.parse(r.result);if(!d||typeof d!=="object")throw Error();data={...data,...d};save();alert("Backup restored!");}catch(x){alert("Invalid backup file.");}};
+r.readAsText(file);
 }
 function resetAll(){
-if(!confirm('Delete all Students Hub data?'))return;
-if(!confirm('Final confirmation?'))return;
-localStorage.clear();location.reload();
+if(confirm("Are you sure? This will erase all Students Hub data saved in this browser.")){
+localStorage.removeItem(KEY);location.reload();
 }
-function render(){
-document.body.className=theme;
-$('date').textContent=new Date().toLocaleDateString(undefined,{weekday:'long',year:'numeric',month:'long',day:'numeric'});
-$('name').value=profile.name||'';
-$('className').value=profile.class||'';
-$('school').value=profile.school||'';
-$('goalInput').value=goal;
-renderTasks();renderPlans();renderTT();renderHome();renderAwards();loadNote();
 }
-function updateClock(){
-$('clock').textContent=new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit',second:'2-digit'});
+function esc(s){
+return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
-$('planDate').value=key();
-$('quickTask').addEventListener('keydown',e=>{if(e.key==='Enter')quickAdd();});
-$('taskInput').addEventListener('keydown',e=>{if(e.key==='Enter')addTask();});
-$('planInput').addEventListener('keydown',e=>{if(e.key==='Enter')addPlan();});
-updateClock();setInterval(updateClock,1000);render();
+function safeUrl(s){return esc(s).replace(/'/g,"%27")}
+function renderAll(){
+renderTasks();renderChapters();renderPlans();renderExams();renderNotes();renderJournals();renderLinks();
+$("sessionStat").textContent=data.sessions;
+}
+function init(){
+$("today").textContent=new Date().toLocaleDateString(undefined,{weekday:"long",year:"numeric",month:"long",day:"numeric"});
+$("profileName").value=data.profile||"";
+$("greeting").textContent=data.profile?"Welcome back, "+data.profile+" 💜":"Welcome back! 💜";
+if(data.theme)setTheme(data.theme);
+if(data.roomTheme)setRoomTheme(data.roomTheme);
+$("roomSubject").value=data.roomSubject||"";
+renderAll();updateTimer();
+}
+init();
 </script>
 </body>
 </html>
-
