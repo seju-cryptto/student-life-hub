@@ -1,449 +1,288 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Student OS | Study Edition</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Life Hub</title>
 <style>
-:root{
- --bg:#f4f0ff;--panel:#fff;--accent:#9370db;
- --text:#41345b;--soft:#eee7ff;
-}
 *{box-sizing:border-box}
-body{margin:0;font-family:Segoe UI,Arial,sans-serif;color:var(--text);background:var(--bg)}
-button,input,select,textarea{font:inherit}
-button{
- border:0;padding:10px 13px;border-radius:10px;
- background:var(--accent);color:white;cursor:pointer;
-}
-button:hover{opacity:.85}
-input,select,textarea{
- padding:10px;border:1px solid #ddd;border-radius:10px;
- width:100%;background:white;color:#333;
-}
-textarea{resize:vertical;min-height:70px}
-#desktop{min-height:100vh;padding:18px 18px 80px;background:var(--bg)}
-.top{
- display:flex;justify-content:space-between;align-items:center;
- flex-wrap:wrap;gap:10px;
-}
-.top h1{margin:5px 0}
-#nav{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}
-#nav button{background:var(--panel);color:var(--text)}
-#nav button.active{background:var(--accent);color:white}
-#view{max-width:1200px;margin:auto}
-.cards{
- display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
- gap:15px;
-}
-.card{
- background:var(--panel);border-radius:18px;
- padding:18px;box-shadow:0 4px 18px #00000008;
-}
-.card h3{margin-top:0}
-.big{font-size:28px;font-weight:bold}
-.muted{opacity:.65;font-size:13px}
-.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+:root{--accent:#9875df;--bg:#f2edff;--text:#443665;--glass:rgba(255,255,255,.88)}
+body{margin:0;font-family:Segoe UI,Arial,sans-serif;color:var(--text);overflow:hidden}
+button,input,textarea,select{font:inherit}
+button{border:0;border-radius:12px;padding:10px 14px;cursor:pointer;background:var(--accent);color:white;transition:.2s}
+button:hover{filter:brightness(.96);transform:translateY(-1px)}
+button.secondary{background:#eee7ff;color:var(--text)}
+button.danger{background:#ffebee;color:#b33950}
+input,textarea,select{padding:11px;border:1px solid #ddd3f6;border-radius:12px;width:100%;outline:none;background:white;color:#443665}
+input:focus,textarea:focus,select:focus{border-color:var(--accent)}
+h1,h2,h3{margin-top:0}
+.small{font-size:12px;opacity:.7}
+#lock{position:fixed;inset:0;z-index:100;background:linear-gradient(135deg,#bca4f4,#e8dfff,#a9c5f8);display:flex;align-items:center;justify-content:center;text-align:center}
+.lockbox{background:rgba(255,255,255,.7);backdrop-filter:blur(20px);padding:40px;border-radius:30px;width:min(450px,90%);box-shadow:0 20px 80px #7560a533}
+#clock{font-size:65px;font-weight:700;margin-bottom:0}
+#date{margin:8px 0 25px}
+#desktop{position:fixed;inset:0;display:none;background:linear-gradient(135deg,#e9ddff,#d5e7ff,#f6e5ff);background-size:cover}
+#desktop:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 20% 20%,#ffffff88,transparent 35%),radial-gradient(circle at 80% 80%,#c9b1ff77,transparent 45%);pointer-events:none}
+.icons{position:absolute;top:15px;left:15px;display:flex;flex-direction:column;gap:8px;width:90px}
+.desktop-icon{background:transparent;color:var(--text);padding:10px 5px;border-radius:12px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:5px;word-break:break-word}
+.desktop-icon:hover{background:#ffffff77}
+.desktop-icon span:first-child{font-size:30px}
+#widget{position:absolute;right:22px;top:20px;background:#ffffffaa;backdrop-filter:blur(10px);padding:20px;border-radius:20px;width:220px}
+#widget h2{margin-bottom:8px}
+#taskbar{position:absolute;bottom:0;left:0;right:0;height:58px;background:#ffffffb8;backdrop-filter:blur(18px);display:flex;align-items:center;justify-content:space-between;padding:0 15px;z-index:80}
+#taskleft,#taskright{display:flex;align-items:center;gap:8px}
+#startbtn{font-size:18px;background:#e9ddff;color:var(--text)}
+#taskapps{display:flex;gap:5px;overflow:auto}
+.taskapp{background:#ffffff88;color:var(--text);padding:8px 12px;border-radius:10px;white-space:nowrap}
+#startmenu{position:absolute;bottom:65px;left:15px;width:310px;background:#ffffffee;backdrop-filter:blur(20px);border-radius:22px;padding:18px;z-index:90;display:none;box-shadow:0 15px 50px #6a538533}
+#startmenu.show{display:block}
+#startapps{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:15px}
+.startapp{background:#f2edff;color:var(--text);display:flex;flex-direction:column;align-items:center;gap:6px;padding:15px 5px}
+#search{margin-bottom:10px}
+.window{position:absolute;width:min(650px,90vw);height:min(540px,75vh);background:var(--glass);backdrop-filter:blur(25px);border:1px solid #ffffffb0;border-radius:20px;box-shadow:0 20px 60px #64558c35;display:flex;flex-direction:column;overflow:hidden;z-index:10}
+.window.maximized{left:8px!important;top:8px!important;width:calc(100% - 16px)!important;height:calc(100% - 74px)!important}
+.wtitle{height:45px;min-height:45px;background:#ffffff80;display:flex;align-items:center;justify-content:space-between;padding:0 14px;cursor:move;user-select:none}
+.wcontrols{display:flex;gap:6px}
+.wcontrols button{padding:5px 10px;background:#eee7ff;color:var(--text)}
+.wcontrols .close{background:#ffe4e9;color:#9f334b}
+.wbody{padding:18px;overflow:auto;flex:1}
+.row{display:flex;gap:8px;align-items:center;margin:8px 0}
 .row>*{flex:1}
-hr{border:0;border-top:1px solid #eee;margin:15px 0}
-.progress{
- height:10px;background:#eae4f5;border-radius:20px;overflow:hidden;
-}
+.card{background:white;border-radius:16px;padding:15px;margin:10px 0;box-shadow:0 3px 15px #6b538c0a}
+.pill{display:inline-block;background:#eee7ff;border-radius:20px;padding:5px 10px;font-size:12px}
+.progress{height:12px;background:#eee5fa;border-radius:20px;overflow:hidden}
 .progress div{height:100%;background:var(--accent);width:0}
-.item{
- padding:12px;background:var(--soft);border-radius:12px;
- margin:8px 0;display:flex;gap:8px;align-items:center;flex-wrap:wrap;
-}
-.item>*{flex:1}
-.item button{flex:0 0 auto}
-#bar{
- position:fixed;bottom:0;left:0;width:100%;height:58px;
- background:#ffffffd9;backdrop-filter:blur(10px);
- display:flex;justify-content:space-between;align-items:center;
- padding:10px 18px;z-index:10;
-}
-#bar button{background:var(--soft);color:var(--text)}
-.badge{background:var(--soft);padding:5px 10px;border-radius:20px;font-size:12px}
-select{min-width:120px}
-@media(max-width:600px){
- #desktop{padding:12px 12px 75px}
- .big{font-size:22px}
+.item{background:#fff;padding:12px;border-radius:14px;margin:8px 0;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.item button{padding:7px 10px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+#toast{position:absolute;bottom:75px;left:50%;transform:translateX(-50%);background:#443665;color:white;padding:12px 20px;border-radius:20px;z-index:120;display:none}
+@media(max-width:650px){
+.icons{display:grid;grid-template-columns:repeat(3,75px);width:auto}
+#widget{top:150px;right:10px;width:180px}
+.window{width:94vw!important;left:3vw!important}
+.grid2{grid-template-columns:1fr}
 }
 </style>
 </head>
 <body>
+
+<!-- WELCOME / LOCK SCREEN -->
+<div id="lock">
+  <div class="lockbox">
+    <div style="font-size:60px">🎓</div>
+    <p class="small">STUDENT LIFE HUB</p>
+    <div id="clock">00:00</div>
+    <div id="date"></div>
+    <h2>Welcome to your Study Space 💜</h2>
+    <p>Learn. Grow. Achieve.</p>
+    <button onclick="enterDesktop()" style="width:100%;font-size:17px;padding:15px">✨ Enter Desktop</button>
+    <p class="small" style="margin-top:20px">Your personal learning universe</p>
+  </div>
+</div>
+
+<!-- DESKTOP -->
 <div id="desktop">
-<div class="top">
- <div>
-  <h1>🎓 Student OS</h1>
-  <div class="muted">Your personal study workspace.</div>
- </div>
- <div class="row" style="flex:0 0 auto">
-  <span class="badge" id="today"></span>
- </div>
-</div>
+  <div class="icons" id="icons"></div>
 
-<div id="nav">
- <button onclick="show('home')" class="active">🏠 Home</button>
- <button onclick="show('chapters')">📊 Chapters</button>
- <button onclick="show('flash')">📖 Flashcards</button>
- <button onclick="show('mistakes')">❌ Mistakes</button>
- <button onclick="show('revision')">🔁 Revision</button>
- <button onclick="show('practice')">🧪 Practice</button>
- <button onclick="show('exam')">📝 Exam</button>
-</div>
-<div id="view"></div>
-</div>
+  <div id="widget">
+    <h2>☁️ My Space</h2>
+    <div id="wdate"></div>
+    <hr style="border:0;border-top:1px solid #ddd">
+    <p id="quote">Small steps every day.</p>
+    <div class="pill">🎓 Study Edition</div>
+  </div>
 
-<div id="bar">
- <button onclick="show('home')">🎓 Student OS</button>
- <span id="barStatus">Study Edition</span>
- <button onclick="show('revision')">🔁 Revise</button>
+  <div id="startmenu">
+    <h3>🎓 Student Life Hub</h3>
+    <input id="search" placeholder="🔍 Search apps..." oninput="searchApps(this.value)">
+    <div id="startapps"></div>
+    <button class="secondary" style="width:100%;margin-top:15px" onclick="lockDesktop()">🔒 Lock Screen</button>
+  </div>
+
+  <div id="taskbar">
+    <div id="taskleft">
+      <button id="startbtn" onclick="toggleStart()">🎓</button>
+      <div id="taskapps"></div>
+    </div>
+    <div id="taskright">
+      <span id="taskclock"></span>
+      <button class="secondary" onclick="lockDesktop()">🔒</button>
+    </div>
+  </div>
 </div>
+<div id="toast"></div>
 
 <script>
-const subjects=["Physics","Chemistry","Maths","English","Computer Science"];
-const DB={
- chapters:JSON.parse(localStorage.getItem("so_ch")||"[]"),
- cards:JSON.parse(localStorage.getItem("so_fc")||"[]"),
- mistakes:JSON.parse(localStorage.getItem("so_mi")||"[]"),
- revisions:JSON.parse(localStorage.getItem("so_re")||"[]"),
- questions:JSON.parse(localStorage.getItem("so_qu")||"[]"),
- sessions:JSON.parse(localStorage.getItem("so_se")||"[]"),
- exams:JSON.parse(localStorage.getItem("so_ex")||"[]")
+const apps=[
+ {id:"home",name:"Home",icon:"🏠"},
+ {id:"chapters",name:"Chapter Tracker",icon:"📚"},
+ {id:"flash",name:"Flashcards",icon:"🃏"},
+ {id:"mistakes",name:"Mistake Bank",icon:"❌"},
+ {id:"revision",name:"Revision",icon:"🔁"},
+ {id:"practice",name:"Practice",icon:"🧪"},
+ {id:"exam",name:"Exam Simulator",icon:"📝"},
+ {id:"notes",name:"Notes",icon:"📒"},
+ {id:"calculator",name:"Calculator",icon:"🧮"},
+ {id:"settings",name:"Settings",icon:"⚙️"}
+];
+let z=20, windows={}, activeQuiz=null, examTimer=null;
+const store={
+ chapters:JSON.parse(localStorage.getItem("hub_ch")||"[]"),
+ flash:JSON.parse(localStorage.getItem("hub_fc")||"[]"),
+ mistakes:JSON.parse(localStorage.getItem("hub_mi")||"[]"),
+ revisions:JSON.parse(localStorage.getItem("hub_re")||"[]"),
+ questions:JSON.parse(localStorage.getItem("hub_q")||"[]"),
+ notes:localStorage.getItem("hub_notes")||""
 };
 function save(){
- for(const k in DB)localStorage.setItem("so_"+({
- chapters:"ch",cards:"fc",mistakes:"mi",revisions:"re",
- questions:"qu",sessions:"se",exams:"ex"
- })[k],JSON.stringify(DB[k]));
+ for(let k of ["chapters","flash","mistakes","revisions","questions"])
+ localStorage.setItem("hub_"+({chapters:"ch",flash:"fc",mistakes:"mi",revisions:"re",questions:"q"}[k]),JSON.stringify(store[k]));
+ localStorage.setItem("hub_notes",store.notes);
 }
-function uid(){return Date.now()+Math.random()}
-function esc(s){
- return String(s??"").replace(/[&<>"']/g,c=>({
- "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
- }[c]));
+function updateClock(){
+ const d=new Date();
+ document.getElementById("clock").textContent=d.toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});
+ document.getElementById("date").textContent=d.toLocaleDateString([],{weekday:"long",month:"long",day:"numeric",year:"numeric"});
+ document.getElementById("taskclock").textContent=d.toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});
+ document.getElementById("wdate").textContent=d.toLocaleDateString([],{weekday:"long",month:"long",day:"numeric"});
 }
-function show(page){
- document.querySelectorAll("#nav button").forEach(b=>b.classList.remove("active"));
- let map={home:0,chapters:1,flash:2,mistakes:3,revision:4,practice:5,exam:6};
- if(map[page]!==undefined)document.querySelectorAll("#nav button")[map[page]].classList.add("active");
- const v=document.getElementById("view");
- if(page==="home")home(v);
- if(page==="chapters")chapters(v);
- if(page==="flash")flash(v);
- if(page==="mistakes")mistakes(v);
- if(page==="revision")revision(v);
- if(page==="practice")practice(v);
- if(page==="exam")exam(v);
+setInterval(updateClock,1000);updateClock();
+
+function enterDesktop(){
+ document.getElementById("lock").style.display="none";
+ document.getElementById("desktop").style.display="block";
 }
-function home(v){
- let mastered=DB.chapters.filter(x=>x.status==="Mastered").length;
- let due=DB.revisions.filter(x=>x.date<=today()).length;
- let pct=DB.chapters.length?Math.round(mastered/DB.chapters.length*100):0;
- v.innerHTML=`
- <div class="cards">
-  <div class="card"><h3>📚 Total Chapters</h3><div class="big">${DB.chapters.length}</div></div>
-  <div class="card"><h3>🏆 Mastered</h3><div class="big">${mastered}</div></div>
-  <div class="card"><h3>🔁 Revision Due</h3><div class="big">${due}</div></div>
-  <div class="card"><h3>📖 Flashcards</h3><div class="big">${DB.cards.length}</div></div>
- </div>
- <div class="card" style="margin-top:15px">
- <h3>📈 Overall Chapter Mastery</h3>
- <div class="progress"><div style="width:${pct}%"></div></div>
- <p>${pct}% mastered</p>
- </div>
- <div class="cards" style="margin-top:15px">
- <div class="card"><h3>🔁 Due Today</h3><p>${due} revision item(s)</p><button onclick="show('revision')">Open revision</button></div>
- <div class="card"><h3>❌ Mistake Bank</h3><p>${DB.mistakes.length} saved mistakes</p><button onclick="show('mistakes')">Review mistakes</button></div>
- <div class="card"><h3>🧪 Practice</h3><p>${DB.questions.length} questions</p><button onclick="show('practice')">Start practice</button></div>
- </div>
- <div class="card" style="margin-top:15px">
- <h3>⚡ Quick Actions</h3>
- <div class="row">
- <button onclick="show('chapters')">Add chapter</button>
- <button onclick="show('flash')">Add flashcard</button>
- <button onclick="show('mistakes')">Save mistake</button>
- <button onclick="show('exam')">Start test</button>
- </div></div>`;
+function lockDesktop(){
+ document.getElementById("desktop").style.display="none";
+ document.getElementById("lock").style.display="flex";
+ document.getElementById("startmenu").classList.remove("show");
 }
-function chapters(v){
- v.innerHTML=`
- <div class="card">
- <h2>📊 Chapter Mastery Tracker</h2>
- <div class="row">
- <select id="chSubject">${subjects.map(s=>`<option>${s}</option>`).join("")}</select>
- <input id="chName" placeholder="Chapter name">
- </div>
- <div class="row">
- <select id="chStatus">
- <option>Learning</option><option>Practising</option>
- <option>Revised</option><option>Mastered</option>
- </select>
- <button onclick="addChapter()">Add Chapter</button>
- </div>
- </div>
- <div class="card" style="margin-top:15px">
- <div class="row"><select id="chFilter" onchange="renderChList()">
- <option value="">All Subjects</option>${subjects.map(s=>`<option>${s}</option>`).join("")}
- </select></div>
- <div id="chList"></div>
- </div>`;
- renderChList();
+function toggleStart(){document.getElementById("startmenu").classList.toggle("show")}
+function buildIcons(){
+ const ic=document.getElementById("icons"),st=document.getElementById("startapps");
+ ic.innerHTML="";st.innerHTML="";
+ apps.forEach(a=>{
+  let b=document.createElement("button");b.className="desktop-icon";
+  b.innerHTML=`<span>${a.icon}</span><span>${a.name}</span>`;
+  b.onclick=()=>openApp(a.id);ic.appendChild(b);
+  let s=document.createElement("button");s.className="startapp";
+  s.innerHTML=`<span style="font-size:26px">${a.icon}</span><span>${a.name}</span>`;
+  s.onclick=()=>{openApp(a.id);toggleStartIfOpen()};st.appendChild(s);
+ });
 }
+buildIcons();
+function toggleStartIfOpen(){document.getElementById("startmenu").classList.remove("show")}
+function searchApps(q){
+ document.querySelectorAll("#startapps .startapp").forEach(b=>b.style.display=b.textContent.toLowerCase().includes(q.toLowerCase())?"flex":"none");
+}
+function toast(msg){
+ let t=document.getElementById("toast");t.textContent=msg;t.style.display="block";
+ setTimeout(()=>t.style.display="none",2200);
+}
+function openApp(id){
+ if(windows[id]){windows[id].style.display="flex";windows[id].style.zIndex=++z;return}
+ const a=apps.find(x=>x.id===id);
+ const w=document.createElement("div");w.className="window";w.style.zIndex=++z;
+ w.style.left=(100+Math.random()*180)+"px";w.style.top=(70+Math.random()*100)+"px";
+ w.innerHTML=`<div class="wtitle"><span>${a.icon} ${a.name}</span><div class="wcontrols"><button onclick="minimize('${id}')">—</button><button onclick="maximize('${id}')">□</button><button class="close" onclick="closeApp('${id}')">✕</button></div></div><div class="wbody" id="body_${id}"></div>`;
+ document.getElementById("desktop").appendChild(w);windows[id]=w;
+ w.addEventListener("mousedown",()=>w.style.zIndex=++z);
+ drag(w,w.querySelector(".wtitle"));
+ renderApp(id);
+ updateTaskApps();
+}
+function drag(w,h){
+ h.addEventListener("mousedown",e=>{
+  if(e.target.closest("button"))return;
+  if(w.classList.contains("maximized"))return;
+  let sx=e.clientX,sy=e.clientY,ox=w.offsetLeft,oy=w.offsetTop;
+  document.onmousemove=ev=>{w.style.left=ox+ev.clientX-sx+"px";w.style.top=oy+ev.clientY-sy+"px"};
+  document.onmouseup=()=>{document.onmousemove=null;document.onmouseup=null};
+ });
+}
+function minimize(id){if(windows[id])windows[id].style.display="none";updateTaskApps()}
+function maximize(id){if(windows[id])windows[id].classList.toggle("maximized")}
+function closeApp(id){if(windows[id]){windows[id].remove();delete windows[id]}updateTaskApps()}
+function updateTaskApps(){
+ let t=document.getElementById("taskapps");t.innerHTML="";
+ Object.keys(windows).forEach(id=>{
+ let b=document.createElement("button");b.className="taskapp";b.textContent=apps.find(a=>a.id===id).icon;
+ b.title=apps.find(a=>a.id===id).name;
+ b.onclick=()=>{windows[id].style.display="flex";windows[id].style.zIndex=++z};
+ t.appendChild(b);
+ });
+}
+function renderApp(id){
+ let b=document.getElementById("body_"+id);if(!b)return;
+ if(id==="home")b.innerHTML=homeHTML();
+ if(id==="chapters")b.innerHTML=chaptersHTML();
+ if(id==="flash")b.innerHTML=flashHTML();
+ if(id==="mistakes")b.innerHTML=mistakesHTML();
+ if(id==="revision")b.innerHTML=revisionHTML();
+ if(id==="practice")b.innerHTML=practiceHTML();
+ if(id==="exam")b.innerHTML=examHTML();
+ if(id==="notes")b.innerHTML=notesHTML();
+ if(id==="calculator")b.innerHTML=calcHTML();
+ if(id==="settings")b.innerHTML=settingsHTML();
+}
+function homeHTML(){
+ let total=store.chapters.length,master=store.chapters.filter(x=>x.status==="Mastered").length;
+ let due=store.revisions.filter(x=>x.date<=today()).length;
+ let pct=total?Math.round(master/total*100):0;
+ return `<h2>Welcome to your Study Desktop 💜</h2><p>Make today count, one chapter at a time.</p>
+ <div class="grid2"><div class="card"><h3>📚 Chapters</h3><h2>${total}</h2></div><div class="card"><h3>🏆 Mastered</h3><h2>${master}</h2></div><div class="card"><h3>🔁 Due</h3><h2>${due}</h2></div><div class="card"><h3>🃏 Flashcards</h3><h2>${store.flash.length}</h2></div></div>
+ <div class="card"><h3>Progress</h3><div class="progress"><div style="width:${pct}%"></div></div><p>${pct}% chapters mastered</p></div>
+ <h3>Quick Launch</h3><div class="grid2">${apps.slice(1,7).map(a=>`<button class="secondary" onclick="openApp('${a.id}')">${a.icon} ${a.name}</button>`).join("")}</div>`;
+}
+function chaptersHTML(){
+ return `<h2>📚 Chapter Tracker</h2><div class="row"><select id="chsub">${subjects()}</select><input id="chname" placeholder="Chapter name"></div><button onclick="addChapter()">+ Add Chapter</button><hr><div id="chlist">${store.chapters.map((c,i)=>chapterItem(c,i)).join("")||"No chapters yet."}</div>`;
+}
+const subs=["Physics","Chemistry","Maths","English","Computer Science"];
+function subjects(){return subs.map(s=>`<option>${s}</option>`).join("")}
+function chapterItem(c,i){return `<div class="item"><div><b>${c.subject}</b><br>${c.name}<br><span class="pill">${c.status}</span></div><div><select onchange="statusChapter(${i},this.value)"><option ${c.status==="Learning"?"selected":""}>Learning</option><option ${c.status==="Practising"?"selected":""}>Practising</option><option ${c.status==="Revised"?"selected":""}>Revised</option><option ${c.status==="Mastered"?"selected":""}>Mastered</option></select><button class="danger" onclick="delChapter(${i})">✕</button></div></div>`}
 function addChapter(){
- let n=document.getElementById("chName").value.trim();
- if(!n)return alert("Enter chapter name");
- DB.chapters.push({id:uid(),subject:document.getElementById("chSubject").value,name:n,status:document.getElementById("chStatus").value});
- save();show("chapters");
+ let n=document.getElementById("chname").value.trim(),s=document.getElementById("chsub").value;
+ if(!n)return toast("Enter chapter name!");
+ store.chapters.push({subject:s,name:n,status:"Learning"});save();renderApp("chapters");refresh("home");toast("Chapter added!");
 }
-function renderChList(){
- let el=document.getElementById("chList");if(!el)return;
- let f=document.getElementById("chFilter").value;
- let arr=DB.chapters.filter(c=>!f||c.subject===f);
- el.innerHTML=arr.map(c=>`
- <div class="item">
- <span><b>${esc(c.name)}</b><br><small>${esc(c.subject)}</small></span>
- <select onchange="changeCh(${c.id},this.value)">
- ${["Learning","Practising","Revised","Mastered"].map(s=>`<option ${s===c.status?"selected":""}>${s}</option>`).join("")}
- </select>
- <button onclick="delCh(${c.id})">🗑️</button>
- </div>`).join("")||"No chapters yet.";
-}
-function changeCh(id,s){let c=DB.chapters.find(x=>x.id==id);if(c)c.status=s;save();renderChList()}
-function delCh(id){DB.chapters=DB.chapters.filter(x=>x.id!=id);save();renderChList()}
-
-function flash(v){
- v.innerHTML=`
- <div class="card">
- <h2>📖 Active Recall Flashcards</h2>
- <div class="row"><select id="fcSub">${subjects.map(s=>`<option>${s}</option>`).join("")}</select></div>
- <textarea id="fcQ" placeholder="Question"></textarea>
- <textarea id="fcA" placeholder="Answer"></textarea>
- <button onclick="addFC()">Save Flashcard</button>
- </div>
- <div class="card" style="margin-top:15px">
- <h3>Study Cards</h3><div id="fcList"></div>
- </div>`;
- renderFC();
-}
-function addFC(){
- let q=document.getElementById("fcQ").value.trim(),a=document.getElementById("fcA").value.trim();
- if(!q||!a)return alert("Enter both question and answer");
- DB.cards.push({id:uid(),subject:document.getElementById("fcSub").value,q,a});
- save();show("flash");
-}
-function renderFC(){
- let el=document.getElementById("fcList");if(!el)return;
- el.innerHTML=DB.cards.map(c=>`
- <div class="item" style="display:block">
- <span class="badge">${esc(c.subject)}</span>
- <p><b>${esc(c.q)}</b></p>
- <button onclick="reveal(${c.id})">Reveal Answer</button>
- <div id="ans${c.id}" style="display:none;margin-top:10px">${esc(c.a)}</div>
- <button onclick="delFC(${c.id})">Delete</button>
- </div>`).join("")||"No cards yet.";
-}
-function reveal(id){let e=document.getElementById("ans"+id);e.style.display=e.style.display==="none"?"block":"none"}
-function delFC(id){DB.cards=DB.cards.filter(x=>x.id!=id);save();renderFC()}
-
-function mistakes(v){
- v.innerHTML=`
- <div class="card">
- <h2>❌ Mistake Bank</h2>
- <div class="row"><select id="miSub">${subjects.map(s=>`<option>${s}</option>`).join("")}</select><input id="miCh" placeholder="Chapter"></div>
- <textarea id="miQ" placeholder="Question or mistake"></textarea>
- <textarea id="miWhy" placeholder="Why was it wrong?"></textarea>
- <textarea id="miCorrect" placeholder="Correct approach / concept"></textarea>
- <button onclick="addMi()">Save Mistake</button>
- </div>
- <div class="card" style="margin-top:15px"><h3>Saved Mistakes</h3><div id="miList"></div></div>`;
- renderMi();
-}
-function addMi(){
- let q=document.getElementById("miQ").value.trim();
- if(!q)return alert("Enter the mistake");
- DB.mistakes.push({id:uid(),subject:document.getElementById("miSub").value,chapter:document.getElementById("miCh").value,q,why:document.getElementById("miWhy").value,correct:document.getElementById("miCorrect").value});
- save();show("mistakes");
-}
-function renderMi(){
- let el=document.getElementById("miList");if(!el)return;
- el.innerHTML=DB.mistakes.map(m=>`
- <div class="item" style="display:block">
- <b>${esc(m.subject)} — ${esc(m.chapter)}</b>
- <p>${esc(m.q)}</p>
- <details><summary>Review reason and correction</summary>
- <p><b>Reason:</b> ${esc(m.why)}</p>
- <p><b>Correction:</b> ${esc(m.correct)}</p></details>
- <button onclick="delMi(${m.id})">Delete</button>
- <button onclick="scheduleMi(${m.id})">Add revision</button>
- </div>`).join("")||"No mistakes saved.";
-}
-function delMi(id){DB.mistakes=DB.mistakes.filter(x=>x.id!=id);save();renderMi()}
-function scheduleMi(id){
- let m=DB.mistakes.find(x=>x.id==id);if(!m)return;
- DB.revisions.push({id:uid(),type:"mistake",ref:id,title:m.q,subject:m.subject,date:today()});
- save();alert("Added to revision queue!");
-}
-
-function today(){
- let d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
-}
-function revision(v){
- let due=DB.revisions.filter(x=>x.date<=today());
- v.innerHTML=`
- <div class="card">
- <h2>🔁 Revision Scheduler</h2>
- <p>Schedule chapters, flashcards or mistakes for revision.</p>
- <div class="row"><select id="reSub">${subjects.map(s=>`<option>${s}</option>`).join("")}</select>
- <input id="reTitle" placeholder="Topic / chapter"></div>
- <input type="date" id="reDate" value="${today()}">
- <button onclick="addRe()">Schedule Revision</button>
- </div>
- <div class="card" style="margin-top:15px">
- <h3>📌 Due / Upcoming</h3><div id="reList"></div>
- </div>
- <div class="card" style="margin-top:15px">
- <h3>📍 Revision due today</h3>
- <p>${due.length} item(s)</p>
- </div>`;
- renderRe();
-}
-function addRe(){
- let t=document.getElementById("reTitle").value.trim(),d=document.getElementById("reDate").value;
- if(!t||!d)return alert("Enter topic and date");
- DB.revisions.push({id:uid(),type:"topic",title:t,subject:document.getElementById("reSub").value,date:d});
- save();show("revision");
-}
-function renderRe(){
- let el=document.getElementById("reList");if(!el)return;
- el.innerHTML=DB.revisions.sort((a,b)=>a.date.localeCompare(b.date)).map(r=>`
- <div class="item">
- <span><b>${esc(r.title)}</b><br>${esc(r.subject)}<br><small>${esc(r.date)}</small></span>
- <span class="badge">${r.date<=today()?"DUE":"UPCOMING"}</span>
- <button onclick="completeRe(${r.id})">✔ Done</button>
- <button onclick="delRe(${r.id})">🗑️</button>
- </div>`).join("")||"Nothing scheduled.";
-}
-function completeRe(id){
- DB.revisions=DB.revisions.filter(x=>x.id!=id);
- DB.sessions.push({date:today(),type:"revision"});
- save();show("revision");
-}
-function delRe(id){DB.revisions=DB.revisions.filter(x=>x.id!=id);save();renderRe()}
-
-function practice(v){
- v.innerHTML=`
- <div class="card">
- <h2>🧪 Practice Arena</h2>
- <div class="row"><select id="quSub">${subjects.map(s=>`<option>${s}</option>`).join("")}</select></div>
- <textarea id="quText" placeholder="Question"></textarea>
- <input id="quOpt1" placeholder="Option A">
- <input id="quOpt2" placeholder="Option B">
- <input id="quOpt3" placeholder="Option C">
- <input id="quOpt4" placeholder="Option D">
- <select id="quCorrect"><option value="0">Correct: A</option><option value="1">Correct: B</option><option value="2">Correct: C</option><option value="3">Correct: D</option></select>
- <button onclick="addQu()">Add MCQ</button>
- </div>
- <div class="card" style="margin-top:15px">
- <h3>Practice questions</h3><div id="quList"></div>
- <button onclick="startQuiz()">Start Quiz</button>
- </div>
- <div class="card" style="margin-top:15px">
- <h3>🏅 Practice Results</h3><div id="quResult"></div>
- </div>`;
- renderQu();
-}
-function addQu(){
- let q=document.getElementById("quText").value.trim();
- let opts=[1,2,3,4].map(i=>document.getElementById("quOpt"+i).value.trim());
- if(!q||opts.some(x=>!x))return alert("Fill question and all four options");
- DB.questions.push({id:uid(),subject:document.getElementById("quSub").value,q,opts,correct:Number(document.getElementById("quCorrect").value)});
- save();show("practice");
-}
-function renderQu(){
- let el=document.getElementById("quList");if(!el)return;
- el.innerHTML=DB.questions.map(q=>`<div class="item"><span>${esc(q.subject)}: ${esc(q.q)}</span><button onclick="delQu(${q.id})">Delete</button></div>`).join("")||"No questions.";
-}
-function delQu(id){DB.questions=DB.questions.filter(x=>x.id!=id);save();renderQu()}
-function startQuiz(){
- if(!DB.questions.length)return alert("Add questions first!");
- let arr=DB.questions.slice().sort(()=>Math.random()-.5);
- let v=document.getElementById("quResult");
- let score=0,idx=0;
- function next(){
- if(idx>=arr.length){
- v.innerHTML=`<h2>Score: ${score}/${arr.length}</h2>
- <p>${Math.round(score/arr.length*100)}% accuracy</p>
- <button onclick="show('practice')">Back</button>`;
- DB.sessions.push({date:today(),type:"quiz",score,total:arr.length});
- save();return;
- }
- let q=arr[idx];
- v.innerHTML=`<h3>${idx+1}/${arr.length} — ${esc(q.subject)}</h3><p>${esc(q.q)}</p>
- ${q.opts.map((o,i)=>`<button style="display:block;width:100%;margin:5px 0;background:var(--soft);color:var(--text)" onclick="answer(${i})">${String.fromCharCode(65+i)}. ${esc(o)}</button>`).join("")}`;
- window.answer=function(n){
- if(n===q.correct)score++;
- else{
- DB.mistakes.push({id:uid(),subject:q.subject,chapter:"Practice",q:q.q,why:"Incorrect quiz answer",correct:q.opts[q.correct]});
- save();
- }
- idx++;next();
- };
- }
- next();
-}
-
-function exam(v){
- v.innerHTML=`
- <div class="card">
- <h2>📝 Exam Simulator</h2>
- <p>Create a timed test using your saved MCQs.</p>
- <div class="row"><input id="exMins" type="number" min="1" max="180" value="10" placeholder="Minutes"></div>
- <button onclick="startExam()">Start Exam</button>
- </div>
- <div class="card" style="margin-top:15px"><div id="examArea"></div></div>`;
-}
+function statusChapter(i,v){store.chapters[i].status=v;save();renderApp("chapters");refresh("home")}
+function delChapter(i){store.chapters.splice(i,1);save();renderApp("chapters");refresh("home")}
+function refresh(id){if(windows[id])renderApp(id)}
+function flashHTML(){return `<h2>🃏 Flashcards</h2><div class="row"><select id="fcsub">${subjects()}</select><input id="fcq" placeholder="Question"></div><textarea id="fca" placeholder="Answer" rows="3"></textarea><button onclick="addFlash()">+ Save Card</button><hr>${store.flash.map((f,i)=>`<div class="card"><b>${f.subject}</b><p>${f.q}</p><button class="secondary" onclick="revealFC(${i})">Reveal Answer</button><div id="ans${i}" style="display:none;margin-top:10px">${f.a}</div><button class="danger" onclick="delFC(${i})">Delete</button></div>`).join("")||"No flashcards yet."}`}
+function addFlash(){let q=document.getElementById("fcq").value.trim(),a=document.getElementById("fca").value.trim();if(!q||!a)return toast("Fill both fields");store.flash.push({subject:document.getElementById("fcsub").value,q,a});save();renderApp("flash")}
+function revealFC(i){let e=document.getElementById("ans"+i);e.style.display=e.style.display==="none"?"block":"none"}
+function delFC(i){store.flash.splice(i,1);save();renderApp("flash")}
+function mistakesHTML(){return `<h2>❌ Mistake Bank</h2><div class="row"><select id="misub">${subjects()}</select><input id="miq" placeholder="Question/topic"></div><textarea id="mireason" placeholder="What went wrong?"></textarea><textarea id="micorrect" placeholder="Correct concept / solution"></textarea><button onclick="addMistake()">+ Save Mistake</button><hr>${store.mistakes.map((m,i)=>`<div class="card"><b>${m.subject} · ${m.q}</b><p><b>Reason:</b> ${m.reason}</p><p><b>Correction:</b> ${m.correct}</p><button class="secondary" onclick="addRevFromMistake(${i})">🔁 Revise</button><button class="danger" onclick="delMistake(${i})">Delete</button></div>`).join("")||"No mistakes saved."}`}
+function addMistake(){let q=document.getElementById("miq").value.trim(),r=document.getElementById("mireason").value.trim(),c=document.getElementById("micorrect").value.trim();if(!q)return toast("Enter a question");store.mistakes.push({subject:document.getElementById("misub").value,q,reason:r,correct:c});save();renderApp("mistakes")}
+function delMistake(i){store.mistakes.splice(i,1);save();renderApp("mistakes")}
+function addRevFromMistake(i){store.revisions.push({subject:store.mistakes[i].subject,name:store.mistakes[i].q,date:today()});save();renderApp("revision");toast("Added to revision!")}
+function today(){return new Date().toISOString().slice(0,10)}
+function revisionHTML(){return `<h2>🔁 Revision Planner</h2><div class="row"><select id="resub">${subjects()}</select><input id="rename" placeholder="Topic"></div><div class="row"><input id="redate" type="date" value="${today()}"></div><button onclick="addRevision()">+ Schedule</button><hr>${store.revisions.map((r,i)=>`<div class="item"><div><b>${r.subject}</b><br>${r.name}<br><span class="pill">${r.date}</span></div><div><button onclick="doneRev(${i})">✓ Done</button><button class="danger" onclick="delRev(${i})">✕</button></div></div>`).join("")||"Nothing scheduled."}`}
+function addRevision(){let n=document.getElementById("rename").value.trim();if(!n)return toast("Enter topic");store.revisions.push({subject:document.getElementById("resub").value,name:n,date:document.getElementById("redate").value||today()});save();renderApp("revision");refresh("home")}
+function doneRev(i){store.revisions.splice(i,1);save();renderApp("revision");refresh("home")}
+function delRev(i){doneRev(i)}
+function practiceHTML(){return `<h2>🧪 Practice Arena</h2><div class="row"><select id="qsub">${subjects()}</select><input id="qq" placeholder="Question"></div><div class="row"><input id="o0" placeholder="Option A"><input id="o1" placeholder="Option B"></div><div class="row"><input id="o2" placeholder="Option C"><input id="o3" placeholder="Option D"></div><select id="correct"><option value="0">Correct: A</option><option value="1">Correct: B</option><option value="2">Correct: C</option><option value="3">Correct: D</option></select><button onclick="addQuestion()">+ Add MCQ</button><hr><p>${store.questions.length} questions saved</p><button onclick="runPractice()">▶ Start Practice</button><div id="quiz"></div><hr>${store.questions.map((q,i)=>`<div class="item"><span>${q.subject}: ${q.q}</span><button class="danger" onclick="delQ(${i})">✕</button></div>`).join("")}`}
+function addQuestion(){let q=document.getElementById("qq").value.trim(),o=[0,1,2,3].map(i=>document.getElementById("o"+i).value.trim());if(!q||o.some(x=>!x))return toast("Fill question and all options");store.questions.push({subject:document.getElementById("qsub").value,q,o,c:+document.getElementById("correct").value});save();renderApp("practice");toast("MCQ saved!")}
+function delQ(i){store.questions.splice(i,1);save();renderApp("practice")}
+function runPractice(){let qs=[...store.questions];if(!qs.length)return toast("Add MCQs first!");let score=0,i=0,el=document.getElementById("quiz");function draw(){if(i>=qs.length){el.innerHTML=`<div class="card"><h2>Quiz Finished 🎉</h2><p>Score: ${score}/${qs.length}</p></div>`;return}let q=qs[i];el.innerHTML=`<div class="card"><h3>${i+1}/${qs.length}: ${q.q}</h3>${q.o.map((o,j)=>`<button class="secondary" style="display:block;width:100%;margin:5px 0;text-align:left" onclick="pick(${j})">${String.fromCharCode(65+j)}. ${o}</button>`).join("")}</div>`}window.pick=j=>{if(j===qs[i].c)score++;else store.mistakes.push({subject:qs[i].subject,q:qs[i].q,reason:"Practice mistake",correct:qs[i].o[qs[i].c]});i++;save();draw()};draw()}
+function examHTML(){return `<h2>📝 Exam Simulator</h2><p>Create MCQs in Practice first. Exam is a timed run through saved questions.</p><div class="row"><label>Time per question (seconds)<input id="examtime" type="number" value="30" min="5"></label></div><button onclick="startExam()">🚀 Start Exam</button><div id="examarea"></div>`}
 function startExam(){
- if(!DB.questions.length)return alert("Add MCQs in Practice Arena first.");
- let arr=DB.questions.slice().sort(()=>Math.random()-.5);
- let duration=Math.max(1,Number(document.getElementById("exMins").value)||10)*60;
- let end=Date.now()+duration*1000,idx=0,score=0,answered=false;
- let area=document.getElementById("examArea");
- function finish(){
- clearInterval(interval);
- area.innerHTML=`<h2>Exam Finished!</h2><div class="big">${score}/${arr.length}</div>
- <p>Accuracy: ${Math.round(score/arr.length*100)}%</p><button onclick="show('exam')">Back</button>`;
- DB.exams.push({date:today(),score,total:arr.length});
- DB.sessions.push({date:today(),type:"exam",score,total:arr.length});
- save();
- }
- function draw(){
- if(Date.now()>=end){finish();return}
- if(idx>=arr.length){finish();return}
- let q=arr[idx];
- area.innerHTML=`<h3>Question ${idx+1}/${arr.length}</h3>
- <div class="badge">${esc(q.subject)}</div><h4>${esc(q.q)}</h4>
- ${q.opts.map((o,i)=>`<button style="display:block;width:100%;margin:5px 0;background:var(--soft);color:var(--text)" onclick="examAnswer(${i})">${String.fromCharCode(65+i)}. ${esc(o)}</button>`).join("")}
- <p id="exTime"></p>`;
- window.examAnswer=function(n){
- if(answered)return;answered=true;
- if(n===q.correct)score++;
- else DB.mistakes.push({id:uid(),subject:q.subject,chapter:"Exam",q:q.q,why:"Incorrect exam answer",correct:q.opts[q.correct]});
- save();idx++;answered=false;draw();
- };
- }
- let interval=setInterval(()=>{
- let rem=Math.max(0,Math.ceil((end-Date.now())/1000));
- let t=document.getElementById("exTime");
- if(t)t.textContent="⏳ "+Math.floor(rem/60)+":"+String(rem%60).padStart(2,"0");
- if(rem<=0)finish();
- },500);
- draw();
+ if(!store.questions.length)return toast("Add MCQs in Practice first!");
+ let qs=[...store.questions],i=0,score=0,seconds=+(document.getElementById("examtime")?.value||30),remaining=seconds,el=document.getElementById("examarea");
+ if(examTimer)clearInterval(examTimer);
+ function finish(){clearInterval(examTimer);examTimer=null;el.innerHTML=`<div class="card"><h2>Exam completed 🎉</h2><p>Score: ${score}/${qs.length}</p><p>Accuracy: ${Math.round(score/qs.length*100)}%</p><button onclick="startExam()">Try again</button></div>`}
+ function draw(){if(i>=qs.length){finish();return}let q=qs[i];el.innerHTML=`<div class="card"><h3>Question ${i+1}/${qs.length}</h3><p>⏳ ${remaining}s</p><h3>${q.q}</h3>${q.o.map((o,j)=>`<button class="secondary" style="display:block;width:100%;margin:5px 0;text-align:left" onclick="examPick(${j})">${String.fromCharCode(65+j)}. ${o}</button>`).join("")}</div>`}
+ window.examPick=j=>{if(j===qs[i].c)score++;else store.mistakes.push({subject:qs[i].subject,q:qs[i].q,reason:"Exam error",correct:qs[i].o[qs[i].c]});i++;remaining=seconds;save();draw()};
+ examTimer=setInterval(()=>{remaining--;if(remaining<=0){i++;remaining=seconds;if(i>=qs.length)finish();else draw()}else draw()},1000);draw();
 }
-document.getElementById("today").textContent=new Date().toLocaleDateString(undefined,{weekday:"short",month:"short",day:"numeric",year:"numeric"});
-show("home");
+function notesHTML(){return `<h2>📒 Notes</h2><textarea id="notearea" rows="15" placeholder="Write your study notes here...">${store.notes}</textarea><button onclick="saveNotes()">💾 Save Notes</button>`}
+function saveNotes(){store.notes=document.getElementById("notearea").value;save();toast("Notes saved!")}
+function calcHTML(){return `<h2>🧮 Calculator</h2><input id="calin" placeholder="Example: (12+8)*5" ><button onclick="calculate()">Calculate</button><div class="card" id="calout">Result</div><p class="small">Basic arithmetic only.</p>`}
+function calculate(){try{let s=document.getElementById("calin").value;if(!/^[0-9+\\-*/().%\\s]+$/.test(s))throw 1;let result=Function('"use strict";return ('+s+')')();document.getElementById("calout").textContent=result}catch(e){document.getElementById("calout").textContent="Invalid expression"}}
+function settingsHTML(){return `<h2>⚙️ Settings</h2><h3>Accent Colour</h3><input type="color" id="colour" value="#9875df" onchange="changeColor(this.value)"><h3>Wallpaper</h3><select onchange="wall(this.value)"><option value="1">Lavender</option><option value="2">Blue</option><option value="3">Peach</option><option value="4">Mint</option></select><hr><button class="secondary" onclick="lockDesktop()">🔒 Lock screen</button><button class="danger" onclick="clearAll()">Reset all study data</button><p class="small">Reset permanently clears this website's locally saved study data.</p>`}
+function changeColor(v){document.documentElement.style.setProperty("--accent",v)}
+function wall(v){let b=document.getElementById("desktop");let styles={1:"linear-gradient(135deg,#e9ddff,#d5e7ff,#f6e5ff)",2:"linear-gradient(135deg,#cde8ff,#e4f1ff,#d8d9ff)",3:"linear-gradient(135deg,#ffe4d8,#fff1e7,#ffdce8)",4:"linear-gradient(135deg,#d7f5e9,#e7fff2,#d3edff)"};b.style.background=styles[v]}
+function clearAll(){if(confirm("Delete ALL saved study data?")){Object.keys(store).forEach(k=>store[k]=k==="notes"?"":[]);save();Object.keys(windows).forEach(closeApp);toast("Study data reset.")}}
 </script>
 </body>
 </html>
