@@ -216,8 +216,13 @@ body.dark .dicon{color:white}
   <div class="dicon" onclick="openWin('sticky')"><span class="emoji">📌</span><span>Sticky Notes</span></div>
   <div class="dicon" onclick="openWin('analytics')"><span class="emoji">📊</span><span>Analytics</span></div>
   <div class="dicon" onclick="openWin('vault')"><span class="emoji">🗂️</span><span>Vault</span></div>
-  <div class="dicon" onclick="openWin('calc')"><span class="emoji">🔢</span><span>Calculator</span></div>
+    <div class="dicon" onclick="openWin('calc')"><span class="emoji">🔢</span><span>Calculator</span></div>
   <div class="dicon" onclick="openWin('focus')"><span class="emoji">🌙</span><span>Focus Room</span></div>
+  <div class="dicon" onclick="openWin('formulas')"><span class="emoji">🧾</span><span>Formula Vault</span></div>
+  <div class="dicon" onclick="openWin('doubts')"><span class="emoji">❓</span><span>Doubt Tracker</span></div>
+  <div class="dicon" onclick="openWin('revision')"><span class="emoji">🔁</span><span>Revision Scheduler</span></div>
+  <div class="dicon" onclick="openWin('mistakes')"><span class="emoji">❌</span><span>Mistake Notebook</span></div>
+  <div class="dicon" onclick="openWin('papers')"><span class="emoji">📝</span><span>Practice Papers</span></div>
  </div>
 
  <div id="widget">
@@ -336,8 +341,62 @@ body.dark .dicon{color:white}
    <div id="stickylist"></div>
   </div>
  </div>
+  <div class="window" id="formulas" style="left:430px;top:120px">
+  <div class="whead"><strong>🧾 Formula Vault</strong><div class="wcontrols"><button onclick="minWin('formulas')">−</button><button onclick="closeWin('formulas')">×</button></div></div>
+  <div class="wbody">
+   <select id="fs"><option>Physics</option><option>Chemistry</option><option>Maths</option></select>
+   <input id="ft" placeholder="Formula name" style="margin-top:10px">
+   <textarea id="fc" placeholder="Formula / explanation" style="margin-top:10px"></textarea>
+   <button onclick="addFormula()">Save Formula</button>
+   <div id="formulalist"></div>
+  </div>
+ </div>
 
- <div class="window" id="analytics" style="left:400px;top:100px">
+ <div class="window" id="doubts" style="left:350px;top:140px">
+  <div class="whead"><strong>❓ Doubt Tracker</strong><div class="wcontrols"><button onclick="minWin('doubts')">−</button><button onclick="closeWin('doubts')">×</button></div></div>
+  <div class="wbody">
+   <select id="ds"><option>Physics</option><option>Chemistry</option><option>Maths</option></select>
+   <input id="dt" placeholder="Topic / question" style="margin-top:10px">
+   <textarea id="dc" placeholder="Describe your doubt"></textarea>
+   <button onclick="addDoubt()">Save Doubt</button>
+   <div id="doubtlist"></div>
+  </div>
+ </div>
+
+ <div class="window" id="revision" style="left:250px;top:100px">
+  <div class="whead"><strong>🔁 Revision Scheduler</strong><div class="wcontrols"><button onclick="minWin('revision')">−</button><button onclick="closeWin('revision')">×</button></div></div>
+  <div class="wbody">
+   <select id="rs"><option>Physics</option><option>Chemistry</option><option>Maths</option></select>
+   <input id="rt" placeholder="Chapter / topic" style="margin-top:10px">
+   <input type="date" id="rd" style="margin-top:10px">
+   <button onclick="addRevision()" style="margin-top:10px">Schedule Revision</button>
+   <div id="revisionlist"></div>
+  </div>
+ </div>
+
+ <div class="window" id="mistakes" style="left:350px;top:100px">
+  <div class="whead"><strong>❌ Mistake Notebook</strong><div class="wcontrols"><button onclick="minWin('mistakes')">−</button><button onclick="closeWin('mistakes')">×</button></div></div>
+  <div class="wbody">
+   <select id="ms"><option>Physics</option><option>Chemistry</option><option>Maths</option></select>
+   <input id="mt" placeholder="Question / topic" style="margin-top:10px">
+   <textarea id="me" placeholder="What went wrong?"></textarea>
+   <textarea id="mc" placeholder="Correct method"></textarea>
+   <button onclick="addMistake()">Save Mistake</button>
+   <div id="mistakelist"></div>
+  </div>
+ </div>
+
+ <div class="window" id="papers" style="left:400px;top:100px">
+  <div class="whead"><strong>📝 Practice Paper Tracker</strong><div class="wcontrols"><button onclick="minWin('papers')">−</button><button onclick="closeWin('papers')">×</button></div></div>
+  <div class="wbody">
+   <input id="pt" placeholder="Paper name">
+   <div class="row" style="margin-top:10px"><input id="ps" placeholder="Score"><input id="ptime" placeholder="Time taken"></div>
+   <textarea id="pr" placeholder="Paper review / mistakes" style="margin-top:10px"></textarea>
+   <button onclick="addPaper()">Save Paper</button>
+   <div id="paperlist"></div>
+  </div>
+ </div>
+  <div class="window" id="analytics" style="left:400px;top:100px">
   <div class="whead"><strong>📊 Progress Analytics</strong><div class="wcontrols"><button onclick="minWin('analytics')">−</button><button onclick="closeWin('analytics')">×</button></div></div>
   <div class="wbody"><div id="stats"></div><div id="badges"></div></div>
  </div>
@@ -419,7 +478,7 @@ const get=(k,d=[])=>{try{return JSON.parse(localStorage.getItem("sh_"+k))??d}cat
 const save=(k,v)=>localStorage.setItem("sh_"+k,JSON.stringify(v));
 let xp=get("xp",0),tasks=get("tasks"),plans=get("plans"),flashes=get("flashes"),
  exams=get("exams"),chapters=get("chapters"),notes=get("notes"),dreams=get("dreams"),
- journal=get("journal"),stickies=get("stickies"),vault=get("vault"),flashIndex=0;
+ journal=get("journal"),stickies=get("stickies"),vault=get("vault"),formulas=get("formulas"),doubts=get("doubts"),revisions=get("revisions"),mistakes=get("mistakes"),papers=get("papers"),flashIndex=0;
 let timerSeconds=1500,timerInterval=null,timerRunning=false;
 let z=20;
 
@@ -521,131 +580,98 @@ function nextFlash(){flashIndex++;flipped=false;showFlash()}
 function prevFlash(){flashIndex--;flipped=false;showFlash()}
 function renderFlash(){showFlash(false)}
 function deleteFlash(i){flashes.splice(i,1);flashIndex=0;save("flashes",flashes);renderFlash()}
-
-function addExam(){
- let n=$("examname").value.trim(),d=$("examdate").value;if(!n||!d)return;
- exams.push({n,d,id:Date.now()});save("exams",exams);$("examname").value="";renderExams();
+ function addExam(){
+ let n=$("examname").value.trim(),d=$("examdate").value;
+ if(!n||!d)return;
+ exams.push({n,d,id:Date.now()});save("exams",exams);
+ $("examname").value="";renderExams();
 }
 function deleteExam(id){exams=exams.filter(x=>x.id!==id);save("exams",exams);renderExams()}
 function renderExams(){
- exams.sort((a,b)=>a.d.localeCompare(b.d));
- $("examlist").innerHTML=exams.map(e=>{
- let days=Math.ceil((new Date(e.d+"T00:00:00")-new Date(new Date().toDateString()))/86400000);
- return `<div class="card"><b>${esc(e.n)}</b><p>📅 ${e.d} · ${days>=0?days+" days left":"Passed"}</p><button class="danger mini" onclick="deleteExam(${e.id})">Remove</button></div>`;
- }).join("")||"<p>No upcoming exams.</p>";
+ $("examlist").innerHTML=exams.sort((a,b)=>a.d.localeCompare(b.d)).map(x=>`<div class="card"><b>${esc(x.n)}</b><p>${esc(x.d)}</p><button class="danger mini" onclick="deleteExam(${x.id})">Remove</button></div>`).join("");
 }
 
 function addChapter(){
- let s=$("subject").value,n=$("chapterinput").value.trim();if(!n)return;
- chapters.push({s,n,status:"Not Started",id:Date.now()});save("chapters",chapters);$("chapterinput").value="";renderChapters();
+ let s=$("subject").value,c=$("chapterinput").value.trim();if(!c)return;
+ chapters.push({s,c,status:"Not Started",id:Date.now()});
+ save("chapters",chapters);$("chapterinput").value="";renderChapters();
 }
-function updateChapter(id,v){
+function changeChapter(id){
  let c=chapters.find(x=>x.id===id);if(!c)return;
- if(v==="Completed"&&c.status!=="Completed")addXP(15);
- c.status=v;save("chapters",chapters);renderChapters();
+ c.status=c.status==="Not Started"?"In Progress":c.status==="In Progress"?"Completed":"Not Started";
+ if(c.status==="Completed")addXP(15);
+ save("chapters",chapters);renderChapters();
 }
 function deleteChapter(id){chapters=chapters.filter(x=>x.id!==id);save("chapters",chapters);renderChapters()}
 function renderChapters(){
- $("chapterlist").innerHTML=chapters.map(c=>`<div class="card"><b>${esc(c.s)}</b><p>${esc(c.n)}</p><select onchange="updateChapter(${c.id},this.value)"><option ${c.status==="Not Started"?"selected":""}>Not Started</option><option ${c.status==="In Progress"?"selected":""}>In Progress</option><option ${c.status==="Completed"?"selected":""}>Completed</option></select><button class="danger mini" onclick="deleteChapter(${c.id})" style="margin-top:7px">Remove</button></div>`).join("");
+ $("chapterlist").innerHTML=chapters.map(c=>`<div class="card"><b>${esc(c.s)}</b> · ${esc(c.c)}<p><button class="secondary mini" onclick="changeChapter(${c.id})">${esc(c.status)}</button><button class="danger mini" onclick="deleteChapter(${c.id})">×</button></p></div>`).join("");
 }
 
 function saveNote(){
  let t=$("notetitle").value.trim(),c=$("notecontent").value.trim();if(!t||!c)return;
- notes.push({t,c,id:Date.now()});save("notes",notes);$("notetitle").value="";$("notecontent").value="";renderNotes();toast("Note saved ♡");
+ notes.push({t,c,id:Date.now()});save("notes",notes);
+ $("notetitle").value="";$("notecontent").value="";renderNotes();
 }
 function deleteNote(id){notes=notes.filter(x=>x.id!==id);save("notes",notes);renderNotes()}
 function renderNotes(){
- $("noteslist").innerHTML=notes.map(n=>`<div class="card"><b>${esc(n.t)}</b><p style="white-space:pre-wrap">${esc(n.c)}</p><button class="danger mini" onclick="deleteNote(${n.id})">Delete</button></div>`).join("");
+ $("noteslist").innerHTML=notes.map(n=>`<div class="card"><b>${esc(n.t)}</b><p>${esc(n.c)}</p><button class="danger mini" onclick="deleteNote(${n.id})">Delete</button></div>`).join("");
 }
 
 function addDream(){
  let t=$("dreamtitle").value.trim(),d=$("dreamdesc").value.trim();if(!t)return;
- dreams.push({t,d,p:0,id:Date.now()});save("dreams",dreams);$("dreamtitle").value="";$("dreamdesc").value="";renderDreams();
-}
-function setDream(id,v){
- let d=dreams.find(x=>x.id===id);if(!d)return;d.p=+v;save("dreams",dreams);renderDreams();
+ dreams.push({t,d,id:Date.now()});save("dreams",dreams);
+ $("dreamtitle").value="";$("dreamdesc").value="";renderDreams();
 }
 function deleteDream(id){dreams=dreams.filter(x=>x.id!==id);save("dreams",dreams);renderDreams()}
 function renderDreams(){
- $("dreamlist").innerHTML=dreams.map(d=>`<div class="card"><h3>🌷 ${esc(d.t)}</h3><p>${esc(d.d)}</p><p>${d.p}% completed</p><input type="range" min="0" max="100" value="${d.p}" onchange="setDream(${d.id},this.value)"><button class="danger mini" onclick="deleteDream(${d.id})">Remove</button></div>`).join("");
- $("letter").value=get("letter","");
+ $("dreamlist").innerHTML=dreams.map(x=>`<div class="card"><h3>🌠 ${esc(x.t)}</h3><p>${esc(x.d)}</p><button class="danger mini" onclick="deleteDream(${x.id})">Remove</button></div>`).join("");
 }
-function saveLetter(){save("letter",$("letter").value);toast("Letter saved 💌")}
+function saveLetter(){save("letter",$("letter").value);toast("Letter saved ♡")}
+$("letter").value=get("letter","");
 
 function saveJournal(){
- let d=$("jdate").value,c=$("jentry").value.trim();if(!d||!c)return;
- let existing=journal.find(x=>x.d===d);
- if(existing)existing.c=c;else journal.push({d,c});
- save("journal",journal);$("jentry").value="";renderJournal();toast("Journal saved ♡");
+ let d=$("jdate").value,t=$("jentry").value.trim();if(!t)return;
+ journal.push({d,t,id:Date.now()});save("journal",journal);
+ $("jentry").value="";renderJournal();
 }
-function deleteJournal(d){journal=journal.filter(x=>x.d!==d);save("journal",journal);renderJournal()}
+function deleteJournal(id){journal=journal.filter(x=>x.id!==id);save("journal",journal);renderJournal()}
 function renderJournal(){
- $("journallist").innerHTML=journal.slice().sort((a,b)=>b.d.localeCompare(a.d)).map(j=>`<div class="card"><b>${j.d}</b><p style="white-space:pre-wrap">${esc(j.c)}</p><button class="danger mini" onclick="deleteJournal('${j.d}')">Delete</button></div>`).join("");
+ $("journallist").innerHTML=journal.slice().reverse().map(x=>`<div class="card"><b>${esc(x.d)}</b><p>${esc(x.t)}</p><button class="danger mini" onclick="deleteJournal(${x.id})">Delete</button></div>`).join("");
 }
 $("jdate").value=new Date().toISOString().slice(0,10);
 
 function addSticky(){
- let c=$("sticktext").value.trim();if(!c)return;
- stickies.push({c,color:$("stickcolor").value,id:Date.now()});save("stickies",stickies);$("sticktext").value="";renderSticky();
+ let t=$("sticktext").value.trim(),c=$("stickcolor").value;if(!t)return;
+ stickies.push({t,c,id:Date.now()});save("stickies",stickies);
+ $("sticktext").value="";renderStickies();
 }
-function deleteSticky(id){stickies=stickies.filter(x=>x.id!==id);save("stickies",stickies);renderSticky()}
-function renderSticky(){
- $("stickylist").innerHTML=stickies.map(s=>`<div class="note ${s.color}">${esc(s.c)}<button class="danger mini" style="float:right" onclick="deleteSticky(${s.id})">×</button></div>`).join("");
+function deleteSticky(id){stickies=stickies.filter(x=>x.id!==id);save("stickies",stickies);renderStickies()}
+function renderStickies(){
+ $("stickylist").innerHTML=stickies.map(x=>`<div class="note ${x.c}">${esc(x.t)}<button class="danger mini" style="float:right" onclick="deleteSticky(${x.id})">×</button></div>`).join("");
 }
 
-function renderStats(){
- let td=tasks.filter(t=>t.done).length,ch=chapters.filter(c=>c.status==="Completed").length;
- let pct=chapters.length?Math.round(ch/chapters.length*100):0;
- $("stats").innerHTML=`<div class="card"><h3>📝 Tasks</h3>${td}/${tasks.length} complete</div>
- <div class="card"><h3>📚 Chapters</h3>${ch}/${chapters.length} complete (${pct}%)</div>
- <div class="card"><h3>🧠 Flashcards</h3>${flashes.length} cards created</div>
- <div class="card"><h3>🎓 Exams</h3>${exams.length} scheduled</div>
- <div class="card"><h3>🌠 Dreams</h3>${dreams.length} dreams saved</div>
- <div class="card"><h3>📔 Journal</h3>${journal.length} entries</div>
- <div class="card"><h3>✨ XP</h3>${xp} points · Level ${Math.floor(xp/100)+1}</div>`;
- let b=[];
- if(td>=1)b.push("🌱 First task");
- if(td>=5)b.push("🌷 5 tasks");
- if(td>=10)b.push("⭐ 10 tasks");
- if(ch>=1)b.push("📚 Chapter finisher");
- if(flashes.length>=5)b.push("🧠 Flashcard maker");
- if(xp>=100)b.push("✨ Level up");
- $("badges").innerHTML="<h3>🏆 Badges</h3>"+(b.map(x=>`<span class="badgecard">${x}</span>`).join("")||"<p>Keep going to unlock badges ♡</p>");
-}
-function coachRefresh(){
- let done=tasks.filter(x=>x.done).length,unfinished=tasks.filter(x=>!x.done);
- let pending=chapters.filter(x=>x.status!=="Completed");
- $("coachreport").innerHTML=`<p>🌷 You have completed <b>${done}</b> tasks.</p><p>📚 ${pending.length} chapters still need revision or work.</p><p>✨ Your level is <b>${Math.floor(xp/100)+1}</b>.</p><p>🧠 ${flashes.length} flashcards are available.</p>`;
- let suggestions=[];
- if(unfinished.length)suggestions.push("Finish one pending task: "+unfinished[0].text);
- if(pending.length)suggestions.push("Revise "+pending[0].n+" in "+pending[0].s);
- if(!suggestions.length)suggestions.push("Create a new task and plan a focused session!");
- $("coachsuggest").innerHTML=suggestions.map(x=>`<p>🌸 ${esc(x)}</p>`).join("");
-}
 function addVault(){
- let t=$("vtitle").value.trim(),u=$("vurl").value.trim(),s=$("vsubject").value;
- if(!t||!u)return;
- if(!/^https?:\/\//i.test(u)){toast("Enter a valid URL starting with http:// or https://");return}
- vault.push({t,u,s,id:Date.now()});save("vault",vault);$("vtitle").value="";$("vurl").value="";renderVault();
+ let t=$("vtitle").value.trim(),u=$("vurl").value.trim(),s=$("vsubject").value;if(!t||!u)return;
+ if(!/^https?:\/\//i.test(u)){toast("Please enter a valid link");return}
+ vault.push({t,u,s,id:Date.now()});save("vault",vault);
+ $("vtitle").value="";$("vurl").value="";renderVault();
 }
 function deleteVault(id){vault=vault.filter(x=>x.id!==id);save("vault",vault);renderVault()}
 function renderVault(){
- $("vaultlist").innerHTML=vault.map(v=>`<div class="card"><b>${esc(v.t)}</b><p>${esc(v.s)}</p><a href="${esc(v.u)}" target="_blank" rel="noopener">Open resource ↗</a><button class="danger mini" style="float:right" onclick="deleteVault(${v.id})">Delete</button></div>`).join("");
+ $("vaultlist").innerHTML=vault.map(x=>`<div class="card"><b>${esc(x.t)}</b><p class="tag">${esc(x.s)}</p><p><a href="${esc(x.u)}" target="_blank" rel="noopener">Open resource ↗</a></p><button class="danger mini" onclick="deleteVault(${x.id})">Delete</button></div>`).join("");
 }
 
 function calculate(){
- let e=$("calcinput").value;
- if(!e||!/^[0-9+\-*/().%\s]+$/.test(e)){toast("Only basic arithmetic allowed");return}
  try{
- let r=Function('"use strict";return ('+e+')')();
- if(!Number.isFinite(r))throw Error();
- $("calcresult").textContent="Result: "+r;
+  let e=$("calcinput").value;
+  if(!/^[\d+\-*/().%\s]+$/.test(e)){throw Error("Invalid")}
+  let result=Function('"use strict";return ('+e+')')();
+  if(!Number.isFinite(result))throw Error("Invalid");
+  $("calcresult").textContent="Result: "+result;
  }catch{$("calcresult").textContent="Invalid expression"}
 }
 
-function setTimer(){
- pauseTimer();timerSeconds=+$("fmins").value*60;updateTimer();
-}
+function setTimer(){timerSeconds=Number($("fmins").value)*60;updateTimer()}
 function updateTimer(){
  let m=Math.floor(timerSeconds/60),s=timerSeconds%60;
  let t=String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
@@ -655,75 +681,149 @@ function startTimer(){
  if(timerRunning)return;
  timerRunning=true;
  timerInterval=setInterval(()=>{
- timerSeconds--;
- updateTimer();
- if(timerSeconds<=0){
- pauseTimer();timerSeconds=0;updateTimer();addXP(25);toast("Focus session completed! +25 XP 🌷");
- }
+  if(timerSeconds>0){timerSeconds--;updateTimer()}
+  else{
+   pauseTimer();toast("Focus session complete! 🎉");addXP(25);
+  }
  },1000);
 }
 function pauseTimer(){clearInterval(timerInterval);timerRunning=false}
-function resetTimer(){pauseTimer();timerSeconds=+$("fmins").value*60;updateTimer()}
+function resetTimer(){pauseTimer();setTimer()}
 function fullFocus(){$("focusOverlay").classList.add("active");updateTimer()}
 function exitFullFocus(){$("focusOverlay").classList.remove("active")}
 
 function theme(a,b){
  document.documentElement.style.setProperty("--accent",a);
  document.documentElement.style.setProperty("--bg",b);
- save("theme",[a,b]);
+ $("desktop").style.background="linear-gradient(135deg,"+b+","+a+"33,"+b+")";
+ save("theme",{a,b});
 }
 function customTheme(){theme($("customcolor").value,"#f5effb")}
 function toggleDark(){document.body.classList.toggle("dark");save("dark",document.body.classList.contains("dark"))}
 function wallpaper(n){
- let backgrounds=[
+ const w=[
  "linear-gradient(135deg,#e9defa,#f8f0f4,#e5eaf9)",
- "linear-gradient(135deg,#d8d4f5,#b9c6e9,#f2d9ec)",
- "linear-gradient(135deg,#e5f2df,#f8ebda,#e4e9f9)",
- "linear-gradient(135deg,#f5effb,#fff,#e5eaf9)"
+ "linear-gradient(135deg,#1e2749,#464b75,#343a59)",
+ "linear-gradient(135deg,#e5f3e7,#d2e9dc,#f5e5d5)",
+ "linear-gradient(135deg,#f7f2ed,#eee4df,#e9e5f1)"
  ];
- $("desktop").style.background=backgrounds[n-1];save("wallpaper",n);toast("Wallpaper changed ♡");
+ $("desktop").style.background=w[n-1];save("wallpaper",n);
 }
 function petTalk(){
- let a=["You can do this! 🐰","One chapter at a time! 🌷","Your dreams are waiting! ✨","Time for a little study! 📚","Proud of your progress! ♡"];
+ let a=["You've got this! 🐰","Take it one step at a time. 🌷","Your effort counts! ✨","Welcome back to your study space! 💜","Little progress is still progress! ☁️"];
  toast(a[Math.floor(Math.random()*a.length)]);
 }
 
+function coachRefresh(){
+ let done=tasks.filter(x=>x.done).length;
+ $("coachreport").innerHTML=`<p>📌 Tasks: ${done}/${tasks.length} completed</p><p>📚 Chapters tracked: ${chapters.length}</p><p>🎓 Upcoming exams: ${exams.length}</p><p>✨ XP earned: ${xp}</p>`;
+ let incomplete=chapters.filter(x=>x.status!=="Completed");
+ $("coachsuggest").textContent=incomplete.length?"Revise: "+incomplete[0].s+" — "+incomplete[0].c:"Add chapters to get suggestions!";
+}
+function renderStats(){
+ let td=tasks.filter(x=>x.done).length;
+ let cd=chapters.filter(x=>x.status==="Completed").length;
+ $("stats").innerHTML=`<div class="card"><h3>📝 Tasks</h3><p>${td} completed of ${tasks.length}</p></div><div class="card"><h3>📚 Chapters</h3><p>${cd} completed of ${chapters.length}</p></div><div class="card"><h3>✨ XP</h3><p>${xp}</p></div><div class="card"><h3>🧠 Flashcards</h3><p>${flashes.length} cards saved</p></div>`;
+ let b=[];
+ if(td>=1)b.push("🌱 Task Starter");
+ if(td>=10)b.push("🌟 Task Master");
+ if(cd>=1)b.push("📚 Chapter Explorer");
+ if(cd>=5)b.push("🎓 Chapter Champion");
+ if(xp>=100)b.push("✨ Level Up");
+ $("badges").innerHTML="<h3>🏆 Badges</h3>"+(b.map(x=>`<span class="badgecard">${x}</span>`).join("")||"Complete tasks to unlock badges!");
+}
+
+function addFormula(){
+ let s=$("fs").value,t=$("ft").value.trim(),c=$("fc").value.trim();if(!t||!c)return;
+ formulas.push({s,t,c,id:Date.now()});save("formulas",formulas);
+ $("ft").value="";$("fc").value="";renderFormulas();
+}
+function deleteFormula(id){formulas=formulas.filter(x=>x.id!==id);save("formulas",formulas);renderFormulas()}
+function renderFormulas(){
+ $("formulalist").innerHTML=formulas.map(x=>`<div class="card"><span class="tag">${esc(x.s)}</span><b>${esc(x.t)}</b><p>${esc(x.c)}</p><button class="danger mini" onclick="deleteFormula(${x.id})">Delete</button></div>`).join("");
+}
+
+function addDoubt(){
+ let s=$("ds").value,t=$("dt").value.trim(),c=$("dc").value.trim();if(!t)return;
+ doubts.push({s,t,c,solved:false,id:Date.now()});save("doubts",doubts);
+ $("dt").value="";$("dc").value="";renderDoubts();
+}
+function toggleDoubt(id){let x=doubts.find(a=>a.id===id);if(x){x.solved=!x.solved;save("doubts",doubts);renderDoubts()}}
+function deleteDoubt(id){doubts=doubts.filter(x=>x.id!==id);save("doubts",doubts);renderDoubts()}
+function renderDoubts(){
+ $("doubtlist").innerHTML=doubts.map(x=>`<div class="card"><b>${esc(x.s)}</b> · ${esc(x.t)}<p>${esc(x.c)}</p><button class="secondary mini" onclick="toggleDoubt(${x.id})">${x.solved?"Solved ✓":"Mark solved"}</button><button class="danger mini" onclick="deleteDoubt(${x.id})">×</button></div>`).join("");
+}
+
+function addRevision(){
+ let s=$("rs").value,t=$("rt").value.trim(),d=$("rd").value;if(!t||!d)return;
+ revisions.push({s,t,d,done:false,id:Date.now()});save("revisions",revisions);
+ $("rt").value="";$("rd").value="";renderRevisions();
+}
+function toggleRevision(id){let x=revisions.find(a=>a.id===id);if(x){x.done=!x.done;save("revisions",revisions);renderRevisions()}}
+function deleteRevision(id){revisions=revisions.filter(x=>x.id!==id);save("revisions",revisions);renderRevisions()}
+function renderRevisions(){
+ $("revisionlist").innerHTML=revisions.slice().sort((a,b)=>a.d.localeCompare(b.d)).map(x=>`<div class="card"><b>${esc(x.s)}</b> · ${esc(x.t)}<p>📅 ${esc(x.d)}</p><button class="secondary mini" onclick="toggleRevision(${x.id})">${x.done?"Done ✓":"Mark revised"}</button><button class="danger mini" onclick="deleteRevision(${x.id})">×</button></div>`).join("");
+}
+
+function addMistake(){
+ let s=$("ms").value,t=$("mt").value.trim(),e=$("me").value.trim(),c=$("mc").value.trim();if(!t)return;
+ mistakes.push({s,t,e,c,done:false,id:Date.now()});save("mistakes",mistakes);
+ $("mt").value="";$("me").value="";$("mc").value="";renderMistakes();
+}
+function toggleMistake(id){let x=mistakes.find(a=>a.id===id);if(x){x.done=!x.done;save("mistakes",mistakes);renderMistakes()}}
+function deleteMistake(id){mistakes=mistakes.filter(x=>x.id!==id);save("mistakes",mistakes);renderMistakes()}
+function renderMistakes(){
+ $("mistakelist").innerHTML=mistakes.map(x=>`<div class="card"><b>${esc(x.s)} · ${esc(x.t)}</b><p><b>Mistake:</b> ${esc(x.e)}</p><p><b>Correct approach:</b> ${esc(x.c)}</p><button class="secondary mini" onclick="toggleMistake(${x.id})">${x.done?"Reattempted ✓":"Mark reattempted"}</button><button class="danger mini" onclick="deleteMistake(${x.id})">×</button></div>`).join("");
+}
+
+function addPaper(){
+ let t=$("pt").value.trim(),s=$("ps").value.trim(),time=$("ptime").value.trim(),r=$("pr").value.trim();if(!t)return;
+ papers.push({t,s,time,r,id:Date.now()});save("papers",papers);
+ $("pt").value="";$("ps").value="";$("ptime").value="";$("pr").value="";renderPapers();
+}
+function deletePaper(id){papers=papers.filter(x=>x.id!==id);save("papers",papers);renderPapers()}
+function renderPapers(){
+ $("paperlist").innerHTML=papers.map(x=>`<div class="card"><b>${esc(x.t)}</b><p>Score: ${esc(x.s||"—")} · Time: ${esc(x.time||"—")}</p><p>${esc(x.r)}</p><button class="danger mini" onclick="deletePaper(${x.id})">Delete</button></div>`).join("");
+}
+
+function esc(s){
+ return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+
+function renderAll(){
+ renderTasks();renderPlans();renderFlash();renderExams();renderChapters();renderNotes();renderDreams();renderJournal();renderStickies();renderVault();renderFormulas();renderDoubts();renderRevisions();renderMistakes();renderPapers();updateXP();coachRefresh();renderStats();
+}
 function exportData(){
- let obj={};
- Object.keys(localStorage).filter(k=>k.startsWith("sh_")).forEach(k=>obj[k]=localStorage.getItem(k));
- let blob=new Blob([JSON.stringify(obj,null,2)],{type:"application/json"});
- let a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="students-hub-backup.json";a.click();URL.revokeObjectURL(a.href);toast("Backup downloaded!");
+ let data={tasks,plans,flashes,exams,chapters,notes,dreams,journal,stickies,vault,formulas,doubts,revisions,mistakes,papers,xp,letter:get("letter","")};
+ let blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+ let url=URL.createObjectURL(blob),a=document.createElement("a");
+ a.href=url;a.download="students-hub-backup.json";a.click();URL.revokeObjectURL(url);
+ toast("Backup downloaded ♡");
 }
 function restoreData(e){
  let f=e.target.files[0];if(!f)return;
  let reader=new FileReader();
  reader.onload=()=>{
  try{
- let o=JSON.parse(reader.result);
- Object.keys(o).filter(k=>k.startsWith("sh_")).forEach(k=>localStorage.setItem(k,o[k]));
- location.reload();
+ let d=JSON.parse(reader.result);
+ Object.keys(d).forEach(k=>save(k,d[k]));
+ toast("Backup restored! Refreshing...");
+ setTimeout(()=>location.reload(),800);
  }catch{toast("Invalid backup file")}
  };
  reader.readAsText(f);
 }
 function resetAll(){
- if(!confirm("Delete all Students Hub saved data? Download a backup first if needed."))return;
- Object.keys(localStorage).filter(k=>k.startsWith("sh_")).forEach(k=>localStorage.removeItem(k));location.reload();
-}
-function esc(s){
- return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+ if(!confirm("Reset ALL Students Hub data? This cannot be undone."))return;
+ Object.keys(localStorage).filter(k=>k.startsWith("sh_")).forEach(k=>localStorage.removeItem(k));
+ location.reload();
 }
 
-function renderAll(){
- renderTasks();renderPlans();renderFlash();renderExams();renderChapters();renderNotes();renderDreams();renderJournal();renderSticky();renderVault();renderStats();updateXP();
-}
-function loadSaved(){
- let th=get("theme",null);if(th)theme(th[0],th[1]);
- if(get("dark",false))document.body.classList.add("dark");
- let wp=get("wallpaper",1);wallpaper(wp);
- $("letter").value=get("letter","");
-}
-loadSaved();
+let oldTheme=get("theme",null);if(oldTheme)theme(oldTheme.a,oldTheme.b);
+if(get("dark",false))document.body.classList.add("dark");
+let oldWallpaper=get("wallpaper",0);if(oldWallpaper)wallpaper(oldWallpaper);
+updateXP();
+
 </script>
 </body>
 </html>
