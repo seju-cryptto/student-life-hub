@@ -4,551 +4,446 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Student OS 💜</title>
+<title>Student OS | Study Edition</title>
 <style>
 :root{
- --bg:#e9e1ff;--panel:#fff;--accent:#a78bfa;
- --text:#403558;--bar:#ffffffd9;
+ --bg:#f4f0ff;--panel:#fff;--accent:#9370db;
+ --text:#41345b;--soft:#eee7ff;
 }
 *{box-sizing:border-box}
-body{
- margin:0;font-family:Segoe UI,Arial,sans-serif;
- color:var(--text);background:var(--bg);
- overflow:hidden;
-}
-button,input{font:inherit}
+body{margin:0;font-family:Segoe UI,Arial,sans-serif;color:var(--text);background:var(--bg)}
+button,input,select,textarea{font:inherit}
 button{
- border:0;border-radius:12px;padding:10px;
+ border:0;padding:10px 13px;border-radius:10px;
  background:var(--accent);color:white;cursor:pointer;
 }
-button:hover{filter:brightness(.94)}
-input{
- border:1px solid #ddd;border-radius:10px;
- padding:10px;background:white;color:#333;
+button:hover{opacity:.85}
+input,select,textarea{
+ padding:10px;border:1px solid #ddd;border-radius:10px;
+ width:100%;background:white;color:#333;
 }
-#desktop{
- height:100vh;width:100vw;
- background:var(--bg);position:relative;
- overflow:hidden;
+textarea{resize:vertical;min-height:70px}
+#desktop{min-height:100vh;padding:18px 18px 80px;background:var(--bg)}
+.top{
+ display:flex;justify-content:space-between;align-items:center;
+ flex-wrap:wrap;gap:10px;
 }
-#icons{
- display:grid;grid-template-columns:90px;
- gap:8px;padding:15px;
+.top h1{margin:5px 0}
+#nav{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}
+#nav button{background:var(--panel);color:var(--text)}
+#nav button.active{background:var(--accent);color:white}
+#view{max-width:1200px;margin:auto}
+.cards{
+ display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+ gap:15px;
 }
-.icon{
- background:transparent;color:var(--text);
- width:82px;display:flex;flex-direction:column;
- align-items:center;gap:5px;padding:10px;
+.card{
+ background:var(--panel);border-radius:18px;
+ padding:18px;box-shadow:0 4px 18px #00000008;
 }
-.icon span:first-child{font-size:32px}
-#widgets{
- position:absolute;right:15px;top:15px;
- background:#ffffffa8;padding:16px;
- border-radius:18px;width:240px;
- line-height:1.7;backdrop-filter:blur(10px);
+.card h3{margin-top:0}
+.big{font-size:28px;font-weight:bold}
+.muted{opacity:.65;font-size:13px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.row>*{flex:1}
+hr{border:0;border-top:1px solid #eee;margin:15px 0}
+.progress{
+ height:10px;background:#eae4f5;border-radius:20px;overflow:hidden;
 }
-.window{
- position:absolute;top:100px;left:120px;
- width:min(430px,90vw);max-height:75vh;
- overflow:auto;background:var(--panel);
- border-radius:18px;box-shadow:0 12px 40px #0002;
- display:none;z-index:5;
+.progress div{height:100%;background:var(--accent);width:0}
+.item{
+ padding:12px;background:var(--soft);border-radius:12px;
+ margin:8px 0;display:flex;gap:8px;align-items:center;flex-wrap:wrap;
 }
-.head{
- position:sticky;top:0;background:var(--accent);
- color:white;padding:12px;display:flex;
- justify-content:space-between;align-items:center;
- cursor:grab;z-index:2;
-}
-.head button{background:#ffffff40;padding:5px 9px}
-.content{padding:16px}
-.content textarea{
- width:100%;min-height:120px;border-radius:12px;
- border:1px solid #ddd;padding:10px;
- font:inherit;resize:vertical;
-}
-.row{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
-.listitem{
- display:flex;align-items:center;gap:8px;
- padding:10px;margin:6px 0;background:#f3efff;
- border-radius:10px;overflow-wrap:anywhere;
-}
-.listitem span{flex:1}
-.listitem button{padding:6px 9px}
+.item>*{flex:1}
+.item button{flex:0 0 auto}
 #bar{
- position:absolute;bottom:0;left:0;width:100%;
- height:60px;background:var(--bar);
- backdrop-filter:blur(20px);
- display:flex;align-items:center;gap:8px;
- padding:8px;z-index:100;
+ position:fixed;bottom:0;left:0;width:100%;height:58px;
+ background:#ffffffd9;backdrop-filter:blur(10px);
+ display:flex;justify-content:space-between;align-items:center;
+ padding:10px 18px;z-index:10;
 }
-#bar button{background:transparent;color:var(--text)}
-#pins{display:flex;gap:4px;overflow:auto}
-#pins button{font-size:20px}
-#clock{margin-left:auto;text-align:right;font-size:13px}
-#start{
- position:absolute;bottom:65px;left:8px;
- width:min(360px,95vw);max-height:75vh;
- overflow:auto;background:var(--panel);
- border-radius:20px;padding:16px;
- display:none;z-index:101;
- box-shadow:0 10px 40px #0003;
-}
-#start input{width:100%}
-#startApps{
- display:grid;grid-template-columns:repeat(3,1fr);
- gap:8px;margin-top:12px;
-}
-.startapp{
- background:#f3efff;color:var(--text);
- display:flex;flex-direction:column;align-items:center;
- padding:15px 5px;gap:6px;
-}
-#notif{
- position:absolute;right:10px;bottom:65px;
- width:min(340px,95vw);background:var(--panel);
- border-radius:20px;padding:16px;
- display:none;z-index:101;box-shadow:0 10px 40px #0003;
-}
-#lock{
- position:absolute;inset:0;z-index:1000;
- display:none;flex-direction:column;
- justify-content:center;align-items:center;
- background:linear-gradient(135deg,#b6a0ff,#eadfff,#c6b8ff);
- text-align:center;color:#41335d;
-}
-#lock h1{font-size:60px;margin:10px}
-#lock input{width:180px;text-align:center}
-#lock .row{justify-content:center}
-#calGrid{
- display:grid;grid-template-columns:repeat(7,1fr);
- gap:4px;text-align:center;
-}
-.day{padding:8px 2px;background:#f3efff;border-radius:8px}
-.today{background:var(--accent);color:white}
-#todoInput{width:100%}
-.small{font-size:12px;opacity:.8}
+#bar button{background:var(--soft);color:var(--text)}
+.badge{background:var(--soft);padding:5px 10px;border-radius:20px;font-size:12px}
+select{min-width:120px}
 @media(max-width:600px){
- #widgets{width:190px;right:8px;top:8px;font-size:12px}
- #icons{gap:2px}
- .window{left:5px!important;top:80px!important;width:95vw}
+ #desktop{padding:12px 12px 75px}
+ .big{font-size:22px}
 }
 </style>
 </head>
 <body>
 <div id="desktop">
-
-<div id="icons">
-<button class="icon" onclick="openApp('notes')"><span>📝</span><span>Notes</span></button>
-<button class="icon" onclick="openApp('calc')"><span>🧮</span><span>Calculator</span></button>
-<button class="icon" onclick="openApp('timer')"><span>⏱️</span><span>Focus Timer</span></button>
-<button class="icon" onclick="openApp('files')"><span>📁</span><span>Files</span></button>
-<button class="icon" onclick="openApp('calendar')"><span>📅</span><span>Calendar</span></button>
-<button class="icon" onclick="openApp('todo')"><span>✅</span><span>Quick To-do</span></button>
-<button class="icon" onclick="openApp('settings')"><span>⚙️</span><span>Settings</span></button>
-<button class="icon" onclick="openApp('wall')"><span>🖼️</span><span>Wallpaper</span></button>
+<div class="top">
+ <div>
+  <h1>🎓 Student OS</h1>
+  <div class="muted">Your personal study workspace.</div>
+ </div>
+ <div class="row" style="flex:0 0 auto">
+  <span class="badge" id="today"></span>
+ </div>
 </div>
 
-<div id="widgets">
-<b>✨ Student Widgets</b><br>
-<span id="widgetDate"></span><br>
-<small id="quote"></small><hr>
-📚 Focus: <span id="focusCount">0</span> sessions
+<div id="nav">
+ <button onclick="show('home')" class="active">🏠 Home</button>
+ <button onclick="show('chapters')">📊 Chapters</button>
+ <button onclick="show('flash')">📖 Flashcards</button>
+ <button onclick="show('mistakes')">❌ Mistakes</button>
+ <button onclick="show('revision')">🔁 Revision</button>
+ <button onclick="show('practice')">🧪 Practice</button>
+ <button onclick="show('exam')">📝 Exam</button>
+</div>
+<div id="view"></div>
 </div>
 
-<!-- NOTES -->
-<div class="window" id="notes">
-<div class="head"><span>📝 Notes</span><button onclick="closeApp('notes')">✕</button></div>
-<div class="content">
-<textarea id="note" placeholder="Write your notes..."></textarea>
-<button onclick="saveNote()">💾 Save</button>
-<button onclick="clearNote()">🗑️ Clear</button>
-</div></div>
-
-<!-- CALCULATOR -->
-<div class="window" id="calc">
-<div class="head"><span>🧮 Calculator</span><button onclick="closeApp('calc')">✕</button></div>
-<div class="content">
-<input id="calcInput" placeholder="Example: 25*4+10" style="width:100%">
-<div class="row"><button onclick="calculate()">Calculate</button><button onclick="document.getElementById('calcInput').value=''">Clear</button></div>
-<div id="calcResult">Result: —</div>
-</div></div>
-
-<!-- TIMER -->
-<div class="window" id="timer">
-<div class="head"><span>⏱️ Focus Timer</span><button onclick="closeApp('timer')">✕</button></div>
-<div class="content">
-<input id="mins" type="number" value="25" min="1" max="180">
-<h1 id="timerDisplay">25:00</h1>
-<div class="row">
-<button onclick="startTimer()">Start</button>
-<button onclick="pauseTimer()">Pause</button>
-<button onclick="resetTimer()">Reset</button>
-</div>
-</div></div>
-
-<!-- FILES -->
-<div class="window" id="files">
-<div class="head"><span>📁 Files</span><button onclick="closeApp('files')">✕</button></div>
-<div class="content">
-<h3>My Student Files</h3>
-<div class="listitem">📄 Study notes</div>
-<div class="listitem">📚 Chapter tracker</div>
-<div class="listitem">📅 Exam planner</div>
-<div class="listitem">📝 Personal notes</div>
-<p class="small">This is a simulated desktop file manager.</p>
-</div></div>
-
-<!-- CALENDAR -->
-<div class="window" id="calendar">
-<div class="head"><span>📅 Calendar</span><button onclick="closeApp('calendar')">✕</button></div>
-<div class="content">
-<h3 id="calMonth"></h3>
-<div id="calGrid"></div>
-</div></div>
-
-<!-- QUICK TODO -->
-<div class="window" id="todo">
-<div class="head"><span>✅ Quick To-do</span><button onclick="closeApp('todo')">✕</button></div>
-<div class="content">
-<input id="todoInput" placeholder="Add a task...">
-<div class="row"><button onclick="addTodo()">➕ Add Task</button></div>
-<div id="todoList"></div>
-</div></div>
-
-<!-- SETTINGS -->
-<div class="window" id="settings">
-<div class="head"><span>⚙️ Settings</span><button onclick="closeApp('settings')">✕</button></div>
-<div class="content">
-<h3>🎨 Themes</h3>
-<div class="row">
-<button onclick="theme('#e9e1ff','#a78bfa')">💜 Lavender</button>
-<button onclick="theme('#dff5e5','#73b78a')">💚 Green</button>
-<button onclick="theme('#e0f2ff','#68aee0')">💙 Blue</button>
-<button onclick="theme('#ffe5ef','#e78caf')">💗 Pink</button>
-<button onclick="theme('#fff0d9','#dfad69')">🧡 Peach</button>
-</div>
-<h3>📌 Pinned Apps</h3>
-<div id="pinSettings"></div>
-<h3>🔐 Lock Screen PIN</h3>
-<p class="small">Set a local PIN for this simulated desktop.</p>
-<input id="pinInput" placeholder="Set PIN" type="password">
-<button onclick="setPin()">Save PIN</button>
-<button onclick="lockScreen()">Lock Now</button>
-<p class="small">This is a simulated lock and is not real device security.</p>
-</div></div>
-
-<!-- WALLPAPER -->
-<div class="window" id="wall">
-<div class="head"><span>🖼️ Wallpaper</span><button onclick="closeApp('wall')">✕</button></div>
-<div class="content">
-<h3>Desktop Background</h3>
-<div class="row">
-<button onclick="theme('#e9e1ff','#a78bfa')">Lavender</button>
-<button onclick="theme('#dff5e5','#73b78a')">Green</button>
-<button onclick="theme('#e0f2ff','#68aee0')">Blue</button>
-<button onclick="theme('#ffe5ef','#e78caf')">Pink</button>
-<button onclick="theme('#fff0d9','#dfad69')">Peach</button>
-</div>
-<h3>Custom background colour</h3>
-<input type="color" id="customBg" value="#e9e1ff">
-<button onclick="customWallpaper()">Apply</button>
-</div></div>
-
-<!-- START MENU -->
-<div id="start">
-<h2>🌸 Student OS</h2>
-<input id="search" placeholder="Search apps..." oninput="searchApps()">
-<div id="startApps"></div>
-</div>
-
-<!-- NOTIFICATIONS -->
-<div id="notif">
-<h3>🔔 Notification Centre</h3>
-<div id="notifContent">Welcome to Student OS!</div>
-<div class="row">
-<button onclick="clearNotif()">Clear</button>
-<button onclick="toggleNotif()">Close</button>
-</div>
-</div>
-
-<!-- LOCK SCREEN -->
-<div id="lock">
-<h1 id="lockTime"></h1>
-<h2>🔐 Desktop Locked</h2>
-<p>Enter your PIN to unlock</p>
-<input id="unlockPin" type="password" placeholder="PIN">
-<div class="row">
-<button onclick="unlock()">Unlock</button>
-<button onclick="forgotPin()">Reset local PIN</button>
-</div>
-<p id="lockMsg"></p>
-</div>
-
-<!-- TASKBAR -->
 <div id="bar">
-<button onclick="toggleStart()">🪟</button>
-<button onclick="toggleNotif()">🔔</button>
-<div id="pins"></div>
-<div id="clock"></div>
-</div>
-
+ <button onclick="show('home')">🎓 Student OS</button>
+ <span id="barStatus">Study Edition</span>
+ <button onclick="show('revision')">🔁 Revise</button>
 </div>
 
 <script>
-const apps={
- notes:"📝 Notes",calc:"🧮 Calculator",timer:"⏱️ Focus Timer",
- files:"📁 Files",calendar:"📅 Calendar",
- todo:"✅ Quick To-do",settings:"⚙️ Settings",wall:"🖼️ Wallpaper"
+const subjects=["Physics","Chemistry","Maths","English","Computer Science"];
+const DB={
+ chapters:JSON.parse(localStorage.getItem("so_ch")||"[]"),
+ cards:JSON.parse(localStorage.getItem("so_fc")||"[]"),
+ mistakes:JSON.parse(localStorage.getItem("so_mi")||"[]"),
+ revisions:JSON.parse(localStorage.getItem("so_re")||"[]"),
+ questions:JSON.parse(localStorage.getItem("so_qu")||"[]"),
+ sessions:JSON.parse(localStorage.getItem("so_se")||"[]"),
+ exams:JSON.parse(localStorage.getItem("so_ex")||"[]")
 };
-let z=10,timerSeconds=1500,timerInterval=null;
-let focusSessions=Number(localStorage.getItem("focusSessions")||0);
-let pins=JSON.parse(localStorage.getItem("pinsOS")||'["notes","calc","timer","todo"]');
+function save(){
+ for(const k in DB)localStorage.setItem("so_"+({
+ chapters:"ch",cards:"fc",mistakes:"mi",revisions:"re",
+ questions:"qu",sessions:"se",exams:"ex"
+ })[k],JSON.stringify(DB[k]));
+}
+function uid(){return Date.now()+Math.random()}
+function esc(s){
+ return String(s??"").replace(/[&<>"']/g,c=>({
+ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+ }[c]));
+}
+function show(page){
+ document.querySelectorAll("#nav button").forEach(b=>b.classList.remove("active"));
+ let map={home:0,chapters:1,flash:2,mistakes:3,revision:4,practice:5,exam:6};
+ if(map[page]!==undefined)document.querySelectorAll("#nav button")[map[page]].classList.add("active");
+ const v=document.getElementById("view");
+ if(page==="home")home(v);
+ if(page==="chapters")chapters(v);
+ if(page==="flash")flash(v);
+ if(page==="mistakes")mistakes(v);
+ if(page==="revision")revision(v);
+ if(page==="practice")practice(v);
+ if(page==="exam")exam(v);
+}
+function home(v){
+ let mastered=DB.chapters.filter(x=>x.status==="Mastered").length;
+ let due=DB.revisions.filter(x=>x.date<=today()).length;
+ let pct=DB.chapters.length?Math.round(mastered/DB.chapters.length*100):0;
+ v.innerHTML=`
+ <div class="cards">
+  <div class="card"><h3>📚 Total Chapters</h3><div class="big">${DB.chapters.length}</div></div>
+  <div class="card"><h3>🏆 Mastered</h3><div class="big">${mastered}</div></div>
+  <div class="card"><h3>🔁 Revision Due</h3><div class="big">${due}</div></div>
+  <div class="card"><h3>📖 Flashcards</h3><div class="big">${DB.cards.length}</div></div>
+ </div>
+ <div class="card" style="margin-top:15px">
+ <h3>📈 Overall Chapter Mastery</h3>
+ <div class="progress"><div style="width:${pct}%"></div></div>
+ <p>${pct}% mastered</p>
+ </div>
+ <div class="cards" style="margin-top:15px">
+ <div class="card"><h3>🔁 Due Today</h3><p>${due} revision item(s)</p><button onclick="show('revision')">Open revision</button></div>
+ <div class="card"><h3>❌ Mistake Bank</h3><p>${DB.mistakes.length} saved mistakes</p><button onclick="show('mistakes')">Review mistakes</button></div>
+ <div class="card"><h3>🧪 Practice</h3><p>${DB.questions.length} questions</p><button onclick="show('practice')">Start practice</button></div>
+ </div>
+ <div class="card" style="margin-top:15px">
+ <h3>⚡ Quick Actions</h3>
+ <div class="row">
+ <button onclick="show('chapters')">Add chapter</button>
+ <button onclick="show('flash')">Add flashcard</button>
+ <button onclick="show('mistakes')">Save mistake</button>
+ <button onclick="show('exam')">Start test</button>
+ </div></div>`;
+}
+function chapters(v){
+ v.innerHTML=`
+ <div class="card">
+ <h2>📊 Chapter Mastery Tracker</h2>
+ <div class="row">
+ <select id="chSubject">${subjects.map(s=>`<option>${s}</option>`).join("")}</select>
+ <input id="chName" placeholder="Chapter name">
+ </div>
+ <div class="row">
+ <select id="chStatus">
+ <option>Learning</option><option>Practising</option>
+ <option>Revised</option><option>Mastered</option>
+ </select>
+ <button onclick="addChapter()">Add Chapter</button>
+ </div>
+ </div>
+ <div class="card" style="margin-top:15px">
+ <div class="row"><select id="chFilter" onchange="renderChList()">
+ <option value="">All Subjects</option>${subjects.map(s=>`<option>${s}</option>`).join("")}
+ </select></div>
+ <div id="chList"></div>
+ </div>`;
+ renderChList();
+}
+function addChapter(){
+ let n=document.getElementById("chName").value.trim();
+ if(!n)return alert("Enter chapter name");
+ DB.chapters.push({id:uid(),subject:document.getElementById("chSubject").value,name:n,status:document.getElementById("chStatus").value});
+ save();show("chapters");
+}
+function renderChList(){
+ let el=document.getElementById("chList");if(!el)return;
+ let f=document.getElementById("chFilter").value;
+ let arr=DB.chapters.filter(c=>!f||c.subject===f);
+ el.innerHTML=arr.map(c=>`
+ <div class="item">
+ <span><b>${esc(c.name)}</b><br><small>${esc(c.subject)}</small></span>
+ <select onchange="changeCh(${c.id},this.value)">
+ ${["Learning","Practising","Revised","Mastered"].map(s=>`<option ${s===c.status?"selected":""}>${s}</option>`).join("")}
+ </select>
+ <button onclick="delCh(${c.id})">🗑️</button>
+ </div>`).join("")||"No chapters yet.";
+}
+function changeCh(id,s){let c=DB.chapters.find(x=>x.id==id);if(c)c.status=s;save();renderChList()}
+function delCh(id){DB.chapters=DB.chapters.filter(x=>x.id!=id);save();renderChList()}
 
-function openApp(id){
- let w=document.getElementById(id);
- if(!w)return;
- w.style.display="block";w.style.zIndex=++z;
- document.getElementById("start").style.display="none";
+function flash(v){
+ v.innerHTML=`
+ <div class="card">
+ <h2>📖 Active Recall Flashcards</h2>
+ <div class="row"><select id="fcSub">${subjects.map(s=>`<option>${s}</option>`).join("")}</select></div>
+ <textarea id="fcQ" placeholder="Question"></textarea>
+ <textarea id="fcA" placeholder="Answer"></textarea>
+ <button onclick="addFC()">Save Flashcard</button>
+ </div>
+ <div class="card" style="margin-top:15px">
+ <h3>Study Cards</h3><div id="fcList"></div>
+ </div>`;
+ renderFC();
 }
-function closeApp(id){document.getElementById(id).style.display="none"}
-function toggleStart(){
- let s=document.getElementById("start");
- s.style.display=s.style.display==="block"?"none":"block";
- document.getElementById("notif").style.display="none";
- renderStart();
+function addFC(){
+ let q=document.getElementById("fcQ").value.trim(),a=document.getElementById("fcA").value.trim();
+ if(!q||!a)return alert("Enter both question and answer");
+ DB.cards.push({id:uid(),subject:document.getElementById("fcSub").value,q,a});
+ save();show("flash");
 }
-function toggleNotif(){
- let n=document.getElementById("notif");
- n.style.display=n.style.display==="block"?"none":"block";
- document.getElementById("start").style.display="none";
+function renderFC(){
+ let el=document.getElementById("fcList");if(!el)return;
+ el.innerHTML=DB.cards.map(c=>`
+ <div class="item" style="display:block">
+ <span class="badge">${esc(c.subject)}</span>
+ <p><b>${esc(c.q)}</b></p>
+ <button onclick="reveal(${c.id})">Reveal Answer</button>
+ <div id="ans${c.id}" style="display:none;margin-top:10px">${esc(c.a)}</div>
+ <button onclick="delFC(${c.id})">Delete</button>
+ </div>`).join("")||"No cards yet.";
 }
-function clearNotif(){document.getElementById("notifContent").innerHTML="No notifications."}
-function notify(t){
- document.getElementById("notifContent").innerHTML=t;
+function reveal(id){let e=document.getElementById("ans"+id);e.style.display=e.style.display==="none"?"block":"none"}
+function delFC(id){DB.cards=DB.cards.filter(x=>x.id!=id);save();renderFC()}
+
+function mistakes(v){
+ v.innerHTML=`
+ <div class="card">
+ <h2>❌ Mistake Bank</h2>
+ <div class="row"><select id="miSub">${subjects.map(s=>`<option>${s}</option>`).join("")}</select><input id="miCh" placeholder="Chapter"></div>
+ <textarea id="miQ" placeholder="Question or mistake"></textarea>
+ <textarea id="miWhy" placeholder="Why was it wrong?"></textarea>
+ <textarea id="miCorrect" placeholder="Correct approach / concept"></textarea>
+ <button onclick="addMi()">Save Mistake</button>
+ </div>
+ <div class="card" style="margin-top:15px"><h3>Saved Mistakes</h3><div id="miList"></div></div>`;
+ renderMi();
 }
-function renderStart(){
- let s=document.getElementById("startApps");
- s.innerHTML="";
- Object.keys(apps).forEach(id=>{
- let b=document.createElement("button");
- b.className="startapp";b.innerHTML=apps[id];
- b.onclick=()=>openApp(id);s.appendChild(b);
- });
+function addMi(){
+ let q=document.getElementById("miQ").value.trim();
+ if(!q)return alert("Enter the mistake");
+ DB.mistakes.push({id:uid(),subject:document.getElementById("miSub").value,chapter:document.getElementById("miCh").value,q,why:document.getElementById("miWhy").value,correct:document.getElementById("miCorrect").value});
+ save();show("mistakes");
 }
-function searchApps(){
- let q=document.getElementById("search").value.toLowerCase();
- document.querySelectorAll("#startApps button").forEach(b=>{
- b.style.display=b.innerText.toLowerCase().includes(q)?"flex":"none";
- });
+function renderMi(){
+ let el=document.getElementById("miList");if(!el)return;
+ el.innerHTML=DB.mistakes.map(m=>`
+ <div class="item" style="display:block">
+ <b>${esc(m.subject)} — ${esc(m.chapter)}</b>
+ <p>${esc(m.q)}</p>
+ <details><summary>Review reason and correction</summary>
+ <p><b>Reason:</b> ${esc(m.why)}</p>
+ <p><b>Correction:</b> ${esc(m.correct)}</p></details>
+ <button onclick="delMi(${m.id})">Delete</button>
+ <button onclick="scheduleMi(${m.id})">Add revision</button>
+ </div>`).join("")||"No mistakes saved.";
 }
-function renderPins(){
- let p=document.getElementById("pins");
- p.innerHTML="";
- pins.forEach(id=>{
- let b=document.createElement("button");
- b.textContent=apps[id].split(" ")[0];
- b.title=apps[id];
- b.onclick=()=>openApp(id);
- p.appendChild(b);
- });
- document.getElementById("pinSettings").innerHTML="";
- Object.keys(apps).forEach(id=>{
- let b=document.createElement("button");
- b.textContent=(pins.includes(id)?"📌 Unpin ":"📍 Pin ")+apps[id];
- b.style.margin="4px";
- b.onclick=()=>{
- pins=pins.includes(id)?pins.filter(x=>x!==id):[...pins,id];
- localStorage.setItem("pinsOS",JSON.stringify(pins));
- renderPins();
+function delMi(id){DB.mistakes=DB.mistakes.filter(x=>x.id!=id);save();renderMi()}
+function scheduleMi(id){
+ let m=DB.mistakes.find(x=>x.id==id);if(!m)return;
+ DB.revisions.push({id:uid(),type:"mistake",ref:id,title:m.q,subject:m.subject,date:today()});
+ save();alert("Added to revision queue!");
+}
+
+function today(){
+ let d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+}
+function revision(v){
+ let due=DB.revisions.filter(x=>x.date<=today());
+ v.innerHTML=`
+ <div class="card">
+ <h2>🔁 Revision Scheduler</h2>
+ <p>Schedule chapters, flashcards or mistakes for revision.</p>
+ <div class="row"><select id="reSub">${subjects.map(s=>`<option>${s}</option>`).join("")}</select>
+ <input id="reTitle" placeholder="Topic / chapter"></div>
+ <input type="date" id="reDate" value="${today()}">
+ <button onclick="addRe()">Schedule Revision</button>
+ </div>
+ <div class="card" style="margin-top:15px">
+ <h3>📌 Due / Upcoming</h3><div id="reList"></div>
+ </div>
+ <div class="card" style="margin-top:15px">
+ <h3>📍 Revision due today</h3>
+ <p>${due.length} item(s)</p>
+ </div>`;
+ renderRe();
+}
+function addRe(){
+ let t=document.getElementById("reTitle").value.trim(),d=document.getElementById("reDate").value;
+ if(!t||!d)return alert("Enter topic and date");
+ DB.revisions.push({id:uid(),type:"topic",title:t,subject:document.getElementById("reSub").value,date:d});
+ save();show("revision");
+}
+function renderRe(){
+ let el=document.getElementById("reList");if(!el)return;
+ el.innerHTML=DB.revisions.sort((a,b)=>a.date.localeCompare(b.date)).map(r=>`
+ <div class="item">
+ <span><b>${esc(r.title)}</b><br>${esc(r.subject)}<br><small>${esc(r.date)}</small></span>
+ <span class="badge">${r.date<=today()?"DUE":"UPCOMING"}</span>
+ <button onclick="completeRe(${r.id})">✔ Done</button>
+ <button onclick="delRe(${r.id})">🗑️</button>
+ </div>`).join("")||"Nothing scheduled.";
+}
+function completeRe(id){
+ DB.revisions=DB.revisions.filter(x=>x.id!=id);
+ DB.sessions.push({date:today(),type:"revision"});
+ save();show("revision");
+}
+function delRe(id){DB.revisions=DB.revisions.filter(x=>x.id!=id);save();renderRe()}
+
+function practice(v){
+ v.innerHTML=`
+ <div class="card">
+ <h2>🧪 Practice Arena</h2>
+ <div class="row"><select id="quSub">${subjects.map(s=>`<option>${s}</option>`).join("")}</select></div>
+ <textarea id="quText" placeholder="Question"></textarea>
+ <input id="quOpt1" placeholder="Option A">
+ <input id="quOpt2" placeholder="Option B">
+ <input id="quOpt3" placeholder="Option C">
+ <input id="quOpt4" placeholder="Option D">
+ <select id="quCorrect"><option value="0">Correct: A</option><option value="1">Correct: B</option><option value="2">Correct: C</option><option value="3">Correct: D</option></select>
+ <button onclick="addQu()">Add MCQ</button>
+ </div>
+ <div class="card" style="margin-top:15px">
+ <h3>Practice questions</h3><div id="quList"></div>
+ <button onclick="startQuiz()">Start Quiz</button>
+ </div>
+ <div class="card" style="margin-top:15px">
+ <h3>🏅 Practice Results</h3><div id="quResult"></div>
+ </div>`;
+ renderQu();
+}
+function addQu(){
+ let q=document.getElementById("quText").value.trim();
+ let opts=[1,2,3,4].map(i=>document.getElementById("quOpt"+i).value.trim());
+ if(!q||opts.some(x=>!x))return alert("Fill question and all four options");
+ DB.questions.push({id:uid(),subject:document.getElementById("quSub").value,q,opts,correct:Number(document.getElementById("quCorrect").value)});
+ save();show("practice");
+}
+function renderQu(){
+ let el=document.getElementById("quList");if(!el)return;
+ el.innerHTML=DB.questions.map(q=>`<div class="item"><span>${esc(q.subject)}: ${esc(q.q)}</span><button onclick="delQu(${q.id})">Delete</button></div>`).join("")||"No questions.";
+}
+function delQu(id){DB.questions=DB.questions.filter(x=>x.id!=id);save();renderQu()}
+function startQuiz(){
+ if(!DB.questions.length)return alert("Add questions first!");
+ let arr=DB.questions.slice().sort(()=>Math.random()-.5);
+ let v=document.getElementById("quResult");
+ let score=0,idx=0;
+ function next(){
+ if(idx>=arr.length){
+ v.innerHTML=`<h2>Score: ${score}/${arr.length}</h2>
+ <p>${Math.round(score/arr.length*100)}% accuracy</p>
+ <button onclick="show('practice')">Back</button>`;
+ DB.sessions.push({date:today(),type:"quiz",score,total:arr.length});
+ save();return;
+ }
+ let q=arr[idx];
+ v.innerHTML=`<h3>${idx+1}/${arr.length} — ${esc(q.subject)}</h3><p>${esc(q.q)}</p>
+ ${q.opts.map((o,i)=>`<button style="display:block;width:100%;margin:5px 0;background:var(--soft);color:var(--text)" onclick="answer(${i})">${String.fromCharCode(65+i)}. ${esc(o)}</button>`).join("")}`;
+ window.answer=function(n){
+ if(n===q.correct)score++;
+ else{
+ DB.mistakes.push({id:uid(),subject:q.subject,chapter:"Practice",q:q.q,why:"Incorrect quiz answer",correct:q.opts[q.correct]});
+ save();
+ }
+ idx++;next();
  };
- document.getElementById("pinSettings").appendChild(b);
- });
-}
-function saveNote(){
- localStorage.setItem("noteOS",document.getElementById("note").value);
- notify("📝 Notes saved!");
-}
-function clearNote(){
- if(confirm("Clear note?")){
- document.getElementById("note").value="";
- localStorage.removeItem("noteOS");
  }
+ next();
 }
-function calculate(){
- let s=document.getElementById("calcInput").value;
- if(!s||!/^[0-9+\-*/().%\s]+$/.test(s)){
- document.getElementById("calcResult").textContent="Invalid expression";
- return;
+
+function exam(v){
+ v.innerHTML=`
+ <div class="card">
+ <h2>📝 Exam Simulator</h2>
+ <p>Create a timed test using your saved MCQs.</p>
+ <div class="row"><input id="exMins" type="number" min="1" max="180" value="10" placeholder="Minutes"></div>
+ <button onclick="startExam()">Start Exam</button>
+ </div>
+ <div class="card" style="margin-top:15px"><div id="examArea"></div></div>`;
+}
+function startExam(){
+ if(!DB.questions.length)return alert("Add MCQs in Practice Arena first.");
+ let arr=DB.questions.slice().sort(()=>Math.random()-.5);
+ let duration=Math.max(1,Number(document.getElementById("exMins").value)||10)*60;
+ let end=Date.now()+duration*1000,idx=0,score=0,answered=false;
+ let area=document.getElementById("examArea");
+ function finish(){
+ clearInterval(interval);
+ area.innerHTML=`<h2>Exam Finished!</h2><div class="big">${score}/${arr.length}</div>
+ <p>Accuracy: ${Math.round(score/arr.length*100)}%</p><button onclick="show('exam')">Back</button>`;
+ DB.exams.push({date:today(),score,total:arr.length});
+ DB.sessions.push({date:today(),type:"exam",score,total:arr.length});
+ save();
  }
- try{
- let r=Function('"use strict";return ('+s+')')();
- document.getElementById("calcResult").textContent="Result: "+r;
- }catch(e){
- document.getElementById("calcResult").textContent="Invalid expression";
- }
-}
-function startTimer(){
- if(timerInterval)return;
- timerInterval=setInterval(()=>{
- if(timerSeconds<=0){
- pauseTimer();focusSessions++;
- localStorage.setItem("focusSessions",focusSessions);
- updateFocus();notify("🎉 Focus session completed!");
- alert("Focus session completed!");
- return;
- }
- timerSeconds--;displayTimer();
- },1000);
-}
-function pauseTimer(){clearInterval(timerInterval);timerInterval=null}
-function resetTimer(){
- pauseTimer();
- timerSeconds=Math.max(1,Number(document.getElementById("mins").value)||25)*60;
- displayTimer();
-}
-function displayTimer(){
- let m=Math.floor(timerSeconds/60),s=timerSeconds%60;
- document.getElementById("timerDisplay").textContent=
- String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
-}
-function updateFocus(){
- document.getElementById("focusCount").textContent=focusSessions;
-}
-function theme(bg,accent){
- document.documentElement.style.setProperty("--bg",bg);
- document.documentElement.style.setProperty("--accent",accent);
- localStorage.setItem("themeOS",JSON.stringify({bg,accent}));
-}
-function customWallpaper(){
- theme(document.getElementById("customBg").value,
- document.getElementById("customBg").value);
-}
-function loadTheme(){
- let t=JSON.parse(localStorage.getItem("themeOS")||"null");
- if(t)theme(t.bg,t.accent);
-}
-function addTodo(){
- let input=document.getElementById("todoInput");
- let v=input.value.trim();if(!v)return;
- let items=JSON.parse(localStorage.getItem("todoOS")||"[]");
- items.push({text:v,done:false});
- localStorage.setItem("todoOS",JSON.stringify(items));
- input.value="";renderTodo();
- notify("✅ Task added!");
-}
-function renderTodo(){
- let items=JSON.parse(localStorage.getItem("todoOS")||"[]");
- let list=document.getElementById("todoList");list.innerHTML="";
- items.forEach((item,i)=>{
- let d=document.createElement("div");d.className="listitem";
- let span=document.createElement("span");span.textContent=item.text;
- if(item.done)span.style.textDecoration="line-through";
- let done=document.createElement("button");done.textContent=item.done?"↩":"✓";
- done.onclick=()=>{
- items[i].done=!items[i].done;
- localStorage.setItem("todoOS",JSON.stringify(items));renderTodo();
+ function draw(){
+ if(Date.now()>=end){finish();return}
+ if(idx>=arr.length){finish();return}
+ let q=arr[idx];
+ area.innerHTML=`<h3>Question ${idx+1}/${arr.length}</h3>
+ <div class="badge">${esc(q.subject)}</div><h4>${esc(q.q)}</h4>
+ ${q.opts.map((o,i)=>`<button style="display:block;width:100%;margin:5px 0;background:var(--soft);color:var(--text)" onclick="examAnswer(${i})">${String.fromCharCode(65+i)}. ${esc(o)}</button>`).join("")}
+ <p id="exTime"></p>`;
+ window.examAnswer=function(n){
+ if(answered)return;answered=true;
+ if(n===q.correct)score++;
+ else DB.mistakes.push({id:uid(),subject:q.subject,chapter:"Exam",q:q.q,why:"Incorrect exam answer",correct:q.opts[q.correct]});
+ save();idx++;answered=false;draw();
  };
- let del=document.createElement("button");del.textContent="🗑️";
- del.onclick=()=>{
- items.splice(i,1);
- localStorage.setItem("todoOS",JSON.stringify(items));renderTodo();
- };
- d.append(span,done,del);list.appendChild(d);
- });
-}
-function buildCalendar(){
- let now=new Date(),year=now.getFullYear(),month=now.getMonth();
- document.getElementById("calMonth").textContent=
- now.toLocaleString("default",{month:"long"})+" "+year;
- let grid=document.getElementById("calGrid");grid.innerHTML="";
- ["S","M","T","W","T","F","S"].forEach(x=>{
- let d=document.createElement("div");d.className="day";d.textContent=x;grid.appendChild(d);
- });
- let first=new Date(year,month,1).getDay();
- let total=new Date(year,month+1,0).getDate();
- for(let i=0;i<first;i++){grid.appendChild(document.createElement("div"))}
- for(let n=1;n<=total;n++){
- let d=document.createElement("div");d.className="day";d.textContent=n;
- if(n===now.getDate())d.classList.add("today");
- grid.appendChild(d);
  }
+ let interval=setInterval(()=>{
+ let rem=Math.max(0,Math.ceil((end-Date.now())/1000));
+ let t=document.getElementById("exTime");
+ if(t)t.textContent="⏳ "+Math.floor(rem/60)+":"+String(rem%60).padStart(2,"0");
+ if(rem<=0)finish();
+ },500);
+ draw();
 }
-function setPin(){
- let v=document.getElementById("pinInput").value;
- if(!v){alert("Enter a PIN");return}
- localStorage.setItem("lockPinOS",v);
- notify("🔐 Local PIN saved.");
- alert("PIN saved!");
-}
-function lockScreen(){
- document.getElementById("lock").style.display="flex";
- document.getElementById("lockMsg").textContent="";
- document.getElementById("unlockPin").value="";
-}
-function unlock(){
- let saved=localStorage.getItem("lockPinOS");
- if(!saved){document.getElementById("lockMsg").textContent="No PIN set. Reset local PIN to continue.";return}
- if(document.getElementById("unlockPin").value===saved){
- document.getElementById("lock").style.display="none";
- }else document.getElementById("lockMsg").textContent="Incorrect PIN.";
-}
-function forgotPin(){
- if(confirm("Remove saved local PIN?")){
- localStorage.removeItem("lockPinOS");
- document.getElementById("lock").style.display="none";
- alert("Local PIN reset.");
- }
-}
-function updateClock(){
- let now=new Date();
- document.getElementById("clock").innerHTML=
- now.toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"})+
- "<br>"+now.toLocaleDateString();
- document.getElementById("widgetDate").textContent=
- now.toLocaleDateString(undefined,{weekday:"long",day:"numeric",month:"long",year:"numeric"});
- document.getElementById("lockTime").textContent=
- now.toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
-}
-const quotes=[
- "Small steps count 🌱","One chapter at a time 📚",
- "Progress over perfection ✨","You've got this 💜",
- "Focus on what matters 🎯","Keep learning 🌸"
-];
-document.getElementById("quote").textContent=
-quotes[Math.floor(Math.random()*quotes.length)];
-function dragWindows(){
- document.querySelectorAll(".window").forEach(w=>{
- let h=w.querySelector(".head");
- h.addEventListener("pointerdown",e=>{
- if(e.target.tagName==="BUTTON")return;
- let x=e.clientX,y=e.clientY;
- let r=w.getBoundingClientRect();
- w.style.left=r.left+"px";w.style.top=r.top+"px";
- w.style.zIndex=++z;
- h.setPointerCapture(e.pointerId);
- function move(ev){
- w.style.left=Math.max(0,r.left+ev.clientX-x)+"px";
- w.style.top=Math.max(0,r.top+ev.clientY-y)+"px";
- }
- function end(){
- h.removeEventListener("pointermove",move);
- h.removeEventListener("pointerup",end);
- h.removeEventListener("pointercancel",end);
- }
- h.addEventListener("pointermove",move);
- h.addEventListener("pointerup",end);
- h.addEventListener("pointercancel",end);
- });
- w.addEventListener("pointerdown",()=>w.style.zIndex=++z);
- });
-}
-document.getElementById("note").value=localStorage.getItem("noteOS")||"";
-loadTheme();renderPins();renderTodo();buildCalendar();updateClock();updateFocus();displayTimer();dragWindows();
-setInterval(updateClock,1000);
-document.getElementById("todoInput").addEventListener("keydown",e=>{
-if(e.key==="Enter")addTodo();
-});
+document.getElementById("today").textContent=new Date().toLocaleDateString(undefined,{weekday:"short",month:"short",day:"numeric",year:"numeric"});
+show("home");
 </script>
 </body>
 </html>
