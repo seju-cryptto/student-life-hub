@@ -3,587 +3,189 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Students Hub ♡</title>
+<title>Students Hub n</title>
 <style>
-:root{
- --bg:#f5efff;--panel:#fffdfd;--accent:#b89be8;
- --text:#4b405c;--muted:#8b7d9d;--line:#eadff5;
- --shadow:0 12px 35px #7d5d9c22;
-}
 *{box-sizing:border-box}
-body{margin:0;font-family:"Segoe UI",sans-serif;color:var(--text);background:var(--bg)}
-button,input,textarea,select{font:inherit;color:inherit}
-button{cursor:pointer;border:none;border-radius:12px;padding:9px 14px;background:var(--accent);color:white;transition:.2s}
-button:hover{transform:translateY(-1px);filter:brightness(.97)}
-input,textarea,select{padding:10px;border:1px solid var(--line);border-radius:12px;background:#fff;width:100%;outline:none}
-textarea{resize:vertical;min-height:110px}
-#lock{position:fixed;inset:0;z-index:1000;background:linear-gradient(135deg,#e8d9ff,#fff0f3,#f4e9ff);display:flex;align-items:center;justify-content:center;text-align:center}
-.lockbox{background:#ffffffc9;backdrop-filter:blur(15px);padding:45px;border-radius:30px;box-shadow:var(--shadow);max-width:450px;width:90%}
-.lockbox h1{font-size:42px;margin:8px}
-.lockbox p{color:var(--muted)}
-#desktop{min-height:100vh;display:none;background:linear-gradient(135deg,#f8f0ff,#fff7f3,#eee8ff);overflow:hidden;position:relative}
-#topbar{height:56px;background:#ffffffb8;backdrop-filter:blur(15px);display:flex;align-items:center;justify-content:space-between;padding:0 18px;border-bottom:1px solid var(--line);position:relative;z-index:20}
-#topbar .brand{font-weight:800}
-#topbar button{background:#fff;color:var(--text);border:1px solid var(--line)}
-#desktopArea{min-height:calc(100vh - 56px);padding:22px;position:relative}
-#widgets{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:22px}
-.widget{background:#ffffffbd;border:1px solid #fff;padding:14px 18px;border-radius:20px;box-shadow:var(--shadow);min-width:140px}
-.widget strong{font-size:19px}
-#apps{display:grid;grid-template-columns:repeat(auto-fill,100px);gap:16px;max-width:600px}
-.appicon{background:#ffffffa9;border:1px solid white;border-radius:22px;text-align:center;padding:15px 8px;cursor:pointer;transition:.2s;box-shadow:0 4px 15px #80609c13}
-.appicon:hover{transform:translateY(-4px);background:white}
-.appicon .emoji{font-size:30px;display:block;margin-bottom:7px}
-.appicon small{font-size:12px}
-.window{position:absolute;top:160px;left:270px;width:440px;max-width:calc(100vw - 30px);max-height:75vh;min-height:170px;background:var(--panel);border:1px solid white;border-radius:22px;box-shadow:0 20px 50px #624c7b35;z-index:10;overflow:hidden;display:flex;flex-direction:column}
-.window.maximized{top:65px!important;left:10px!important;width:calc(100% - 20px)!important;height:calc(100vh - 80px)!important;max-height:none!important}
-.winhead{background:#f8f0ff;padding:12px 15px;display:flex;justify-content:space-between;align-items:center;cursor:move;user-select:none}
-.winhead .controls{display:flex;gap:5px}
-.winhead button{padding:5px 9px;background:white;color:var(--text)}
-.winbody{padding:18px;overflow:auto;flex:1}
-.winbody h2{margin-top:0}
-.close{background:#ffe2e9!important}
-.dock{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);display:flex;gap:7px;background:#ffffffc9;backdrop-filter:blur(15px);padding:10px;border-radius:20px;box-shadow:var(--shadow);z-index:30;max-width:95vw;overflow-x:auto}
-.dock button{background:white;color:var(--text);font-size:19px;padding:9px}
-.card{padding:15px;border:1px solid var(--line);border-radius:18px;margin:12px 0;background:#fff}
-.row{display:flex;gap:8px;align-items:center}
-.row>*{flex:1}
-.listitem{padding:10px;margin:8px 0;border:1px solid var(--line);border-radius:14px;display:flex;align-items:center;gap:8px;background:#fff}
-.listitem button{flex:0 0 auto;padding:6px 10px}
-.listitem .content{flex:1;overflow-wrap:anywhere}
-.listitem.done .content{text-decoration:line-through;opacity:.55}
-.tag{display:inline-block;background:#f1e8ff;padding:5px 10px;border-radius:20px;font-size:12px;margin:3px}
-.progress{height:10px;background:#eee5f7;border-radius:20px;overflow:hidden;margin:10px 0}
-.progress div{height:100%;background:var(--accent);width:0%;transition:.3s}
-.big{font-size:38px;font-weight:800;text-align:center}
-.center{text-align:center}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.hidden{display:none!important}
-#contextMenu{position:fixed;z-index:100;background:white;border:1px solid var(--line);border-radius:15px;box-shadow:var(--shadow);padding:8px;display:none}
-#contextMenu button{display:block;width:100%;margin:3px;background:white;color:var(--text);text-align:left}
-#notificationPanel{position:fixed;right:15px;top:65px;width:300px;max-width:90vw;background:white;border-radius:20px;padding:18px;box-shadow:var(--shadow);z-index:50;display:none}
-#toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#5d4b72;color:white;padding:12px 20px;border-radius:30px;z-index:200;display:none}
-#pet{position:fixed;right:20px;bottom:95px;font-size:45px;cursor:pointer;z-index:8}
-hr{border:0;border-top:1px solid var(--line)}
-small{color:var(--muted)}
-body.dark{
- --bg:#272332;--panel:#342d42;--text:#f4eaff;--muted:#c3b3d6;
- --line:#524461;--accent:#a88bce;
-}
-body.dark #desktop{background:linear-gradient(135deg,#272332,#352d43)}
-body.dark #topbar,body.dark .widget,body.dark .dock,body.dark .appicon{background:#362d44}
-body.dark .winhead{background:#42354f}
-body.dark .card,body.dark .listitem,body.dark input,body.dark textarea,body.dark select{background:#40364e;color:var(--text)}
-body.dark #notificationPanel,body.dark #contextMenu{background:#352d43}
-@media(max-width:700px){
- #apps{grid-template-columns:repeat(3,1fr)}
- .window{left:10px!important;width:calc(100% - 20px)!important;top:120px!important}
- .dock{bottom:8px}
-}
+body{margin:0;font-family:Segoe UI,sans-serif;background:#f5efff;color:#50445f}
+button,input,textarea{font:inherit}
+button{cursor:pointer;border:0;border-radius:12px;padding:9px 14px;background:#b18adf;color:white}
+input,textarea{padding:10px;border:1px solid #eadff5;border-radius:12px;width:100%}
+#lock{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:linear-grad
+ient(135deg,#e8d9ff,#fff0f3);z-index:5}
+.box{padding:40px;text-align:center;background:#ffffffdd;border-radius:25px}
+#desktop{display:none;min-height:100vh;padding:20px}
+#apps{display:grid;grid-template-columns:repeat(auto-fill,100px);gap:12px}
+.app{padding:15px;text-align:center;background:#fff;border-radius:20px;cursor:pointer}
+.window{position:absolute;left:200px;top:130px;width:420px;max-width:95vw;background:white;border-radius:2
+0px;box-shadow:0 10px 40px #8870aa44;overflow:hidden}
+.head{padding:12px;background:#f3e9ff;cursor:move;display:flex;justify-content:space-between}
+.body{padding:15px;max-height:70vh;overflow:auto}
+.card{padding:12px;border:1px solid #eee;border-radius:15px;margin:10px 0}
+#dock{position:fixed;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:6px;background:#ffff
+ffcc;padding:10px;border-radius:20px}
+#dock button{background:#f5efff;color:#50445f}
 </style>
 </head>
 <body>
-
-<div id="lock">
- <div class="lockbox">
-  <div style="font-size:65px">🌷</div>
-  <h1>Students Hub ♡</h1>
-  <p>Your little corner of productivity, dreams & growth.</p>
-  <p id="lockDate"></p>
-  <button onclick="enterDesktop()" style="padding:14px 30px;font-size:17px">Enter my desktop ✨</button>
- </div>
-</div>
-
+<div id="lock"><div class="box"><h1>Students Hub n</h1><p>Your study space</p><button 
+onclick="enter()">Enter Desktop n</button></div></div>
 <div id="desktop">
- <div id="topbar">
-  <div class="brand">🌷 Students Hub ♡</div>
-  <div class="row" style="flex:0;gap:6px">
-   <button onclick="toggleNotifications()">🔔</button>
-   <button onclick="openApp('Settings')">⚙️</button>
-   <button onclick="lockDesktop()">🔒</button>
-  </div>
-  <div id="clock"></div>
- </div>
-
- <div id="desktopArea" oncontextmenu="showContext(event)">
-  <div id="widgets">
-   <div class="widget">🌸 Today<br><strong id="dateWidget"></strong></div>
-   <div class="widget">📚 Tasks done<br><strong id="taskWidget">0</strong></div>
-   <div class="widget">✨ XP points<br><strong id="xpWidget">0</strong></div>
-   <div class="widget">💭 Quote<br><small id="quote">Small steps matter.</small></div>
-  </div>
-
-  <div id="apps"></div>
- </div>
+<h2>n Students Hub n</h2>
+<p id="stats">Tasks completed: 0</p>
+<div id="apps"></div>
 </div>
-
-<div class="dock" id="dock"></div>
-<div id="pet" onclick="toast('You got this! 🐰💗')" title="Your desktop buddy">🐰</div>
-<div id="contextMenu"></div>
-<div id="notificationPanel">
- <h3>🔔 Notifications</h3>
- <div id="notificationContent">Welcome to your study desktop!</div>
- <button onclick="toggleNotifications()">Close</button>
-</div>
-<div id="toast"></div>
-
+<div id="dock"></div>
 <script>
-const appList=[
- ["Tasks","📝"],["Planner","📅"],["Chapter Tracker","📚"],
- ["Notes Studio","🗒️"],["Flashcards","🃏"],["Focus Room","⏳"],
- ["Dream Board","🌷"],["Study Journal","📔"],["Sticky Notes","📌"],
- ["Analytics","📊"],["Calculator","🧮"],["Formula Vault","📐"],
- ["Doubt Tracker","❓"],["Revision Scheduler","🔁"],
- ["Mistake Notebook","📝"],["Practice Papers","📄"],
- ["Exam Center","🎓"],["Study Coach","✨"],["Trash Bin","🗑️"],
- ["Settings","⚙️"]
-];
-let data=JSON.parse(localStorage.getItem("studentsHubData")||"{}");
-data.tasks ||= [];
-data.chapters ||= [];
-data.notes ||= "";
-data.sticky ||= "";
-data.dream ||= "";
-data.journal ||= "";
-data.flash ||= [];
-data.doubts ||= [];
-data.mistakes ||= [];
-data.papers ||= [];
-data.formulas ||= [];
-data.trash ||= [];
-data.xp ||= 0;
-data.completed ||= 0;
-data.theme ||= "lavender";
-data.dark ||= false;
-data.notifications ||= [];
-let z=10;
-let flashIndex=0;
-
-function save(){
- localStorage.setItem("studentsHubData",JSON.stringify(data));
- updateWidgets();
-}
-function updateWidgets(){
- document.getElementById("taskWidget").textContent=data.completed||0;
- document.getElementById("xpWidget").textContent=data.xp||0;
-}
-function enterDesktop(){
- document.getElementById("lock").style.display="none";
- document.getElementById("desktop").style.display="block";
-}
-function lockDesktop(){
- document.getElementById("desktop").style.display="none";
- document.getElementById("lock").style.display="flex";
-}
-function toast(msg){
- const t=document.getElementById("toast");
- t.textContent=msg;t.style.display="block";
- setTimeout(()=>t.style.display="none",2200);
-}
-function addNotification(msg){
- data.notifications.unshift(msg);
- data.notifications=data.notifications.slice(0,20);
- save();
-}
-function toggleNotifications(){
- let n=document.getElementById("notificationPanel");
- n.style.display=n.style.display==="block"?"none":"block";
- document.getElementById("notificationContent").innerHTML=
- data.notifications.length?data.notifications.map(x=>`<div class="card">${esc(x)}</div>`).join(""):"No notifications yet.";
-}
-function esc(s){
- return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
-}
-function renderApps(){
- let a=document.getElementById("apps");
- a.innerHTML=appList.map(x=>`<div class="appicon" onclick="openApp('${x[0]}')"><span class="emoji">${x[1]}</span><small>${x[0]}</small></div>`).join("");
- let d=document.getElementById("dock");
- d.innerHTML=["Tasks","Planner","Focus Room","Notes Studio","Settings"].map(n=>{
- let e=appList.find(x=>x[0]===n);
- return `<button title="${n}" onclick="openApp('${n}')">${e[1]}</button>`;
- }).join("");
-}
-function openApp(name){
- let old=document.querySelector(`[data-app="${name}"]`);
- if(old){old.style.display="flex";old.style.zIndex=++z;return;}
- let w=document.createElement("div");
- w.className="window";
- w.dataset.app=name;
- w.style.zIndex=++z;
- w.style.left=(150+Math.random()*150)+"px";
- w.style.top=(110+Math.random()*100)+"px";
- w.innerHTML=`<div class="winhead"><strong>${appList.find(x=>x[0]===name)?.[1]||"✨"} ${name}</strong>
- <div class="controls"><button onclick="minWin(this)">—</button><button onclick="maxWin(this)">□</button><button class="close" onclick="this.closest('.window').remove()">×</button></div></div>
- <div class="winbody">${appContent(name)}</div>`;
- document.getElementById("desktopArea").appendChild(w);
- makeDrag(w);
- refreshAll();
-}
-function minWin(b){b.closest(".window").style.display="none";}
-function maxWin(b){b.closest(".window").classList.toggle("maximized");}
-function makeDrag(w){
- const h=w.querySelector(".winhead");
- let sx,sy,ox,oy;
- h.onpointerdown=e=>{
- if(e.target.tagName==="BUTTON")return;
- if(w.classList.contains("maximized"))return;
- sx=e.clientX;sy=e.clientY;
- ox=w.offsetLeft;oy=w.offsetTop;
- w.style.zIndex=++z;
- h.setPointerCapture(e.pointerId);
- };
- h.onpointermove=e=>{
- if(!h.hasPointerCapture(e.pointerId))return;
- w.style.left=(ox+e.clientX-sx)+"px";
- w.style.top=(oy+e.clientY-sy)+"px";
- };
- h.onpointerup=e=>{try{h.releasePointerCapture(e.pointerId)}catch{}};
- w.onpointerdown=()=>w.style.zIndex=++z;
-}
-function appContent(n){
- switch(n){
- case "Tasks":return tasksHTML();
- case "Planner":return plannerHTML();
- case "Chapter Tracker":return chapterHTML();
- case "Notes Studio":return notesHTML();
- case "Flashcards":return flashHTML();
- case "Focus Room":return focusHTML();
- case "Dream Board":return dreamHTML();
- case "Study Journal":return journalHTML();
- case "Sticky Notes":return stickyHTML();
- case "Analytics":return analyticsHTML();
- case "Calculator":return calcHTML();
- case "Formula Vault":return formulaHTML();
- case "Doubt Tracker":return doubtHTML();
- case "Revision Scheduler":return revisionHTML();
- case "Mistake Notebook":return mistakeHTML();
- case "Practice Papers":return paperHTML();
- case "Exam Center":return examHTML();
- case "Study Coach":return coachHTML();
- case "Trash Bin":return trashHTML();
- case "Settings":return settingsHTML();
- default:return "<p>Coming soon ♡</p>";
- }
-}
-function tasksHTML(){
- return `<h2>📝 My Tasks</h2><div class="row"><input id="taskInput" placeholder="Add a task..."><button onclick="addTask()">Add</button></div><div id="taskList"></div><script></script>`;
-}
-function addTask(){
- let input=document.querySelector('[data-app="Tasks"] #taskInput');
- if(!input||!input.value.trim())return;
- data.tasks.push({text:input.value.trim(),done:false});
- input.value="";save();refresh("Tasks");toast("Task added ♡");
-}
-function tasksRefresh(){
- let w=document.querySelector('[data-app="Tasks"]');
- if(!w)return;
- let list=w.querySelector("#taskList");
- if(!list)return;
- list.innerHTML=data.tasks.map((t,i)=>`<div class="listitem ${t.done?"done":""}">
- <input type="checkbox" style="width:auto" ${t.done?"checked":""} onchange="toggleTask(${i},this.checked)">
- <div class="content">${esc(t.text)}</div><button class="close" onclick="deleteTask(${i})">×</button></div>`).join("");
-}
-function toggleTask(i,v){
- data.tasks[i].done=v;
- if(v){data.completed++;data.xp+=10;addNotification("Task completed! +10 XP ✨");}
- save();tasksRefresh();
-}
-function deleteTask(i){
- data.trash.push({type:"Task",text:data.tasks[i].text});
- data.tasks.splice(i,1);save();tasksRefresh();
-}
-function plannerHTML(){
- return `<h2>📅 Study Planner</h2><label>Date</label><input type="date" id="planDate"><label>Subject</label><input id="planSubject" placeholder="Subject"><label>Study plan</label><textarea id="planText" placeholder="What are you studying?"></textarea><button onclick="savePlan()">Save Plan</button><div id="planList"></div>`;
-}
-function savePlan(){
- let d=document.querySelector('[data-app="Planner"] #planDate').value;
- let s=document.querySelector('[data-app="Planner"] #planSubject').value;
- let t=document.querySelector('[data-app="Planner"] #planText').value;
- if(!d||!s||!t)return toast("Fill all details!");
- data.plans ||= [];
- data.plans.push({d,s,t});
- save();refresh("Planner");toast("Plan saved!");
-}
-function plannerRefresh(){
- let w=document.querySelector('[data-app="Planner"] #planList');
- if(w)w.innerHTML=(data.plans||[]).map((p,i)=>`<div class="card"><strong>${esc(p.d)} · ${esc(p.s)}</strong><p>${esc(p.t)}</p><button onclick="removePlan(${i})">Delete</button></div>`).join("");
-}
-function removePlan(i){data.plans.splice(i,1);save();plannerRefresh();}
-function chapterHTML(){
- return `<h2>📚 Chapter Tracker</h2><div class="row"><select id="chSub"><option>Physics</option><option>Chemistry</option><option>Maths</option><option>Computer Science</option></select><input id="chName" placeholder="Chapter name"></div><button onclick="addChapter()">Add Chapter</button><div id="chList"></div>`;
-}
-function addChapter(){
- let s=document.querySelector('[data-app="Chapter Tracker"] #chSub').value;
- let n=document.querySelector('[data-app="Chapter Tracker"] #chName').value.trim();
- if(!n)return;
- data.chapters.push({s,n,status:"Not Started"});
- save();refresh("Chapter Tracker");
-}
-function chapterRefresh(){
- let w=document.querySelector('[data-app="Chapter Tracker"] #chList');
- if(!w)return;
- let grouped={};
- data.chapters.forEach((c,i)=>{(grouped[c.s]||=[]).push({...c,i})});
- w.innerHTML=Object.entries(grouped).map(([s,arr])=>`<h3>${esc(s)}</h3>${arr.map(c=>`<div class="card"><strong>${esc(c.n)}</strong><select onchange="setChapter(${c.i},this.value)"><option ${c.status==="Not Started"?"selected":""}>Not Started</option><option ${c.status==="In Progress"?"selected":""}>In Progress</option><option ${c.status==="Completed"?"selected":""}>Completed</option></select><button class="close" onclick="delChapter(${c.i})">Delete</button></div>`).join("")}`).join("");
-}
-function setChapter(i,v){data.chapters[i].status=v;save();chapterRefresh();}
-function delChapter(i){data.trash.push({type:"Chapter",text:data.chapters[i].n});data.chapters.splice(i,1);save();chapterRefresh();}
-function notesHTML(){
- return `<h2>🗒️ Notes Studio</h2><textarea id="notesArea" style="min-height:300px" placeholder="Your notes...">${esc(data.notes)}</textarea><button onclick="saveNotes()">Save Notes</button>`;
-}
-function saveNotes(){
- data.notes=document.querySelector('[data-app="Notes Studio"] #notesArea').value;save();toast("Notes saved ♡");
-}
-function flashHTML(){
- return `<h2>🃏 Flashcards</h2><div class="row"><input id="flashQ" placeholder="Question"><input id="flashA" placeholder="Answer"></div><button onclick="addFlash()">Add Card</button><hr><div id="flashView"></div>`;
-}
-function addFlash(){
- let q=document.querySelector('[data-app="Flashcards"] #flashQ').value;
- let a=document.querySelector('[data-app="Flashcards"] #flashA').value;
- if(!q||!a)return;
- data.flash.push({q,a});save();refresh("Flashcards");
-}
-function flashRefresh(){
- let w=document.querySelector('[data-app="Flashcards"] #flashView');
- if(!w)return;
- if(!data.flash.length){w.innerHTML="No flashcards yet.";return;}
- flashIndex=Math.min(flashIndex,data.flash.length-1);
- let f=data.flash[flashIndex];
- w.innerHTML=`<div class="card center"><h3>${esc(f.q)}</h3><div id="flashAnswer" class="hidden"><hr>${esc(f.a)}</div><button onclick="document.getElementById('flashAnswer').classList.toggle('hidden')">Reveal Answer</button><p>Card ${flashIndex+1}/${data.flash.length}</p><button onclick="flashPrev()">←</button><button onclick="flashNext()">→</button><button class="close" onclick="delFlash(${flashIndex})">Delete</button></div>`;
-}
-function flashNext(){flashIndex=(flashIndex+1)%data.flash.length;flashRefresh();}
-function flashPrev(){flashIndex=(flashIndex-1+data.flash.length)%data.flash.length;flashRefresh();}
-function delFlash(i){data.flash.splice(i,1);save();flashRefresh();}
-function focusHTML(){
- return `<h2>⏳ Focus Room</h2><div class="center"><div class="big" id="timerDisplay">25:00</div><div class="row"><button onclick="startTimer()">Start</button><button onclick="pauseTimer()">Pause</button><button onclick="resetTimer()">Reset</button></div><p>Focus time for your goals ♡</p><div class="row"><button onclick="setTimer(25)">25 min</button><button onclick="setTimer(45)">45 min</button><button onclick="setTimer(60)">60 min</button></div></div>`;
-}
-let timerSec=1500,timerInt=null;
-function drawTimer(){
- let el=document.querySelector('[data-app="Focus Room"] #timerDisplay');
- if(el)el.textContent=Math.floor(timerSec/60).toString().padStart(2,"0")+":"+ (timerSec%60).toString().padStart(2,"0");
-}
-function startTimer(){
- if(timerInt)return;
- timerInt=setInterval(()=>{
- timerSec--;
- drawTimer();
- if(timerSec<=0){
- pauseTimer();toast("Focus session complete! ✨");
- data.xp+=25;addNotification("Focus session completed +25 XP");save();
- }
- },1000);
-}
-function pauseTimer(){clearInterval(timerInt);timerInt=null;}
-function resetTimer(){pauseTimer();timerSec=1500;drawTimer();}
-function setTimer(m){pauseTimer();timerSec=m*60;drawTimer();}
-function dreamHTML(){
- return `<h2>🌷 Dream Board</h2><textarea id="dreamArea" style="min-height:250px" placeholder="Your goals, dreams, ideas, future vision...">${esc(data.dream)}</textarea><button onclick="saveDream()">Save My Dreams</button>`;
-}
-function saveDream(){data.dream=document.querySelector('[data-app="Dream Board"] #dreamArea').value;save();toast("Dream board saved ♡");}
-function journalHTML(){
- return `<h2>📔 Study Journal</h2><textarea id="journalArea" placeholder="How was today's study session?">${esc(data.journal)}</textarea><button onclick="saveJournal()">Save Journal</button>`;
-}
-function saveJournal(){data.journal=document.querySelector('[data-app="Study Journal"] #journalArea').value;save();toast("Journal saved ♡");}
-function stickyHTML(){
- return `<h2>📌 Sticky Notes</h2><textarea id="stickyArea" placeholder="Quick reminders...">${esc(data.sticky)}</textarea><button onclick="saveSticky()">Save</button>`;
-}
-function saveSticky(){data.sticky=document.querySelector('[data-app="Sticky Notes"] #stickyArea').value;save();toast("Saved!");}
-function analyticsHTML(){
- let total=data.chapters.length,done=data.chapters.filter(c=>c.status==="Completed").length;
- return `<h2>📊 My Progress</h2><div class="grid2"><div class="card center"><h3>Tasks completed</h3><div class="big">${data.completed}</div></div><div class="card center"><h3>XP points</h3><div class="big">${data.xp}</div></div></div><h3>Chapter progress</h3><p>${done}/${total} chapters completed</p><div class="progress"><div style="width:${total?done/total*100:0}%"></div></div><p>Tasks in list: ${data.tasks.length}</p><p>Flashcards: ${data.flash.length}</p><p>Tracked chapters: ${total}</p>`;
-}
-function calcHTML(){
- return `<h2>🧮 Calculator</h2><input id="calcInput" placeholder="Example: (12+5)*2"><button onclick="calculate()">Calculate</button><div class="card" id="calcResult">Result appears here</div><p><small>Basic arithmetic only.</small></p>`;
-}
-function calculate(){
- let w=document.querySelector('[data-app="Calculator"] #calcInput');
- let res=document.querySelector('[data-app="Calculator"] #calcResult');
- try{res.textContent=basicMath(w.value);}
- catch{res.textContent="Invalid expression";}
-}
-function basicMath(expr){
- expr=expr.replace(/\s/g,"");
- if(!/^[0-9+\-*/().%]+$/.test(expr))throw Error();
- let tokens=expr.match(/\d+(?:\.\d+)?|[()+\-*/%]/g)||[];
- if(tokens.join("")!==expr)throw Error();
- let p=0;
- function factor(){
-  let t=tokens[p++];
-  if(t==="("){let v=sum();if(tokens[p++]!==")")throw Error();return v;}
-  if(t==="-")return -factor();
-  if(t==="+")return factor();
-  if(!t||isNaN(Number(t)))throw Error();
-  return Number(t);
- }
- function term(){let v=factor();while(tokens[p]==="*"||tokens[p]==="/"||tokens[p]==="%"){let op=tokens[p++],b=factor();v=op==="*"?v*b:op==="/"?v/b:v%b;}return v;}
- function sum(){let v=term();while(tokens[p]==="+"||tokens[p]==="-"){let op=tokens[p++],b=term();v=op==="+"?v+b:v-b;}return v;}
- let result=sum();if(p!==tokens.length||!isFinite(result))throw Error();return result;
-}
-function formulaHTML(){
- return `<h2>📐 Formula Vault</h2><input id="formulaSub" placeholder="Subject"><input id="formulaName" placeholder="Formula name"><textarea id="formulaText" placeholder="Write formula"></textarea><button onclick="addFormula()">Save formula</button><div id="formulaList"></div>`;
-}
-function addFormula(){
- let s=document.querySelector('[data-app="Formula Vault"] #formulaSub').value;
- let n=document.querySelector('[data-app="Formula Vault"] #formulaName').value;
- let t=document.querySelector('[data-app="Formula Vault"] #formulaText').value;
- if(!s||!n||!t)return;
- data.formulas.push({s,n,t});save();refresh("Formula Vault");
-}
-function formulaRefresh(){
- let w=document.querySelector('[data-app="Formula Vault"] #formulaList');
- if(w)w.innerHTML=data.formulas.map((f,i)=>`<div class="card"><strong>${esc(f.s)} · ${esc(f.n)}</strong><p>${esc(f.t)}</p><button onclick="delFormula(${i})">Delete</button></div>`).join("");
-}
-function delFormula(i){data.formulas.splice(i,1);save();formulaRefresh();}
-function doubtHTML(){
- return `<h2>❓ Doubt Tracker</h2><input id="doubtSubject" placeholder="Subject"><textarea id="doubtText" placeholder="Your doubt"></textarea><button onclick="addDoubt()">Add doubt</button><div id="doubtList"></div>`;
-}
-function addDoubt(){
- let s=document.querySelector('[data-app="Doubt Tracker"] #doubtSubject').value;
- let t=document.querySelector('[data-app="Doubt Tracker"] #doubtText').value;
- if(!s||!t)return;
- data.doubts.push({s,t,done:false});save();refresh("Doubt Tracker");
-}
-function doubtRefresh(){
- let w=document.querySelector('[data-app="Doubt Tracker"] #doubtList');
- if(w)w.innerHTML=data.doubts.map((d,i)=>`<div class="card"><strong>${esc(d.s)}</strong><p>${esc(d.t)}</p><label><input type="checkbox" style="width:auto" ${d.done?"checked":""} onchange="data.doubts[${i}].done=this.checked;save();doubtRefresh()"> Solved</label><button onclick="delDoubt(${i})">Delete</button></div>`).join("");
-}
-function delDoubt(i){data.doubts.splice(i,1);save();doubtRefresh();}
-function revisionHTML(){
- return `<h2>🔁 Revision Scheduler</h2><input id="revSubject" placeholder="Subject / chapter"><input type="date" id="revDate"><button onclick="addRevision()">Schedule Revision</button><div id="revList"></div>`;
-}
-function addRevision(){
- let s=document.querySelector('[data-app="Revision Scheduler"] #revSubject').value;
- let d=document.querySelector('[data-app="Revision Scheduler"] #revDate').value;
- if(!s||!d)return;
- data.revisions ||= [];data.revisions.push({s,d});save();refresh("Revision Scheduler");
-}
-function revisionRefresh(){
- let w=document.querySelector('[data-app="Revision Scheduler"] #revList');
- if(w)w.innerHTML=(data.revisions||[]).map((r,i)=>`<div class="card">${esc(r.d)} · ${esc(r.s)} <button onclick="delRevision(${i})">Delete</button></div>`).join("");
-}
-function delRevision(i){data.revisions.splice(i,1);save();revisionRefresh();}
-function mistakeHTML(){
- return `<h2>📝 Mistake Notebook</h2><input id="mistakeSubject" placeholder="Subject"><textarea id="mistakeText" placeholder="Mistake / correct approach"></textarea><button onclick="addMistake()">Save mistake</button><div id="mistakeList"></div>`;
-}
-function addMistake(){
- let s=document.querySelector('[data-app="Mistake Notebook"] #mistakeSubject').value;
- let t=document.querySelector('[data-app="Mistake Notebook"] #mistakeText').value;
- if(!s||!t)return;
- data.mistakes.push({s,t});save();refresh("Mistake Notebook");
-}
-function mistakeRefresh(){
- let w=document.querySelector('[data-app="Mistake Notebook"] #mistakeList');
- if(w)w.innerHTML=data.mistakes.map((m,i)=>`<div class="card"><strong>${esc(m.s)}</strong><p>${esc(m.t)}</p><button onclick="delMistake(${i})">Delete</button></div>`).join("");
-}
-function delMistake(i){data.mistakes.splice(i,1);save();mistakeRefresh();}
-function paperHTML(){
- return `<h2>📄 Practice Papers</h2><input id="paperName" placeholder="Paper name / source"><input id="paperSubject" placeholder="Subject"><input type="date" id="paperDate"><button onclick="addPaper()">Add Paper</button><div id="paperList"></div>`;
-}
-function addPaper(){
- let n=document.querySelector('[data-app="Practice Papers"] #paperName').value;
- let s=document.querySelector('[data-app="Practice Papers"] #paperSubject').value;
- let d=document.querySelector('[data-app="Practice Papers"] #paperDate').value;
- if(!n||!s)return;
- data.papers.push({n,s,d});save();refresh("Practice Papers");
-}
-function paperRefresh(){
- let w=document.querySelector('[data-app="Practice Papers"] #paperList');
- if(w)w.innerHTML=data.papers.map((p,i)=>`<div class="card"><strong>${esc(p.s)}</strong><p>${esc(p.n)} ${esc(p.d||"")}</p><button onclick="delPaper(${i})">Delete</button></div>`).join("");
-}
-function delPaper(i){data.papers.splice(i,1);save();paperRefresh();}
-function examHTML(){
- return `<h2>🎓 Exam Center</h2><p>Keep your exam dates and goals here.</p><input id="examName" placeholder="Exam name"><input type="date" id="examDate"><textarea id="examTarget" placeholder="Target / syllabus"></textarea><button onclick="addExam()">Add Exam</button><div id="examList"></div>`;
-}
-function addExam(){
- let n=document.querySelector('[data-app="Exam Center"] #examName').value;
- let d=document.querySelector('[data-app="Exam Center"] #examDate').value;
- let t=document.querySelector('[data-app="Exam Center"] #examTarget').value;
- if(!n||!d)return;
- data.exams ||= [];data.exams.push({n,d,t});save();refresh("Exam Center");
-}
-function examRefresh(){
- let w=document.querySelector('[data-app="Exam Center"] #examList');
- if(w)w.innerHTML=(data.exams||[]).map((e,i)=>`<div class="card"><strong>${esc(e.n)} · ${esc(e.d)}</strong><p>${esc(e.t)}</p><button onclick="delExam(${i})">Delete</button></div>`).join("");
-}
-function delExam(i){data.exams.splice(i,1);save();examRefresh();}
-function coachHTML(){
- let count=data.tasks.filter(t=>!t.done).length;
- return `<h2>✨ Study Coach</h2><div class="card">🌷 ${count===0?"Add a task to begin your study day!":`You have ${count} tasks remaining. Start with the smallest one.`}</div><div class="card">💗 Tip: Try one focus session, then check your progress.</div><button onclick="openApp('Tasks')">Open Tasks</button><button onclick="openApp('Focus Room')">Start Focus</button>`;
-}
-function trashHTML(){
- return `<h2>🗑️ Trash Bin</h2><p>Deleted entries can be permanently cleared.</p><div id="trashList"></div><button class="close" onclick="emptyTrash()">Empty Trash</button>`;
-}
-function trashRefresh(){
- let w=document.querySelector('[data-app="Trash Bin"] #trashList');
- if(w)w.innerHTML=data.trash.length?data.trash.map((t,i)=>`<div class="card"><strong>${esc(t.type)}</strong><p>${esc(t.text)}</p></div>`).join(""):"Trash is empty ♡";
-}
-function emptyTrash(){data.trash=[];save();trashRefresh();toast("Trash emptied");}
-function settingsHTML(){
- return `<h2>⚙️ Settings</h2><h3>Theme</h3><select id="themeSelect" onchange="setTheme(this.value)"><option value="lavender">Lavender</option><option value="pink">Pink</option><option value="mint">Mint</option><option value="blue">Blue</option></select><button onclick="toggleDark()">🌙 Toggle dark mode</button><hr><button onclick="resetWindows()">Reset window positions</button><button onclick="exportData()">📦 Export Backup</button><button onclick="document.getElementById('importFile').click()">📥 Import Backup</button><input id="importFile" type="file" accept=".json" class="hidden" onchange="importData(event)"><hr><button class="close" onclick="resetAll()">Reset entire site data</button>`;
-}
-function setTheme(v){
- data.theme=v;
- let themes={lavender:["#f5efff","#b89be8"],pink:["#fff0f5","#e7a6c5"],mint:["#edfff7","#91cbb4"],blue:["#eff7ff","#92b9e5"]};
- document.documentElement.style.setProperty("--bg",themes[v][0]);
- document.documentElement.style.setProperty("--accent",themes[v][1]);
- save();
-}
-function toggleDark(){
- data.dark=!data.dark;document.body.classList.toggle("dark",data.dark);save();
-}
-function resetWindows(){
- document.querySelectorAll(".window").forEach(w=>{w.style.left="270px";w.style.top="160px";w.classList.remove("maximized")});
- toast("Window positions reset");
-}
-function exportData(){
- let b=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
- let a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="students-hub-backup.json";a.click();URL.revokeObjectURL(a.href);
-}
-function importData(e){
- let f=e.target.files[0];if(!f)return;
- let r=new FileReader();
- r.onload=()=>{
- try{data=JSON.parse(r.result);save();location.reload();}
- catch{toast("Invalid backup file");}
- };
- r.readAsText(f);
-}
-function resetAll(){
- if(confirm("Delete all Students Hub data? This cannot be undone.")){
- localStorage.removeItem("studentsHubData");location.reload();
- }
-}
-function refresh(name){
- let w=document.querySelector(`[data-app="${name}"]`);
- if(!w)return;
- let body=w.querySelector(".winbody");
- body.innerHTML=appContent(name);
-}
-function refreshAll(){
- tasksRefresh();plannerRefresh();chapterRefresh();flashRefresh();formulaRefresh();
- doubtRefresh();revisionRefresh();mistakeRefresh();paperRefresh();examRefresh();trashRefresh();
-}
-function showContext(e){
- e.preventDefault();
- let m=document.getElementById("contextMenu");
- m.style.display="block";m.style.left=e.clientX+"px";m.style.top=e.clientY+"px";
- m.innerHTML=`<button onclick="openApp('Tasks');hideContext()">📝 Tasks</button><button onclick="openApp('Planner');hideContext()">📅 Planner</button><button onclick="openApp('Notes Studio');hideContext()">🗒️ Notes</button><button onclick="openApp('Settings');hideContext()">⚙️ Settings</button><button onclick="hideContext()">Close</button>`;
-}
-function hideContext(){document.getElementById("contextMenu").style.display="none";}
-document.addEventListener("click",e=>{
- if(!e.target.closest("#contextMenu"))hideContext();
-});
-function updateClock(){
- let d=new Date();
- document.getElementById("clock").textContent=d.toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});
- document.getElementById("dateWidget").textContent=d.toLocaleDateString([],{day:"numeric",month:"short"});
-}
-const quotes=["Small steps matter ♡","You are growing every day 🌷","Focus on progress, not perfection ✨","You can do hard things 💗","One chapter at a time 📚"];
-document.getElementById("quote").textContent=quotes[Math.floor(Math.random()*quotes.length)];
-document.getElementById("lockDate").textContent=new Date().toLocaleDateString([],{weekday:"long",day:"numeric",month:"long"});
-renderApps();updateClock();setInterval(updateClock,1000);
-document.body.classList.toggle("dark",data.dark);
-setTheme(data.theme);
-updateWidgets();
+const names=["Tasks","Planner","Chapter Tracker","Notes Studio","Flashcards","Focus Room","Dream 
+Board","Study Journal","Sticky Notes","Analytics","Calculator","Formula Vault","Doubt Tracker","Revision 
+Scheduler","Mistake Notebook","Practice Papers","Exam Center","Study Coach","Trash Bin","Settings"];
+const icons=["n","n","n","nn","n","n","n","n","n","n","n","n","n","n","n","n","n","n","nn","nn"];
+let data=JSON.parse(localStorage.getItem("hub")||"{}");
+data.tasks ||= [];data.notes ||= "";data.chapters ||= [];data.xp ||= 0;
+function save(){localStorage.setItem("hub",JSON.stringify(data));document.getElementById("stats").textCont
+ent="Tasks completed: "+(data.done||0);}
+function enter(){document.getElementById("lock").style.display="none";document.getElementById("desktop").s
+tyle.display="block";}
+function esc(s){return String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"
+,"'":"&#39;"}[c]));}
+document.getElementById("apps").innerHTML=names.map((n,i)=>`<div class="app" 
+onclick="openApp('${n}')"><div style="font-size:30px">${icons[i]}</div>${n}</div>`).join("");
+document.getElementById("dock").innerHTML=["Tasks","Planner","Notes Studio","Focus Room"].map(n=>`<button 
+onclick="openApp('${n}')">${n}</button>`).join("");
+function openApp(n){
+let existing=document.querySelector('[data-name="'+n+'"]');if(existing){existing.style.display="block";ret
+urn;}
+let w=document.createElement("div");w.className="window";w.dataset.name=n;
+w.innerHTML=`<div class="head"><b>${n}</b><button onclick="this.closest('.window').remove()">×</button></d
+iv><div class="body">${content(n)}</div>`;
+document.getElementById("desktop").appendChild(w);drag(w);refresh(n);
+}
+function drag(w){let h=w.querySelector(".head"),dx,dy;h.onmousedown=e=>{dx=e.clientX-w.offsetLeft;dy=e.cli
+entY-w.offsetTop;document.onmousemove=m=>{w.style.left=m.clientX-dx+"px";w.style.top=m.clientY-dy+"px";};d
+ocument.onmouseup=()=>document.onmousemove=null;};}
+function content(n){
+if(n==="Tasks")return `<h3>Tasks</h3><input id="task" placeholder="Add task"><button 
+onclick="addTask()">Add</button><div id="tasklist"></div>`;
+if(n==="Planner")return `<h3>Planner</h3><input id="date" type="date"><textarea id="plan" 
+placeholder="Study plan"></textarea><button onclick="savePlan()">Save</button><div id="plans"></div>`;
+if(n==="Chapter Tracker")return `<h3>Chapter Tracker</h3><input id="chapter" 
+placeholder="Chapter"><button onclick="addChapter()">Add</button><div id="chapters"></div>`;
+if(n==="Notes Studio")return `<h3>Notes</h3><textarea id="notes" 
+style="min-height:220px">${esc(data.notes)}</textarea><button onclick="saveNotes()">Save</button>`;
+if(n==="Flashcards")return `<h3>Flashcards</h3><input id="q" placeholder="Question"><input id="a" 
+placeholder="Answer"><button onclick="addFlash()">Add</button><div id="flash"></div>`;
+if(n==="Focus Room")return `<h3>Focus Timer</h3><div style="font-size:35px" id="timer">25:00</div><button 
+onclick="startTimer()">Start</button><button onclick="stopTimer()">Pause</button><button 
+onclick="resetTimer()">Reset</button>`;
+if(n==="Dream Board")return `<h3>Dream Board</h3><textarea 
+id="dream">${esc(data.dream)}</textarea><button onclick="saveDream()">Save</button>`;
+if(n==="Study Journal")return `<h3>Journal</h3><textarea 
+id="journal">${esc(data.journal)}</textarea><button onclick="saveJournal()">Save</button>`;
+if(n==="Sticky Notes")return `<h3>Sticky Notes</h3><textarea 
+id="sticky">${esc(data.sticky)}</textarea><button onclick="saveSticky()">Save</button>`;
+if(n==="Analytics")return `<h3>Analytics</h3><p>Completed: ${data.done||0}</p><p>XP: 
+${data.xp||0}</p><p>Chapters: ${data.chapters.length}</p>`;
+if(n==="Calculator")return `<h3>Calculator</h3><input id="calc" placeholder="Arithmetic 
+expression"><button onclick="calc()">Calculate</button><p id="result"></p>`;
+if(n==="Formula Vault")return `<h3>Formula Vault</h3><input id="f" placeholder="Formula"><button 
+onclick="addFormula()">Save</button><div id="formulas"></div>`;
+if(n==="Doubt Tracker")return `<h3>Doubt Tracker</h3><textarea id="doubt" placeholder="Your 
+doubt"></textarea><button onclick="addDoubt()">Add</button><div id="doubts"></div>`;
+if(n==="Revision Scheduler")return `<h3>Revision Scheduler</h3><input id="rev" 
+placeholder="Chapter"><input id="rd" type="date"><button onclick="addRev()">Add</button><div 
+id="revs"></div>`;
+if(n==="Mistake Notebook")return `<h3>Mistake Notebook</h3><textarea id="mistake"></textarea><button 
+onclick="addMistake()">Save</button><div id="mistakes"></div>`;
+if(n==="Practice Papers")return `<h3>Practice Papers</h3><input id="paper" placeholder="Paper 
+name"><button onclick="addPaper()">Add</button><div id="papers"></div>`;
+if(n==="Exam Center")return `<h3>Exam Center</h3><input id="exam" placeholder="Exam"><input id="ed" 
+type="date"><button onclick="addExam()">Add</button><div id="exams"></div>`;
+if(n==="Study Coach")return `<h3>Study Coach</h3><p>Pick one task, focus on it, and start small n
+</p><button onclick="openApp('Tasks')">Tasks</button>`;
+if(n==="Trash Bin")return `<h3>Trash Bin</h3><div id="trash"></div>`;
+if(n==="Settings")return `<h3>Settings</h3><button onclick="backup()">Export Backup</button><button 
+onclick="resetData()">Reset Data</button>`;
+}
+function refresh(n){if(n==="Tasks")tasks();if(n==="Planner")plans();if(n==="Chapter 
+Tracker")chapters();if(n==="Flashcards")flashcards();if(n==="Formula Vault")formulas();if(n==="Doubt 
+Tracker")doubts();if(n==="Revision Scheduler")revs();if(n==="Mistake 
+Notebook")mistakes();if(n==="Practice Papers")papers();if(n==="Exam Center")exams();if(n==="Trash 
+Bin")trash();}
+function addTask(){let v=document.getElementById("task").value.trim();if(!v)return;data.tasks.push({v,done:
+false});save();tasks();}
+function tasks(){let el=document.getElementById("tasklist");if(el)el.innerHTML=data.tasks.map((t,i)=>`<div
+ class="card"><input type="checkbox" ${t.done?"checked":""} onchange="toggleTask(${i},this.checked)" 
+style="width:auto"><span>${esc(t.v)}</span><button onclick="delTask(${i})">×</button></div>`).join("");}
+function toggleTask(i,v){data.tasks[i].done=v;if(v){data.done=(data.done||0)+1;data.xp+=10;}save();tasks();
+}
+function delTask(i){data.trash||=[];data.trash.push(data.tasks[i].v);data.tasks.splice(i,1);save();tasks();
+}
+function savePlan(){data.plans||=[];data.plans.push({d:document.getElementById("date").value,t:document.ge
+tElementById("plan").value});save();plans();}
+function plans(){let el=document.getElementById("plans");if(el)el.innerHTML=(data.plans||[]).map(p=>`<div 
+class="card">${esc(p.d)} ${esc(p.t)}</div>`).join("");}
+function addChapter(){let v=document.getElementById("chapter").value.trim();if(!v)return;data.chapters.pus
+h({v,s:false});save();chapters();}
+function chapters(){let el=document.getElementById("chapters");if(el)el.innerHTML=data.chapters.map((c,i)=
+>`<div class="card"><input type="checkbox" style="width:auto" ${c.s?"checked":""} 
+onchange="data.chapters[${i}].s=this.checked;save()">${esc(c.v)}</div>`).join("");}
+function saveNotes(){data.notes=document.getElementById("notes").value;save();}
+function addFlash(){data.flash||=[];data.flash.push({q:document.getElementById("q").value,a:document.getEl
+ementById("a").value});save();flashcards();}
+function flashcards(){let el=document.getElementById("flash");if(el)el.innerHTML=(data.flash||[]).map(f=>`
+<div class="card"><b>${esc(f.q)}</b><details><summary>Answer</summary>${esc(f.a)}</details></div>`).join(""
+);}
+let secs=1500,interval=null;
+function draw(){let el=document.getElementById("timer");if(el)el.textContent=Math.floor(secs/60).toString()
+.padStart(2,"0")+":"+ (secs%60).toString().padStart(2,"0");}
+function startTimer(){if(interval)return;interval=setInterval(()=>{secs--;draw();if(secs<=0){stopTimer();a
+lert("Focus session completed!");data.xp+=25;save();}},1000);}
+function stopTimer(){clearInterval(interval);interval=null;}
+function resetTimer(){stopTimer();secs=1500;draw();}
+function saveDream(){data.dream=document.getElementById("dream").value;save();}
+function saveJournal(){data.journal=document.getElementById("journal").value;save();}
+function saveSticky(){data.sticky=document.getElementById("sticky").value;save();}
+function calc(){try{document.getElementById("result").textContent=arithmetic(document.getElementById("calc"
+).value);}catch{document.getElementById("result").textContent="Invalid expression";}}
+function arithmetic(s){s=s.replace(/\s/g,"");if(!/^[0-9+\-*/().%]+$/.test(s))throw Error();let 
+t=s.match(/\d+(?:\.\d+)?|[()+\-*/%]/g)||[],i=0;function f(){let x=t[i++];if(x==="("){let 
+v=sum();if(t[i++]!==")")throw Error();return v;}if(x==="-")return-f();if(x==="+")return 
+f();if(x==null||isNaN(+x))throw Error();return+x;}function term(){let 
+v=f();while(["*","/","%"].includes(t[i])){let o=t[i++],b=f();v=o==="*"?v*b:o==="/"?v/b:v%b;}return 
+v;}function sum(){let v=term();while(["+","-"].includes(t[i])){let 
+o=t[i++],b=term();v=o==="+"?v+b:v-b;}return v;}let r=sum();if(i!==t.length||!isFinite(r))throw 
+Error();return r;}
+function addFormula(){data.formulas||=[];data.formulas.push(document.getElementById("f").value);save();for
+mulas();}
+function formulas(){let el=document.getElementById("formulas");if(el)el.innerHTML=(data.formulas||[]).map(
+x=>`<div class="card">${esc(x)}</div>`).join("");}
+function addDoubt(){data.doubts||=[];data.doubts.push(document.getElementById("doubt").value);save();doubt
+s();}
+function doubts(){let el=document.getElementById("doubts");if(el)el.innerHTML=(data.doubts||[]).map(x=>`<d
+iv class="card">${esc(x)}</div>`).join("");}
+function addRev(){data.revs||=[];data.revs.push({v:document.getElementById("rev").value,d:document.getElem
+entById("rd").value});save();revs();}
+function revs(){let el=document.getElementById("revs");if(el)el.innerHTML=(data.revs||[]).map(x=>`<div 
+class="card">${esc(x.d)} ${esc(x.v)}</div>`).join("");}
+function addMistake(){data.mistakes||=[];data.mistakes.push(document.getElementById("mistake").value);save
+();mistakes();}
+function mistakes(){let el=document.getElementById("mistakes");if(el)el.innerHTML=(data.mistakes||[]).map(
+x=>`<div class="card">${esc(x)}</div>`).join("");}
+function addPaper(){data.papers||=[];data.papers.push(document.getElementById("paper").value);save();paper
+s();}
+function papers(){let el=document.getElementById("papers");if(el)el.innerHTML=(data.papers||[]).map(x=>`<d
+iv class="card">${esc(x)}</div>`).join("");}
+function addExam(){data.exams||=[];data.exams.push({n:document.getElementById("exam").value,d:document.get
+ElementById("ed").value});save();exams();}
+function exams(){let el=document.getElementById("exams");if(el)el.innerHTML=(data.exams||[]).map(x=>`<div 
+class="card">${esc(x.n)} ${esc(x.d)}</div>`).join("");}
+function trash(){let el=document.getElementById("trash");if(el)el.innerHTML=(data.trash||[]).map(x=>`<div 
+class="card">${esc(x)}</div>`).join("")||"Empty";}
+function backup(){let a=document.createElement("a");a.href=URL.createObjectURL(new 
+Blob([JSON.stringify(data)],{type:"application/json"}));a.download="students-hub.json";a.click();}
+function resetData(){if(confirm("Reset all saved data?")){localStorage.removeItem("hub");location.reload();
+}}
+save();
 </script>
 </body>
 </html>
