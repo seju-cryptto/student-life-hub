@@ -1,560 +1,554 @@
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Mini Desktop 💜</title>
+<title>Student OS 💜</title>
 <style>
+:root{
+ --bg:#e9e1ff;--panel:#fff;--accent:#a78bfa;
+ --text:#403558;--bar:#ffffffd9;
+}
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;color:#49365f}
+body{
+ margin:0;font-family:Segoe UI,Arial,sans-serif;
+ color:var(--text);background:var(--bg);
+ overflow:hidden;
+}
+button,input{font:inherit}
+button{
+ border:0;border-radius:12px;padding:10px;
+ background:var(--accent);color:white;cursor:pointer;
+}
+button:hover{filter:brightness(.94)}
+input{
+ border:1px solid #ddd;border-radius:10px;
+ padding:10px;background:white;color:#333;
+}
 #desktop{
-height:100vh;position:relative;overflow:hidden;
-padding:15px;padding-bottom:65px;
-background:linear-gradient(135deg,#d8c9ff,#bde0ff,#f8d9eb);
+ height:100vh;width:100vw;
+ background:var(--bg);position:relative;
+ overflow:hidden;
 }
-#icons{display:grid;grid-template-columns:85px;gap:3px}
+#icons{
+ display:grid;grid-template-columns:90px;
+ gap:8px;padding:15px;
+}
 .icon{
-border:0;background:transparent;border-radius:14px;
-padding:10px;cursor:pointer;color:inherit;
+ background:transparent;color:var(--text);
+ width:82px;display:flex;flex-direction:column;
+ align-items:center;gap:5px;padding:10px;
 }
-.icon:hover{background:#ffffff70}
-.icon span{display:block;font-size:30px;margin-bottom:6px}
-.win{
-display:none;position:absolute;top:80px;left:110px;
-width:min(420px,94vw);height:min(450px,78vh);
-background:var(--panel,#fff);border-radius:16px;
-box-shadow:0 10px 35px #5555;overflow:hidden;z-index:10;
+.icon span:first-child{font-size:32px}
+#widgets{
+ position:absolute;right:15px;top:15px;
+ background:#ffffffa8;padding:16px;
+ border-radius:18px;width:240px;
+ line-height:1.7;backdrop-filter:blur(10px);
+}
+.window{
+ position:absolute;top:100px;left:120px;
+ width:min(430px,90vw);max-height:75vh;
+ overflow:auto;background:var(--panel);
+ border-radius:18px;box-shadow:0 12px 40px #0002;
+ display:none;z-index:5;
 }
 .head{
-background:var(--head,#e6d9ff);padding:11px;
-display:flex;justify-content:space-between;
-align-items:center;font-weight:bold;
-cursor:grab;user-select:none;
+ position:sticky;top:0;background:var(--accent);
+ color:white;padding:12px;display:flex;
+ justify-content:space-between;align-items:center;
+ cursor:grab;z-index:2;
 }
-.head:active{cursor:grabbing}
-.head button{
-border:0;border-radius:8px;padding:5px 9px;
-cursor:pointer;margin-left:3px;
+.head button{background:#ffffff40;padding:5px 9px}
+.content{padding:16px}
+.content textarea{
+ width:100%;min-height:120px;border-radius:12px;
+ border:1px solid #ddd;padding:10px;
+ font:inherit;resize:vertical;
 }
-.body{padding:14px;overflow:auto;height:calc(100% - 43px)}
-.action{
-background:var(--accent,#a78bdb);color:white;
-border:0;border-radius:10px;padding:10px;
-margin:4px;cursor:pointer;
+.row{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.listitem{
+ display:flex;align-items:center;gap:8px;
+ padding:10px;margin:6px 0;background:#f3efff;
+ border-radius:10px;overflow-wrap:anywhere;
 }
-.action:hover{filter:brightness(.9)}
-input,textarea,select{
-width:100%;padding:10px;margin:6px 0;
-border:1px solid #ddd;border-radius:10px;
-background:white;color:#49365f;
-}
-textarea{min-height:90px}
-.note{padding:10px;background:var(--head,#eee5ff);
-border-radius:10px;margin:10px 0;overflow-wrap:anywhere}
+.listitem span{flex:1}
+.listitem button{padding:6px 9px}
 #bar{
-position:absolute;bottom:0;left:0;width:100%;height:58px;
-display:flex;align-items:center;justify-content:center;
-gap:6px;background:#ffffffb9;backdrop-filter:blur(12px);
-z-index:9999;padding:4px;flex-wrap:wrap;
+ position:absolute;bottom:0;left:0;width:100%;
+ height:60px;background:var(--bar);
+ backdrop-filter:blur(20px);
+ display:flex;align-items:center;gap:8px;
+ padding:8px;z-index:100;
 }
-#bar button{
-border:0;border-radius:10px;padding:9px;
-background:#ffffffcc;cursor:pointer;color:#49365f;
+#bar button{background:transparent;color:var(--text)}
+#pins{display:flex;gap:4px;overflow:auto}
+#pins button{font-size:20px}
+#clock{margin-left:auto;text-align:right;font-size:13px}
+#start{
+ position:absolute;bottom:65px;left:8px;
+ width:min(360px,95vw);max-height:75vh;
+ overflow:auto;background:var(--panel);
+ border-radius:20px;padding:16px;
+ display:none;z-index:101;
+ box-shadow:0 10px 40px #0003;
 }
-#bar button:hover{background:#e6d9ff}
-#clock{position:absolute;right:8px;font-size:11px;text-align:right}
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
-.grid button{padding:14px;border:0;border-radius:10px;
-background:var(--head,#e9ddff);cursor:pointer;font-size:17px}
-.wall{display:block;width:100%;padding:20px;border:0;
-border-radius:12px;margin:8px 0;cursor:pointer}
-#launcher{
-display:none;position:absolute;top:50%;left:50%;
-transform:translate(-50%,-50%);
-width:min(380px,94vw);max-height:80vh;overflow:auto;
-background:var(--panel,#fff);padding:18px;border-radius:20px;
-box-shadow:0 15px 40px #3336;z-index:8000;
+#start input{width:100%}
+#startApps{
+ display:grid;grid-template-columns:repeat(3,1fr);
+ gap:8px;margin-top:12px;
 }
-#launcherApps button{
-width:100%;padding:12px;margin:4px 0;
-border:0;border-radius:10px;background:var(--head,#eee);
-cursor:pointer;text-align:left;
+.startapp{
+ background:#f3efff;color:var(--text);
+ display:flex;flex-direction:column;align-items:center;
+ padding:15px 5px;gap:6px;
 }
-#welcome{
-position:absolute;inset:0;background:linear-gradient(135deg,#8e74cb,#c6a8ec,#a8c9f6);
-display:flex;align-items:center;justify-content:center;
-z-index:10000;text-align:center;color:white;padding:20px;
+#notif{
+ position:absolute;right:10px;bottom:65px;
+ width:min(340px,95vw);background:var(--panel);
+ border-radius:20px;padding:16px;
+ display:none;z-index:101;box-shadow:0 10px 40px #0003;
 }
-#welcomeBox{max-width:400px}
-#welcome button{
-border:0;border-radius:14px;padding:14px 22px;
-cursor:pointer;background:white;color:#7256a7;font-weight:bold;
+#lock{
+ position:absolute;inset:0;z-index:1000;
+ display:none;flex-direction:column;
+ justify-content:center;align-items:center;
+ background:linear-gradient(135deg,#b6a0ff,#eadfff,#c6b8ff);
+ text-align:center;color:#41335d;
 }
-#widgetBox{background:var(--head,#eee5ff);
-padding:12px;border-radius:12px;margin-bottom:10px}
-#quote{min-height:55px}
-.pinrow{display:flex;justify-content:space-between;align-items:center;
-padding:8px;border-radius:10px;background:var(--head,#eee5ff);margin:6px 0}
-#themePreview{height:40px;border-radius:12px}
+#lock h1{font-size:60px;margin:10px}
+#lock input{width:180px;text-align:center}
+#lock .row{justify-content:center}
+#calGrid{
+ display:grid;grid-template-columns:repeat(7,1fr);
+ gap:4px;text-align:center;
+}
+.day{padding:8px 2px;background:#f3efff;border-radius:8px}
+.today{background:var(--accent);color:white}
+#todoInput{width:100%}
+.small{font-size:12px;opacity:.8}
+@media(max-width:600px){
+ #widgets{width:190px;right:8px;top:8px;font-size:12px}
+ #icons{gap:2px}
+ .window{left:5px!important;top:80px!important;width:95vw}
+}
 </style>
 </head>
 <body>
-
 <div id="desktop">
 
 <div id="icons">
-<button class="icon" onclick="openW('notes')"><span>📝</span>Notes</button>
-<button class="icon" onclick="openW('files')"><span>📁</span>Files</button>
-<button class="icon" onclick="openW('calc')"><span>🧮</span>Calculator</button>
-<button class="icon" onclick="openW('timer')"><span>⏱️</span>Timer</button>
-<button class="icon" onclick="openW('calendar')"><span>📅</span>Calendar</button>
-<button class="icon" onclick="openW('wall')"><span>🎨</span>Wallpapers</button>
-<button class="icon" onclick="openW('trash')"><span>🗑️</span>Trash</button>
-<button class="icon" onclick="openW('settings')"><span>⚙️</span>Settings</button>
-<button class="icon" onclick="toggleLauncher()"><span>🔍</span>Search</button>
+<button class="icon" onclick="openApp('notes')"><span>📝</span><span>Notes</span></button>
+<button class="icon" onclick="openApp('calc')"><span>🧮</span><span>Calculator</span></button>
+<button class="icon" onclick="openApp('timer')"><span>⏱️</span><span>Focus Timer</span></button>
+<button class="icon" onclick="openApp('files')"><span>📁</span><span>Files</span></button>
+<button class="icon" onclick="openApp('calendar')"><span>📅</span><span>Calendar</span></button>
+<button class="icon" onclick="openApp('todo')"><span>✅</span><span>Quick To-do</span></button>
+<button class="icon" onclick="openApp('settings')"><span>⚙️</span><span>Settings</span></button>
+<button class="icon" onclick="openApp('wall')"><span>🖼️</span><span>Wallpaper</span></button>
+</div>
+
+<div id="widgets">
+<b>✨ Student Widgets</b><br>
+<span id="widgetDate"></span><br>
+<small id="quote"></small><hr>
+📚 Focus: <span id="focusCount">0</span> sessions
 </div>
 
 <!-- NOTES -->
-<div class="win" id="notes">
-<div class="head">📝 Notes <span>
-<button onclick="minW('notes')">—</button>
-<button onclick="closeW('notes')">✕</button>
-</span></div>
-<div class="body">
-<input id="nt" placeholder="Title">
-<textarea id="nb" placeholder="Write a note..."></textarea>
-<button class="action" onclick="saveNote()">Save</button>
-<button class="action" onclick="clearNote()">Clear</button>
-<div id="notesList"></div>
-</div>
-</div>
-
-<!-- FILES -->
-<div class="win" id="files">
-<div class="head">📁 Files <span>
-<button onclick="minW('files')">—</button>
-<button onclick="closeW('files')">✕</button>
-</span></div>
-<div class="body"><div id="filesList"></div></div>
-</div>
+<div class="window" id="notes">
+<div class="head"><span>📝 Notes</span><button onclick="closeApp('notes')">✕</button></div>
+<div class="content">
+<textarea id="note" placeholder="Write your notes..."></textarea>
+<button onclick="saveNote()">💾 Save</button>
+<button onclick="clearNote()">🗑️ Clear</button>
+</div></div>
 
 <!-- CALCULATOR -->
-<div class="win" id="calc">
-<div class="head">🧮 Calculator <span>
-<button onclick="minW('calc')">—</button>
-<button onclick="closeW('calc')">✕</button>
-</span></div>
-<div class="body">
-<input id="cd" value="0" readonly style="font-size:25px;text-align:right">
-<div class="grid">
-<button onclick="ci('7')">7</button><button onclick="ci('8')">8</button><button onclick="ci('9')">9</button><button onclick="ci('/')">÷</button>
-<button onclick="ci('4')">4</button><button onclick="ci('5')">5</button><button onclick="ci('6')">6</button><button onclick="ci('*')">×</button>
-<button onclick="ci('1')">1</button><button onclick="ci('2')">2</button><button onclick="ci('3')">3</button><button onclick="ci('-')">−</button>
-<button onclick="ci('0')">0</button><button onclick="ci('.')">.</button><button onclick="ce()">=</button><button onclick="ci('+')">+</button>
-<button onclick="cc()" style="grid-column:span 4">Clear</button>
-</div>
-</div>
-</div>
+<div class="window" id="calc">
+<div class="head"><span>🧮 Calculator</span><button onclick="closeApp('calc')">✕</button></div>
+<div class="content">
+<input id="calcInput" placeholder="Example: 25*4+10" style="width:100%">
+<div class="row"><button onclick="calculate()">Calculate</button><button onclick="document.getElementById('calcInput').value=''">Clear</button></div>
+<div id="calcResult">Result: —</div>
+</div></div>
 
 <!-- TIMER -->
-<div class="win" id="timer">
-<div class="head">⏱️ Focus Timer <span>
-<button onclick="minW('timer')">—</button>
-<button onclick="closeW('timer')">✕</button>
-</span></div>
-<div class="body" style="text-align:center">
-<h1 id="td" style="font-size:50px">25:00</h1>
-<input id="tm" type="number" min="1" max="180" value="25">
-<button class="action" onclick="setT()">Set</button>
-<button class="action" onclick="startT()">Start</button>
-<button class="action" onclick="pauseT()">Pause</button>
-<button class="action" onclick="resetT()">Reset</button>
-<p id="ts">Ready ✨</p>
+<div class="window" id="timer">
+<div class="head"><span>⏱️ Focus Timer</span><button onclick="closeApp('timer')">✕</button></div>
+<div class="content">
+<input id="mins" type="number" value="25" min="1" max="180">
+<h1 id="timerDisplay">25:00</h1>
+<div class="row">
+<button onclick="startTimer()">Start</button>
+<button onclick="pauseTimer()">Pause</button>
+<button onclick="resetTimer()">Reset</button>
 </div>
-</div>
+</div></div>
+
+<!-- FILES -->
+<div class="window" id="files">
+<div class="head"><span>📁 Files</span><button onclick="closeApp('files')">✕</button></div>
+<div class="content">
+<h3>My Student Files</h3>
+<div class="listitem">📄 Study notes</div>
+<div class="listitem">📚 Chapter tracker</div>
+<div class="listitem">📅 Exam planner</div>
+<div class="listitem">📝 Personal notes</div>
+<p class="small">This is a simulated desktop file manager.</p>
+</div></div>
 
 <!-- CALENDAR -->
-<div class="win" id="calendar">
-<div class="head">📅 Calendar <span>
-<button onclick="minW('calendar')">—</button>
-<button onclick="closeW('calendar')">✕</button>
-</span></div>
-<div class="body" style="text-align:center">
-<h2>Today's Date</h2><h3 id="date"></h3><h3 id="day"></h3>
-</div>
-</div>
+<div class="window" id="calendar">
+<div class="head"><span>📅 Calendar</span><button onclick="closeApp('calendar')">✕</button></div>
+<div class="content">
+<h3 id="calMonth"></h3>
+<div id="calGrid"></div>
+</div></div>
 
-<!-- WALLPAPERS -->
-<div class="win" id="wall">
-<div class="head">🎨 Wallpapers <span>
-<button onclick="minW('wall')">—</button>
-<button onclick="closeW('wall')">✕</button>
-</span></div>
-<div class="body">
-<button class="wall" style="background:linear-gradient(135deg,#d8c9ff,#bde0ff)" onclick="sw('linear-gradient(135deg,#d8c9ff,#bde0ff)')">💜 Lavender</button>
-<button class="wall" style="background:linear-gradient(135deg,#ffcde5,#fff0bd)" onclick="sw('linear-gradient(135deg,#ffcde5,#fff0bd)')">🌸 Pink</button>
-<button class="wall" style="background:linear-gradient(135deg,#b9f2df,#d6e9ff)" onclick="sw('linear-gradient(135deg,#b9f2df,#d6e9ff)')">🌿 Mint</button>
-<button class="wall" style="background:linear-gradient(135deg,#252447,#55427a);color:white" onclick="sw('linear-gradient(135deg,#252447,#55427a)')">🌙 Midnight</button>
-<button class="wall" style="background:linear-gradient(135deg,#fff0bd,#ffcde5,#d9c9ff)" onclick="sw('linear-gradient(135deg,#fff0bd,#ffcde5,#d9c9ff)')">🌈 Dream</button>
-</div>
-</div>
-
-<!-- TRASH -->
-<div class="win" id="trash">
-<div class="head">🗑️ Trash <span>
-<button onclick="minW('trash')">—</button>
-<button onclick="closeW('trash')">✕</button>
-</span></div>
-<div class="body"><div id="trashList"></div>
-<button class="action" onclick="emptyT()">Empty Trash</button>
-</div>
-</div>
+<!-- QUICK TODO -->
+<div class="window" id="todo">
+<div class="head"><span>✅ Quick To-do</span><button onclick="closeApp('todo')">✕</button></div>
+<div class="content">
+<input id="todoInput" placeholder="Add a task...">
+<div class="row"><button onclick="addTodo()">➕ Add Task</button></div>
+<div id="todoList"></div>
+</div></div>
 
 <!-- SETTINGS -->
-<div class="win" id="settings">
-<div class="head">⚙️ Settings <span>
-<button onclick="minW('settings')">—</button>
-<button onclick="closeW('settings')">✕</button>
-</span></div>
-<div class="body">
-
-<h3>🎨 Custom Theme</h3>
-<label>Desktop background</label>
-<input type="color" id="bgColor" value="#d8c9ff" onchange="customTheme()">
-<label>Window color</label>
-<input type="color" id="panelColor" value="#ffffff" onchange="customTheme()">
-<label>Accent color</label>
-<input type="color" id="accentColor" value="#a78bdb" onchange="customTheme()">
-<button class="action" onclick="resetTheme()">Reset Theme</button>
-
-<hr>
+<div class="window" id="settings">
+<div class="head"><span>⚙️ Settings</span><button onclick="closeApp('settings')">✕</button></div>
+<div class="content">
+<h3>🎨 Themes</h3>
+<div class="row">
+<button onclick="theme('#e9e1ff','#a78bfa')">💜 Lavender</button>
+<button onclick="theme('#dff5e5','#73b78a')">💚 Green</button>
+<button onclick="theme('#e0f2ff','#68aee0')">💙 Blue</button>
+<button onclick="theme('#ffe5ef','#e78caf')">💗 Pink</button>
+<button onclick="theme('#fff0d9','#dfad69')">🧡 Peach</button>
+</div>
 <h3>📌 Pinned Apps</h3>
-<p>Choose which apps appear in your taskbar.</p>
 <div id="pinSettings"></div>
+<h3>🔐 Lock Screen PIN</h3>
+<p class="small">Set a local PIN for this simulated desktop.</p>
+<input id="pinInput" placeholder="Set PIN" type="password">
+<button onclick="setPin()">Save PIN</button>
+<button onclick="lockScreen()">Lock Now</button>
+<p class="small">This is a simulated lock and is not real device security.</p>
+</div></div>
 
-<hr>
-<h3>🔊 Sound</h3>
-<button class="action" onclick="toggleSound()" id="soundSettings">Sound: ON</button>
+<!-- WALLPAPER -->
+<div class="window" id="wall">
+<div class="head"><span>🖼️ Wallpaper</span><button onclick="closeApp('wall')">✕</button></div>
+<div class="content">
+<h3>Desktop Background</h3>
+<div class="row">
+<button onclick="theme('#e9e1ff','#a78bfa')">Lavender</button>
+<button onclick="theme('#dff5e5','#73b78a')">Green</button>
+<button onclick="theme('#e0f2ff','#68aee0')">Blue</button>
+<button onclick="theme('#ffe5ef','#e78caf')">Pink</button>
+<button onclick="theme('#fff0d9','#dfad69')">Peach</button>
+</div>
+<h3>Custom background colour</h3>
+<input type="color" id="customBg" value="#e9e1ff">
+<button onclick="customWallpaper()">Apply</button>
+</div></div>
+
+<!-- START MENU -->
+<div id="start">
+<h2>🌸 Student OS</h2>
+<input id="search" placeholder="Search apps..." oninput="searchApps()">
+<div id="startApps"></div>
+</div>
+
+<!-- NOTIFICATIONS -->
+<div id="notif">
+<h3>🔔 Notification Centre</h3>
+<div id="notifContent">Welcome to Student OS!</div>
+<div class="row">
+<button onclick="clearNotif()">Clear</button>
+<button onclick="toggleNotif()">Close</button>
 </div>
 </div>
 
-<!-- SEARCH LAUNCHER -->
-<div id="launcher">
-<h3>🔍 App Launcher</h3>
-<input id="searchInput" placeholder="Search apps..." oninput="searchApps()">
-<div id="launcherApps"></div>
-<button class="action" onclick="toggleLauncher()">Close</button>
+<!-- LOCK SCREEN -->
+<div id="lock">
+<h1 id="lockTime"></h1>
+<h2>🔐 Desktop Locked</h2>
+<p>Enter your PIN to unlock</p>
+<input id="unlockPin" type="password" placeholder="PIN">
+<div class="row">
+<button onclick="unlock()">Unlock</button>
+<button onclick="forgotPin()">Reset local PIN</button>
+</div>
+<p id="lockMsg"></p>
 </div>
 
 <!-- TASKBAR -->
 <div id="bar">
+<button onclick="toggleStart()">🪟</button>
+<button onclick="toggleNotif()">🔔</button>
 <div id="pins"></div>
-<button onclick="toggleLauncher()" title="Search">🔍</button>
-<button onclick="toggleSound()" title="Sound">🔊</button>
 <div id="clock"></div>
-</div>
-
-<!-- WIDGETS -->
-<div id="widgetBox" style="position:absolute;right:15px;top:15px;width:min(220px,45vw);pointer-events:none">
-<div id="dateWidget" style="font-weight:bold"></div>
-<div id="quote" style="font-size:13px;margin-top:8px"></div>
-<div id="focusWidget" style="font-size:12px;margin-top:8px">⏱️ Focus: Ready</div>
-</div>
-
-<!-- WELCOME -->
-<div id="welcome">
-<div id="welcomeBox">
-<div style="font-size:60px">💜</div>
-<h1>Mini Desktop</h1>
-<p>Welcome to your little digital world.</p>
-<p>Notes • Focus • Creativity</p>
-<button onclick="enterDesktop()">Enter Desktop ✨</button>
-</div>
 </div>
 
 </div>
 
 <script>
-const $=x=>document.getElementById(x);
-const appNames={
-notes:"📝 Notes",
-files:"📁 Files",
-calc:"🧮 Calculator",
-timer:"⏱️ Timer",
-calendar:"📅 Calendar",
-wall:"🎨 Wallpapers",
-trash:"🗑️ Trash",
-settings:"⚙️ Settings"
+const apps={
+ notes:"📝 Notes",calc:"🧮 Calculator",timer:"⏱️ Focus Timer",
+ files:"📁 Files",calendar:"📅 Calendar",
+ todo:"✅ Quick To-do",settings:"⚙️ Settings",wall:"🖼️ Wallpaper"
 };
+let z=10,timerSeconds=1500,timerInterval=null;
+let focusSessions=Number(localStorage.getItem("focusSessions")||0);
+let pins=JSON.parse(localStorage.getItem("pinsOS")||'["notes","calc","timer","todo"]');
 
-let N=JSON.parse(localStorage.getItem("notes2")||localStorage.getItem("md_notes")||"[]");
-let T=JSON.parse(localStorage.getItem("trash2")||localStorage.getItem("md_trash")||"[]");
-let pins=JSON.parse(localStorage.getItem("pins3")||'["notes","calc","timer","files"]');
-let sound=localStorage.getItem("sound3")!=="off";
-let Z=10;
-
-// WINDOW OPEN/CLOSE
-function openW(id){
-$(id).style.display="block";
-$(id).style.zIndex=++Z;
+function openApp(id){
+ let w=document.getElementById(id);
+ if(!w)return;
+ w.style.display="block";w.style.zIndex=++z;
+ document.getElementById("start").style.display="none";
 }
-function closeW(id){$(id).style.display="none"}
-function minW(id){$(id).style.display="none"}
-
-// SAFE TEXT
-function safe(s){
-return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function closeApp(id){document.getElementById(id).style.display="none"}
+function toggleStart(){
+ let s=document.getElementById("start");
+ s.style.display=s.style.display==="block"?"none":"block";
+ document.getElementById("notif").style.display="none";
+ renderStart();
 }
-
-// NOTES & FILES
-function persist(){
-localStorage.setItem("notes2",JSON.stringify(N));
-localStorage.setItem("trash2",JSON.stringify(T));
-render();
+function toggleNotif(){
+ let n=document.getElementById("notif");
+ n.style.display=n.style.display==="block"?"none":"block";
+ document.getElementById("start").style.display="none";
 }
-function saveNote(){
-let a=$("nt").value.trim(),b=$("nb").value.trim();
-if(!a&&!b){alert("Write something first!");return}
-N.unshift({id:Date.now(),a:a||"Untitled",b:b,date:new Date().toLocaleDateString()});
-persist();clearNote();beep();
+function clearNotif(){document.getElementById("notifContent").innerHTML="No notifications."}
+function notify(t){
+ document.getElementById("notifContent").innerHTML=t;
 }
-function clearNote(){$("nt").value="";$("nb").value=""}
-
-function render(){
-$("notesList").innerHTML=N.map(n=>`
-<div class="note"><b>${safe(n.a||n.title)}</b>
-<p>${safe(n.b||n.body||"").replace(/\n/g,"<br>")}</p>
-<button class="action" onclick="del(${n.id})">Delete</button></div>`).join("");
-
-$("filesList").innerHTML=N.map(n=>`
-<div class="note"><b>📄 ${safe(n.a||n.title)}</b>
-<p>${safe(n.b||n.body||"").replace(/\n/g,"<br>")}</p></div>`).join("")||"No saved notes.";
-
-$("trashList").innerHTML=T.map(n=>`
-<div class="note"><b>${safe(n.a||n.title)}</b>
-<p>${safe(n.b||n.body||"")}</p>
-<button class="action" onclick="restore(${n.id})">Restore</button>
-<button class="action" onclick="pd(${n.id})">Delete forever</button></div>`).join("")||"Trash is empty.";
-}
-function del(id){
-let n=N.find(x=>x.id===id);
-if(n){T.unshift(n);N=N.filter(x=>x.id!==id);persist();beep()}
-}
-function restore(id){
-let n=T.find(x=>x.id===id);
-if(n){N.unshift(n);T=T.filter(x=>x.id!==id);persist()}
-}
-function pd(id){T=T.filter(x=>x.id!==id);persist()}
-function emptyT(){if(confirm("Empty trash?")){T=[];persist()}}
-
-// CALCULATOR
-function ci(v){
-let d=$("cd");
-if(d.value==="0"||d.value==="Error")d.value="";
-d.value+=v;
-}
-function cc(){$("cd").value="0"}
-function ce(){
-try{
-let s=$("cd").value;
-if(!/^[0-9+\-*/.() ]+$/.test(s))throw 0;
-let r=Function("return "+s)();
-if(!Number.isFinite(r))throw 0;
-$("cd").value=String(r);
-}catch(e){$("cd").value="Error"}
-}
-
-// TIMER
-let total=1500,remaining=1500,interval=null;
-function showT(){
-$("td").textContent=Math.floor(remaining/60).toString().padStart(2,"0")+":"+ (remaining%60).toString().padStart(2,"0");
-}
-function setT(){
-pauseT();
-let m=Number($("tm").value);
-if(!m||m<1||m>180){alert("Enter 1 to 180 minutes");return}
-total=remaining=m*60;showT();$("ts").textContent="Timer set ✨";
-}
-function startT(){
-if(interval)return;
-if(remaining<=0)remaining=total;
-$("ts").textContent="Focus time 💜";
-$("focusWidget").textContent="⏱️ Focus: In session";
-interval=setInterval(()=>{
-remaining--;showT();
-if(remaining<=0){
-pauseT();$("ts").textContent="Completed 🎉";
-$("focusWidget").textContent="⏱️ Focus: Complete";
-beep();alert("Focus session complete!");
-}
-},1000);
-}
-function pauseT(){
-clearInterval(interval);interval=null;
-$("focusWidget").textContent="⏱️ Focus: Paused";
-}
-function resetT(){
-pauseT();remaining=total;showT();
-$("ts").textContent="Ready ✨";
-$("focusWidget").textContent="⏱️ Focus: Ready";
-}
-
-// WALLPAPER
-function sw(b){
-$("desktop").style.background=b;
-localStorage.setItem("wall2",b);
-}
-
-// CLOCK
-function tick(){
-let d=new Date();
-$("clock").innerHTML=d.toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"})+"<br>"+d.toLocaleDateString();
-$("date").textContent=d.toLocaleDateString([],{day:"numeric",month:"long",year:"numeric"});
-$("day").textContent=d.toLocaleDateString([],{weekday:"long"});
-$("dateWidget").textContent="📅 "+d.toLocaleDateString([],{weekday:"short",day:"numeric",month:"short"});
-}
-tick();setInterval(tick,1000);
-
-// WELCOME
-function enterDesktop(){
-$("welcome").style.display="none";
-localStorage.setItem("welcome3","yes");
-beep();
-}
-if(localStorage.getItem("welcome3")==="yes")$("welcome").style.display="none";
-
-// DRAGGABLE WINDOWS (mouse + touch)
-document.querySelectorAll(".win").forEach(w=>{
-const h=w.querySelector(".head");
-let sx=0,sy=0,ox=0,oy=0,drag=false;
-
-h.addEventListener("pointerdown",e=>{
-if(e.target.closest("button"))return;
-drag=true;
-sx=e.clientX;sy=e.clientY;
-ox=w.offsetLeft;oy=w.offsetTop;
-w.style.zIndex=++Z;
-h.setPointerCapture(e.pointerId);
-});
-h.addEventListener("pointermove",e=>{
-if(!drag)return;
-w.style.left=Math.max(0,ox+e.clientX-sx)+"px";
-w.style.top=Math.max(0,oy+e.clientY-sy)+"px";
-});
-h.addEventListener("pointerup",()=>drag=false);
-h.addEventListener("pointercancel",()=>drag=false);
-w.addEventListener("pointerdown",()=>w.style.zIndex=++Z);
-});
-
-// SEARCH LAUNCHER
-function toggleLauncher(){
-let l=$("launcher");
-l.style.display=l.style.display==="block"?"none":"block";
-if(l.style.display==="block"){
-$("searchInput").value="";
-searchApps();$("searchInput").focus();
-}
+function renderStart(){
+ let s=document.getElementById("startApps");
+ s.innerHTML="";
+ Object.keys(apps).forEach(id=>{
+ let b=document.createElement("button");
+ b.className="startapp";b.innerHTML=apps[id];
+ b.onclick=()=>openApp(id);s.appendChild(b);
+ });
 }
 function searchApps(){
-let q=$("searchInput").value.toLowerCase();
-$("launcherApps").innerHTML=Object.keys(appNames)
-.filter(id=>appNames[id].toLowerCase().includes(q)||id.includes(q))
-.map(id=>`<button onclick="openW('${id}');toggleLauncher()">${appNames[id]}</button>`).join("")||"No apps found.";
-}
-searchApps();
-
-// PINNED APPS
-function savePins(){
-localStorage.setItem("pins3",JSON.stringify(pins));
-renderPins();
+ let q=document.getElementById("search").value.toLowerCase();
+ document.querySelectorAll("#startApps button").forEach(b=>{
+ b.style.display=b.innerText.toLowerCase().includes(q)?"flex":"none";
+ });
 }
 function renderPins(){
-$("pins").innerHTML=pins.map(id=>
-`<button title="${id}" onclick="openW('${id}')">${appNames[id].split(" ")[0]}</button>`).join("");
-$("pinSettings").innerHTML=Object.keys(appNames).map(id=>
-`<div class="pinrow">${appNames[id]}<button onclick="pinToggle('${id}')">${pins.includes(id)?"📌 Unpin":"📌 Pin"}</button></div>`).join("");
+ let p=document.getElementById("pins");
+ p.innerHTML="";
+ pins.forEach(id=>{
+ let b=document.createElement("button");
+ b.textContent=apps[id].split(" ")[0];
+ b.title=apps[id];
+ b.onclick=()=>openApp(id);
+ p.appendChild(b);
+ });
+ document.getElementById("pinSettings").innerHTML="";
+ Object.keys(apps).forEach(id=>{
+ let b=document.createElement("button");
+ b.textContent=(pins.includes(id)?"📌 Unpin ":"📍 Pin ")+apps[id];
+ b.style.margin="4px";
+ b.onclick=()=>{
+ pins=pins.includes(id)?pins.filter(x=>x!==id):[...pins,id];
+ localStorage.setItem("pinsOS",JSON.stringify(pins));
+ renderPins();
+ };
+ document.getElementById("pinSettings").appendChild(b);
+ });
 }
-function pinToggle(id){
-if(pins.includes(id))pins=pins.filter(x=>x!==id);
-else pins.push(id);
-savePins();
+function saveNote(){
+ localStorage.setItem("noteOS",document.getElementById("note").value);
+ notify("📝 Notes saved!");
 }
-
-// THEMES
-function customTheme(){
-let bg=$("bgColor").value,panel=$("panelColor").value,accent=$("accentColor").value;
-$("desktop").style.background=bg;
-document.documentElement.style.setProperty("--panel",panel);
-document.documentElement.style.setProperty("--head",bg);
-document.documentElement.style.setProperty("--accent",accent);
-localStorage.setItem("theme3",JSON.stringify({bg,panel,accent}));
+function clearNote(){
+ if(confirm("Clear note?")){
+ document.getElementById("note").value="";
+ localStorage.removeItem("noteOS");
+ }
+}
+function calculate(){
+ let s=document.getElementById("calcInput").value;
+ if(!s||!/^[0-9+\-*/().%\s]+$/.test(s)){
+ document.getElementById("calcResult").textContent="Invalid expression";
+ return;
+ }
+ try{
+ let r=Function('"use strict";return ('+s+')')();
+ document.getElementById("calcResult").textContent="Result: "+r;
+ }catch(e){
+ document.getElementById("calcResult").textContent="Invalid expression";
+ }
+}
+function startTimer(){
+ if(timerInterval)return;
+ timerInterval=setInterval(()=>{
+ if(timerSeconds<=0){
+ pauseTimer();focusSessions++;
+ localStorage.setItem("focusSessions",focusSessions);
+ updateFocus();notify("🎉 Focus session completed!");
+ alert("Focus session completed!");
+ return;
+ }
+ timerSeconds--;displayTimer();
+ },1000);
+}
+function pauseTimer(){clearInterval(timerInterval);timerInterval=null}
+function resetTimer(){
+ pauseTimer();
+ timerSeconds=Math.max(1,Number(document.getElementById("mins").value)||25)*60;
+ displayTimer();
+}
+function displayTimer(){
+ let m=Math.floor(timerSeconds/60),s=timerSeconds%60;
+ document.getElementById("timerDisplay").textContent=
+ String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
+}
+function updateFocus(){
+ document.getElementById("focusCount").textContent=focusSessions;
+}
+function theme(bg,accent){
+ document.documentElement.style.setProperty("--bg",bg);
+ document.documentElement.style.setProperty("--accent",accent);
+ localStorage.setItem("themeOS",JSON.stringify({bg,accent}));
+}
+function customWallpaper(){
+ theme(document.getElementById("customBg").value,
+ document.getElementById("customBg").value);
 }
 function loadTheme(){
-let t=JSON.parse(localStorage.getItem("theme3")||"null");
-if(!t)return;
-$("bgColor").value=t.bg;
-$("panelColor").value=t.panel;
-$("accentColor").value=t.accent;
-$("desktop").style.background=t.bg;
-document.documentElement.style.setProperty("--panel",t.panel);
-document.documentElement.style.setProperty("--head",t.bg);
-document.documentElement.style.setProperty("--accent",t.accent);
+ let t=JSON.parse(localStorage.getItem("themeOS")||"null");
+ if(t)theme(t.bg,t.accent);
 }
-function resetTheme(){
-localStorage.removeItem("theme3");
-$("bgColor").value="#d8c9ff";
-$("panelColor").value="#ffffff";
-$("accentColor").value="#a78bdb";
-$("desktop").style.background="linear-gradient(135deg,#d8c9ff,#bde0ff,#f8d9eb)";
-document.documentElement.style.setProperty("--panel","#fff");
-document.documentElement.style.setProperty("--head","#e6d9ff");
-document.documentElement.style.setProperty("--accent","#a78bdb");
+function addTodo(){
+ let input=document.getElementById("todoInput");
+ let v=input.value.trim();if(!v)return;
+ let items=JSON.parse(localStorage.getItem("todoOS")||"[]");
+ items.push({text:v,done:false});
+ localStorage.setItem("todoOS",JSON.stringify(items));
+ input.value="";renderTodo();
+ notify("✅ Task added!");
 }
-
-// SOUND
-function toggleSound(){
-sound=!sound;
-localStorage.setItem("sound3",sound?"on":"off");
-$("soundSettings").textContent="Sound: "+(sound?"ON":"OFF");
-beep();
+function renderTodo(){
+ let items=JSON.parse(localStorage.getItem("todoOS")||"[]");
+ let list=document.getElementById("todoList");list.innerHTML="";
+ items.forEach((item,i)=>{
+ let d=document.createElement("div");d.className="listitem";
+ let span=document.createElement("span");span.textContent=item.text;
+ if(item.done)span.style.textDecoration="line-through";
+ let done=document.createElement("button");done.textContent=item.done?"↩":"✓";
+ done.onclick=()=>{
+ items[i].done=!items[i].done;
+ localStorage.setItem("todoOS",JSON.stringify(items));renderTodo();
+ };
+ let del=document.createElement("button");del.textContent="🗑️";
+ del.onclick=()=>{
+ items.splice(i,1);
+ localStorage.setItem("todoOS",JSON.stringify(items));renderTodo();
+ };
+ d.append(span,done,del);list.appendChild(d);
+ });
 }
-function beep(){
-if(!sound)return;
-try{
-let ctx=new (window.AudioContext||window.webkitAudioContext)();
-let osc=ctx.createOscillator(),gain=ctx.createGain();
-osc.connect(gain);gain.connect(ctx.destination);
-osc.frequency.value=650;
-gain.gain.value=.04;
-osc.start();
-osc.stop(ctx.currentTime+.08);
-osc.onended=()=>ctx.close();
-}catch(e){}
+function buildCalendar(){
+ let now=new Date(),year=now.getFullYear(),month=now.getMonth();
+ document.getElementById("calMonth").textContent=
+ now.toLocaleString("default",{month:"long"})+" "+year;
+ let grid=document.getElementById("calGrid");grid.innerHTML="";
+ ["S","M","T","W","T","F","S"].forEach(x=>{
+ let d=document.createElement("div");d.className="day";d.textContent=x;grid.appendChild(d);
+ });
+ let first=new Date(year,month,1).getDay();
+ let total=new Date(year,month+1,0).getDate();
+ for(let i=0;i<first;i++){grid.appendChild(document.createElement("div"))}
+ for(let n=1;n<=total;n++){
+ let d=document.createElement("div");d.className="day";d.textContent=n;
+ if(n===now.getDate())d.classList.add("today");
+ grid.appendChild(d);
+ }
 }
-$("soundSettings").textContent="Sound: "+(sound?"ON":"OFF");
-
-// QUOTES
-let quotes=[
-"✨ Small steps still move you forward.",
-"🌷 You can begin again today.",
-"💜 Progress, not perfection.",
-"🌙 Focus on the next step.",
-"📚 Your effort is building your future.",
-"☁️ One task at a time.",
-"🌟 You are allowed to learn slowly."
+function setPin(){
+ let v=document.getElementById("pinInput").value;
+ if(!v){alert("Enter a PIN");return}
+ localStorage.setItem("lockPinOS",v);
+ notify("🔐 Local PIN saved.");
+ alert("PIN saved!");
+}
+function lockScreen(){
+ document.getElementById("lock").style.display="flex";
+ document.getElementById("lockMsg").textContent="";
+ document.getElementById("unlockPin").value="";
+}
+function unlock(){
+ let saved=localStorage.getItem("lockPinOS");
+ if(!saved){document.getElementById("lockMsg").textContent="No PIN set. Reset local PIN to continue.";return}
+ if(document.getElementById("unlockPin").value===saved){
+ document.getElementById("lock").style.display="none";
+ }else document.getElementById("lockMsg").textContent="Incorrect PIN.";
+}
+function forgotPin(){
+ if(confirm("Remove saved local PIN?")){
+ localStorage.removeItem("lockPinOS");
+ document.getElementById("lock").style.display="none";
+ alert("Local PIN reset.");
+ }
+}
+function updateClock(){
+ let now=new Date();
+ document.getElementById("clock").innerHTML=
+ now.toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"})+
+ "<br>"+now.toLocaleDateString();
+ document.getElementById("widgetDate").textContent=
+ now.toLocaleDateString(undefined,{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+ document.getElementById("lockTime").textContent=
+ now.toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
+}
+const quotes=[
+ "Small steps count 🌱","One chapter at a time 📚",
+ "Progress over perfection ✨","You've got this 💜",
+ "Focus on what matters 🎯","Keep learning 🌸"
 ];
-let qi=Math.floor(Math.random()*quotes.length);
-function nextQuote(){
-$("quote").textContent=quotes[qi%quotes.length];
-qi++;
+document.getElementById("quote").textContent=
+quotes[Math.floor(Math.random()*quotes.length)];
+function dragWindows(){
+ document.querySelectorAll(".window").forEach(w=>{
+ let h=w.querySelector(".head");
+ h.addEventListener("pointerdown",e=>{
+ if(e.target.tagName==="BUTTON")return;
+ let x=e.clientX,y=e.clientY;
+ let r=w.getBoundingClientRect();
+ w.style.left=r.left+"px";w.style.top=r.top+"px";
+ w.style.zIndex=++z;
+ h.setPointerCapture(e.pointerId);
+ function move(ev){
+ w.style.left=Math.max(0,r.left+ev.clientX-x)+"px";
+ w.style.top=Math.max(0,r.top+ev.clientY-y)+"px";
+ }
+ function end(){
+ h.removeEventListener("pointermove",move);
+ h.removeEventListener("pointerup",end);
+ h.removeEventListener("pointercancel",end);
+ }
+ h.addEventListener("pointermove",move);
+ h.addEventListener("pointerup",end);
+ h.addEventListener("pointercancel",end);
+ });
+ w.addEventListener("pointerdown",()=>w.style.zIndex=++z);
+ });
 }
-nextQuote();
-setInterval(nextQuote,60000);
-
-// WALLPAPER RESTORE
-if(localStorage.getItem("wall2"))sw(localStorage.getItem("wall2"));
-render();showT();renderPins();loadTheme();
+document.getElementById("note").value=localStorage.getItem("noteOS")||"";
+loadTheme();renderPins();renderTodo();buildCalendar();updateClock();updateFocus();displayTimer();dragWindows();
+setInterval(updateClock,1000);
+document.getElementById("todoInput").addEventListener("keydown",e=>{
+if(e.key==="Enter")addTodo();
+});
 </script>
 </body>
 </html>
