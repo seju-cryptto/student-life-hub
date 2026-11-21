@@ -43,7 +43,374 @@ else if(t==='Calculator'){b.innerHTML=`<h2>Calculator 🧮</h2><input id="calc" 
 else if(t==='Focus Room'){b.innerHTML=`<h2>Focus Room ⏳</h2><div style="font-size:55px;text-align:center" id="timerDisplay">25:00</div><div class="row"><button id="timerStart">Start</button><button id="timerPause">Pause</button><button id="timerReset">Reset</button></div><p class="muted">One focus session at a time.</p>`;let seconds=25*60,interval=null;function show(){ $('timerDisplay',b).textContent=Math.floor(seconds/60).toString().padStart(2,'0')+':'+(seconds%60).toString().padStart(2,'0')} $('timerStart',b).onclick=()=>{if(interval)return;interval=setInterval(()=>{seconds--;show();if(seconds<=0){clearInterval(interval);interval=null;data.completedSessions++;data.xp+=25;save();toast('Focus session complete!')}} ,1000)};$('timerPause',b).onclick=()=>{clearInterval(interval);interval=null};$('timerReset',b).onclick=()=>{clearInterval(interval);interval=null;seconds=25*60;show()}}
 else if(t==='Revision Scheduler'){b.innerHTML=`<h2>Revision Scheduler 🔁</h2><p>Use a simple spaced revision pattern for a chapter:</p><div class="paper">Day 0 — learn + practice\nDay 1 — quick recall\nDay 3 — practice questions\nDay 7 — mini-test\nDay 14 — mixed revision</div><input id="revTopic" placeholder="Topic to revise"><button id="revAdd">Add revision task</button>`;$('revAdd',b).onclick=()=>{let v=$('revTopic',b).value.trim();if(v){data.tasks.push({text:'Revision: '+v,done:false});save();toast('Added to Tasks')}}}
 else if(t==='Settings'){b.innerHTML=`<h2>Settings ⚙️</h2><h3>Theme</h3><div class="row"><button data-theme="lavender">Lavender</button><button data-theme="rose">Rose</button><button data-theme="mint">Mint</button><button data-theme="blue">Sky</button></div><button id="dark">Toggle dark mode</button><button id="backup">Export backup</button><button id="clear">Reset window positions</button>`;b.querySelectorAll('[data-theme]').forEach(x=>x.onclick=()=>{let themes={lavender:['#f5effb','#a783d4'],rose:['#fff0f5','#d68cae'],mint:['#edfaf5','#77bba0'],blue:['#eff7ff','#85a9d7']},v=themes[x.dataset.theme];document.documentElement.style.setProperty('--bg',v[0]);document.documentElement.style.setProperty('--accent',v[1]);toast('Theme applied')});$('dark',b).onclick=()=>document.body.classList.toggle('dark');$('backup',b).onclick=()=>open('Vault');$('clear',b).onclick=()=>{document.querySelectorAll('.window').forEach(w=>{w.style.left='80px';w.style.top='70px'});toast('Windows repositioned')}}
+  <div class="desktop-icons">
+
+  <!-- Existing icons -->
+
+</div>
 else{b.innerHTML='<h2>'+esc(t)+'</h2><p>App ready.</p>'}}
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}dashboard();
 })();
+  <!-- DREAMTUNES MUSIC SYSTEM -->
+<style>
+#dreamTunes{
+  position:fixed;
+  top:120px;
+  left:160px;
+  width:330px;
+  max-width:92vw;
+  background:#fcf8ff;
+  color:#574568;
+  border:1px solid #e5d4f7;
+  border-radius:20px;
+  box-shadow:0 15px 50px #9470d833;
+  z-index:99999;
+  font-family:Arial,sans-serif;
+  overflow:hidden;
+  display:none;
+}
+#dreamTunes *{box-sizing:border-box}
+.dt-head{
+  background:#eadcfb;
+  padding:13px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  cursor:move;
+  font-weight:bold;
+}
+.dt-close{
+  cursor:pointer;
+  border:none;
+  background:#fff;
+  border-radius:50%;
+  width:26px;height:26px;
+  color:#74538d;
+}
+.dt-body{padding:18px;text-align:center}
+.dt-cover{
+  width:150px;height:150px;
+  margin:5px auto 15px;
+  border-radius:18px;
+  background:linear-gradient(135deg,#d9b9fa,#f8dff0,#c9c8ff);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:55px;
+  box-shadow:0 8px 25px #b18adf40;
+}
+.dt-song{
+  font-size:17px;
+  font-weight:bold;
+  margin-bottom:5px;
+  overflow-wrap:anywhere;
+}
+.dt-artist{font-size:12px;color:#9984ad;margin-bottom:15px}
+.dt-controls{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:12px;
+  margin:15px 0;
+}
+.dt-btn{
+  background:#eee2fb;
+  color:#765495;
+  border:none;
+  border-radius:50%;
+  width:42px;height:42px;
+  font-size:17px;
+  cursor:pointer;
+}
+.dt-btn:hover{background:#d9c0f4}
+.dt-play{
+  background:#b18adf;
+  color:white;
+  width:52px;height:52px;
+  font-size:22px;
+}
+.dt-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+  font-size:12px;
+  margin:12px 0;
+}
+#dtProgress,#dtVolume{
+  accent-color:#a77bce;
+  width:100%;
+  cursor:pointer;
+}
+.dt-upload{
+  display:block;
+  padding:10px;
+  background:#f0e4fc;
+  border-radius:12px;
+  cursor:pointer;
+  margin:12px 0;
+  font-size:13px;
+}
+.dt-upload input{display:none}
+.dt-list{
+  text-align:left;
+  max-height:120px;
+  overflow:auto;
+  background:#f7f0ff;
+  border-radius:12px;
+  padding:8px;
+  font-size:12px;
+}
+.dt-item{
+  padding:8px;
+  border-radius:8px;
+  cursor:pointer;
+  overflow-wrap:anywhere;
+}
+.dt-item:hover{background:#e8d7fa}
+.dt-item.active{background:#e3cdf8;font-weight:bold}
+.dt-bottom{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:12px;
+}
+.dt-small{
+  border:none;
+  background:#eee2fb;
+  border-radius:10px;
+  padding:8px 10px;
+  color:#74538d;
+  cursor:pointer;
+}
+</style>
+
+<div id="dreamTunes">
+
+  <div class="dt-head" id="dtDrag">
+    <span>🎧 DreamTunes ♡</span>
+    <button class="dt-close" onclick="dtHide()">×</button>
+  </div>
+
+  <div class="dt-body">
+
+    <div class="dt-cover" id="dtCover">🎵</div>
+
+    <div class="dt-song" id="dtSong">No song selected</div>
+    <div class="dt-artist" id="dtArtist">Your little music corner ♡</div>
+
+    <input type="range" id="dtProgress" min="0" max="100" value="0">
+
+    <div class="dt-row">
+      <span id="dtCurrent">0:00</span>
+      <span id="dtDuration">0:00</span>
+    </div>
+
+    <div class="dt-controls">
+      <button class="dt-btn" id="dtShuffle" title="Shuffle">🔀</button>
+      <button class="dt-btn" onclick="dtPrev()">⏮</button>
+      <button class="dt-btn dt-play" onclick="dtToggle()" id="dtPlay">▶</button>
+      <button class="dt-btn" onclick="dtNext()">⏭</button>
+      <button class="dt-btn" id="dtRepeat" title="Repeat">🔁</button>
+    </div>
+
+    <label class="dt-upload">
+      ＋ Add your music files ♡
+      <input type="file" id="dtFiles" accept="audio/*" multiple>
+    </label>
+
+    <div class="dt-list" id="dtList">
+      Your playlist will appear here ♡
+    </div>
+
+    <div class="dt-bottom">
+      <button class="dt-small" id="dtFav">♡ Favorite</button>
+      <span>🔊</span>
+      <input type="range" id="dtVolume" min="0" max="1"
+             step="0.01" value="0.7" style="width:85px">
+    </div>
+
+    <div style="font-size:10px;color:#b09ac5;margin-top:12px">
+      made for your study vibes ♡
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function(){
+
+const box=document.getElementById("dreamTunes");
+const audio=new Audio();
+audio.volume=0.7;
+
+let songs=[];
+let index=-1;
+let shuffle=false;
+let repeat=false;
+let favorites=new Set();
+
+const $=id=>document.getElementById(id);
+
+function fmt(t){
+  if(!isFinite(t))return "0:00";
+  let m=Math.floor(t/60);
+  let s=Math.floor(t%60);
+  return m+":"+String(s).padStart(2,"0");
+}
+
+function render(){
+  $("dtList").innerHTML="";
+
+  if(!songs.length){
+    $("dtList").textContent="Your playlist will appear here ♡";
+    return;
+  }
+
+  songs.forEach((song,i)=>{
+    let div=document.createElement("div");
+    div.className="dt-item"+(i===index?" active":"");
+    div.textContent=(favorites.has(i)?"♥ ":"")+song.name;
+    div.onclick=()=>playSong(i);
+    $("dtList").appendChild(div);
+  });
+}
+
+function playSong(i){
+  if(i<0||i>=songs.length)return;
+  index=i;
+  audio.src=songs[i].url;
+  audio.play().then(()=>{
+    $("dtPlay").textContent="⏸";
+  }).catch(()=>{
+    $("dtPlay").textContent="▶";
+  });
+  $("dtSong").textContent=songs[i].name;
+  $("dtArtist").textContent="Playing in DreamTunes ♡";
+  render();
+}
+
+window.dtToggle=function(){
+  if(index===-1){
+    if(songs.length)playSong(0);
+    return;
+  }
+  if(audio.paused){
+    audio.play().then(()=> $("dtPlay").textContent="⏸");
+  }else{
+    audio.pause();
+    $("dtPlay").textContent="▶";
+  }
+};
+
+window.dtNext=function(){
+  if(!songs.length)return;
+  if(shuffle && songs.length>1){
+    let n;
+    do{n=Math.floor(Math.random()*songs.length)}
+    while(n===index);
+    playSong(n);
+  }else{
+    playSong((index+1)%songs.length);
+  }
+};
+
+window.dtPrev=function(){
+  if(!songs.length)return;
+  if(audio.currentTime>3){
+    audio.currentTime=0;
+  }else{
+    playSong((index-1+songs.length)%songs.length);
+  }
+};
+
+window.dtHide=function(){
+  box.style.display="none";
+};
+
+$("dtFiles").addEventListener("change",function(){
+  Array.from(this.files).forEach(file=>{
+    songs.push({
+      name:file.name.replace(/\.[^/.]+$/,""),
+      url:URL.createObjectURL(file)
+    });
+  });
+  render();
+  if(index===-1 && songs.length)playSong(0);
+  this.value="";
+});
+
+audio.addEventListener("timeupdate",()=>{
+  if(audio.duration){
+    $("dtProgress").value=(audio.currentTime/audio.duration)*100;
+    $("dtCurrent").textContent=fmt(audio.currentTime);
+    $("dtDuration").textContent=fmt(audio.duration);
+  }
+});
+
+$("dtProgress").addEventListener("input",()=>{
+  if(audio.duration){
+    audio.currentTime=( $("dtProgress").value/100)*audio.duration;
+  }
+});
+
+audio.addEventListener("ended",()=>{
+  if(repeat){
+    audio.currentTime=0;
+    audio.play();
+  }else{
+    dtNext();
+  }
+});
+
+$("dtVolume").addEventListener("input",()=>{
+  audio.volume=$("dtVolume").value;
+});
+
+$("dtShuffle").onclick=function(){
+  shuffle=!shuffle;
+  this.style.background=shuffle?"#c9a8eb":"#eee2fb";
+};
+
+$("dtRepeat").onclick=function(){
+  repeat=!repeat;
+  this.style.background=repeat?"#c9a8eb":"#eee2fb";
+};
+
+$("dtFav").onclick=function(){
+  if(index===-1)return;
+  if(favorites.has(index)){
+    favorites.delete(index);
+    this.textContent="♡ Favorite";
+  }else{
+    favorites.add(index);
+    this.textContent="♥ Favorited";
+  }
+  render();
+};
+
+render();
+
+/* DRAG WINDOW */
+let dragging=false,offsetX=0,offsetY=0;
+
+$("dtDrag").addEventListener("mousedown",e=>{
+  if(e.target.closest("button"))return;
+  dragging=true;
+  offsetX=e.clientX-box.offsetLeft;
+  offsetY=e.clientY-box.offsetTop;
+});
+
+document.addEventListener("mousemove",e=>{
+  if(!dragging)return;
+  box.style.left=(e.clientX-offsetX)+"px";
+  box.style.top=(e.clientY-offsetY)+"px";
+});
+
+document.addEventListener("mouseup",()=>{
+  dragging=false;
+});
+
+})();
+</script>
 </script></body></html>
