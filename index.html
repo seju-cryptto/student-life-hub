@@ -5,825 +5,585 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Students Hub ♡</title>
 <style>
-*{box-sizing:border-box}
 :root{
- --accent:#b18adf;--bg:#f5effb;--ink:#50445f;
- --glass:rgba(255,255,255,.78);--shadow:0 12px 40px #78619c22;
+ --bg:#f5efff;--panel:#fffdfd;--accent:#b89be8;
+ --text:#4b405c;--muted:#8b7d9d;--line:#eadff5;
+ --shadow:0 12px 35px #7d5d9c22;
 }
-body{
- margin:0;font-family:"Segoe UI",sans-serif;color:var(--ink);
- background:var(--bg);overflow:hidden;transition:.3s;
-}
-button,input,textarea,select{font:inherit}
-button{
- border:0;border-radius:12px;padding:9px 14px;
- background:var(--accent);color:white;cursor:pointer;
- transition:.2s;
-}
-button:hover{filter:brightness(1.06);transform:translateY(-1px)}
-button.secondary{background:#eee5f7;color:#655477}
-button.danger{background:#f2b7c9;color:#633d52}
-input,textarea,select{
- width:100%;padding:10px;border:1px solid #e5d9f1;
- border-radius:12px;background:#fff9;outline:none;color:var(--ink);
-}
-textarea{min-height:90px;resize:vertical}
-hr{border:0;border-top:1px solid #e8def1;margin:15px 0}
-#lock{
- position:fixed;inset:0;z-index:1000;
- display:flex;align-items:center;justify-content:center;
- background:linear-gradient(135deg,#e8dafa,#fdf2ee,#e4e9ff);
-}
-.lockcard{
- text-align:center;padding:40px;width:min(450px,92%);
- background:#ffffffb9;border:1px solid #fff;border-radius:30px;
- box-shadow:var(--shadow);backdrop-filter:blur(15px);
-}
-.lockcard h1{font-size:36px;margin:12px}
-.lockcard p{color:#847291}
-#desktop{
- position:fixed;inset:0;
- background:linear-gradient(145deg,#e9defa,#f8f0f4,#e5eaf9);
- background-size:cover;background-position:center;
-}
-#desktop:before{
- content:"";position:absolute;inset:0;pointer-events:none;
- background:radial-gradient(circle at 15% 20%,#ffffff55,transparent 35%),
- radial-gradient(circle at 85% 75%,#d4c5f255,transparent 35%);
-}
-#topbar{
- position:absolute;top:12px;left:15px;right:15px;
- height:45px;background:#ffffff88;backdrop-filter:blur(15px);
- border-radius:18px;display:flex;align-items:center;
- justify-content:space-between;padding:0 16px;z-index:30;
- box-shadow:var(--shadow);
-}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Segoe UI",sans-serif;color:var(--text);background:var(--bg)}
+button,input,textarea,select{font:inherit;color:inherit}
+button{cursor:pointer;border:none;border-radius:12px;padding:9px 14px;background:var(--accent);color:white;transition:.2s}
+button:hover{transform:translateY(-1px);filter:brightness(.97)}
+input,textarea,select{padding:10px;border:1px solid var(--line);border-radius:12px;background:#fff;width:100%;outline:none}
+textarea{resize:vertical;min-height:110px}
+#lock{position:fixed;inset:0;z-index:1000;background:linear-gradient(135deg,#e8d9ff,#fff0f3,#f4e9ff);display:flex;align-items:center;justify-content:center;text-align:center}
+.lockbox{background:#ffffffc9;backdrop-filter:blur(15px);padding:45px;border-radius:30px;box-shadow:var(--shadow);max-width:450px;width:90%}
+.lockbox h1{font-size:42px;margin:8px}
+.lockbox p{color:var(--muted)}
+#desktop{min-height:100vh;display:none;background:linear-gradient(135deg,#f8f0ff,#fff7f3,#eee8ff);overflow:hidden;position:relative}
+#topbar{height:56px;background:#ffffffb8;backdrop-filter:blur(15px);display:flex;align-items:center;justify-content:space-between;padding:0 18px;border-bottom:1px solid var(--line);position:relative;z-index:20}
 #topbar .brand{font-weight:800}
-#clock{font-size:13px}
-#icons{
- position:absolute;top:80px;left:18px;display:grid;
- grid-template-columns:repeat(2,85px);gap:14px;z-index:2;
-}
-.dicon{
- cursor:pointer;text-align:center;padding:9px;border-radius:18px;
- color:#59486a;text-shadow:0 1px 2px #fff;
-}
-.dicon:hover{background:#ffffff65}
-.dicon .emoji{font-size:31px;display:block;margin-bottom:5px}
-.dicon span:last-child{font-size:12px}
-.window{
- position:absolute;width:450px;max-width:94vw;
- height:500px;max-height:78vh;
- background:var(--glass);backdrop-filter:blur(22px);
- border:1px solid #ffffffb5;border-radius:23px;
- box-shadow:0 20px 60px #57456b27;
- display:none;overflow:hidden;z-index:10;
-}
-.window.open{display:flex;flex-direction:column}
-.whead{
- height:48px;min-height:48px;display:flex;align-items:center;
- justify-content:space-between;padding:0 15px;
- background:#ffffff55;border-bottom:1px solid #fff8;
- cursor:grab;user-select:none;
-}
-.whead strong{font-size:14px}
-.wcontrols{display:flex;gap:6px}
-.wcontrols button{padding:5px 10px;border-radius:10px}
-.wbody{padding:16px;overflow:auto;flex:1}
-.wbody h3{margin-top:4px}
-#dock{
- position:absolute;bottom:14px;left:50%;transform:translateX(-50%);
- padding:10px 14px;border-radius:23px;
- display:flex;gap:8px;background:#ffffff9a;
- backdrop-filter:blur(20px);box-shadow:var(--shadow);
- z-index:40;
-}
-#dock button{padding:11px;font-size:19px;background:#fff;color:#68527e}
-#widget{
- position:absolute;right:25px;top:80px;width:235px;
- padding:17px;background:#ffffff80;backdrop-filter:blur(15px);
- border-radius:22px;box-shadow:var(--shadow);z-index:2;
-}
-#widget h3{margin:0 0 7px}
-#widget p{font-size:13px}
-.small{font-size:12px;opacity:.7}
+#topbar button{background:#fff;color:var(--text);border:1px solid var(--line)}
+#desktopArea{min-height:calc(100vh - 56px);padding:22px;position:relative}
+#widgets{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:22px}
+.widget{background:#ffffffbd;border:1px solid #fff;padding:14px 18px;border-radius:20px;box-shadow:var(--shadow);min-width:140px}
+.widget strong{font-size:19px}
+#apps{display:grid;grid-template-columns:repeat(auto-fill,100px);gap:16px;max-width:600px}
+.appicon{background:#ffffffa9;border:1px solid white;border-radius:22px;text-align:center;padding:15px 8px;cursor:pointer;transition:.2s;box-shadow:0 4px 15px #80609c13}
+.appicon:hover{transform:translateY(-4px);background:white}
+.appicon .emoji{font-size:30px;display:block;margin-bottom:7px}
+.appicon small{font-size:12px}
+.window{position:absolute;top:160px;left:270px;width:440px;max-width:calc(100vw - 30px);max-height:75vh;min-height:170px;background:var(--panel);border:1px solid white;border-radius:22px;box-shadow:0 20px 50px #624c7b35;z-index:10;overflow:hidden;display:flex;flex-direction:column}
+.window.maximized{top:65px!important;left:10px!important;width:calc(100% - 20px)!important;height:calc(100vh - 80px)!important;max-height:none!important}
+.winhead{background:#f8f0ff;padding:12px 15px;display:flex;justify-content:space-between;align-items:center;cursor:move;user-select:none}
+.winhead .controls{display:flex;gap:5px}
+.winhead button{padding:5px 9px;background:white;color:var(--text)}
+.winbody{padding:18px;overflow:auto;flex:1}
+.winbody h2{margin-top:0}
+.close{background:#ffe2e9!important}
+.dock{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);display:flex;gap:7px;background:#ffffffc9;backdrop-filter:blur(15px);padding:10px;border-radius:20px;box-shadow:var(--shadow);z-index:30;max-width:95vw;overflow-x:auto}
+.dock button{background:white;color:var(--text);font-size:19px;padding:9px}
+.card{padding:15px;border:1px solid var(--line);border-radius:18px;margin:12px 0;background:#fff}
 .row{display:flex;gap:8px;align-items:center}
 .row>*{flex:1}
-.stack{display:flex;flex-direction:column;gap:10px}
-.card{
- background:#fff9;border:1px solid #fff;
- padding:13px;border-radius:17px;margin-bottom:10px;
- box-shadow:0 4px 14px #78619c0a;
-}
-.task{display:flex;align-items:center;gap:9px}
-.task input{width:auto}
-.task.done span{text-decoration:line-through;opacity:.55}
-.tag{font-size:11px;background:#eadff5;padding:5px 8px;border-radius:10px}
-.bar{height:9px;background:#e9def4;border-radius:20px;overflow:hidden}
-.bar div{height:100%;background:var(--accent);transition:.3s}
-.note{
- background:#fff4c9;padding:15px;border-radius:17px;
- box-shadow:2px 6px 12px #7772;margin:8px 0;
-}
-.note.pink{background:#ffe0ec}
-.note.blue{background:#e0eaff}
-.note.green{background:#e0f4e4}
-.flash{
- min-height:150px;display:flex;align-items:center;
- justify-content:center;text-align:center;padding:25px;
- background:linear-gradient(135deg,#e9ddfa,#ffe8ee);
- border-radius:22px;font-size:19px;cursor:pointer;
-}
-.pet{text-align:center;font-size:75px;cursor:pointer}
-.mini{padding:5px 9px;font-size:12px}
-.listbtn{margin:4px 0}
-#focusOverlay{
- position:fixed;inset:0;z-index:900;display:none;
- background:linear-gradient(135deg,#e9defa,#f9e7ef);
- align-items:center;justify-content:center;text-align:center;
-}
-#focusOverlay.active{display:flex}
-#focusOverlay h1{font-size:55px}
-#focusOverlay .timer{font-size:85px;font-weight:800}
-.closefocus{position:absolute;top:20px;right:20px}
-#toast{
- position:fixed;bottom:90px;left:50%;transform:translateX(-50%);
- background:#69527f;color:white;padding:12px 20px;
- border-radius:16px;display:none;z-index:9999;
-}
-.badgecard{display:inline-block;margin:4px;padding:10px;background:#f2e7fb;border-radius:13px}
-#petfloat{
- position:absolute;bottom:90px;right:25px;font-size:45px;
- cursor:pointer;z-index:5;animation:bob 2s infinite ease-in-out;
-}
-@keyframes bob{50%{transform:translateY(-8px)}}
-@keyframes fade{from{opacity:0}to{opacity:1}}
-@media(max-width:700px){
- #widget{display:none}
- #icons{grid-template-columns:repeat(2,75px)}
- .window{left:3%!important;top:75px!important;width:94%!important;height:75vh!important}
- #dock{gap:4px}
- #dock button{padding:8px}
-}
+.listitem{padding:10px;margin:8px 0;border:1px solid var(--line);border-radius:14px;display:flex;align-items:center;gap:8px;background:#fff}
+.listitem button{flex:0 0 auto;padding:6px 10px}
+.listitem .content{flex:1;overflow-wrap:anywhere}
+.listitem.done .content{text-decoration:line-through;opacity:.55}
+.tag{display:inline-block;background:#f1e8ff;padding:5px 10px;border-radius:20px;font-size:12px;margin:3px}
+.progress{height:10px;background:#eee5f7;border-radius:20px;overflow:hidden;margin:10px 0}
+.progress div{height:100%;background:var(--accent);width:0%;transition:.3s}
+.big{font-size:38px;font-weight:800;text-align:center}
+.center{text-align:center}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.hidden{display:none!important}
+#contextMenu{position:fixed;z-index:100;background:white;border:1px solid var(--line);border-radius:15px;box-shadow:var(--shadow);padding:8px;display:none}
+#contextMenu button{display:block;width:100%;margin:3px;background:white;color:var(--text);text-align:left}
+#notificationPanel{position:fixed;right:15px;top:65px;width:300px;max-width:90vw;background:white;border-radius:20px;padding:18px;box-shadow:var(--shadow);z-index:50;display:none}
+#toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#5d4b72;color:white;padding:12px 20px;border-radius:30px;z-index:200;display:none}
+#pet{position:fixed;right:20px;bottom:95px;font-size:45px;cursor:pointer;z-index:8}
+hr{border:0;border-top:1px solid var(--line)}
+small{color:var(--muted)}
 body.dark{
- --ink:#e9defa;--glass:rgba(44,35,59,.85);
- --bg:#30283b;
+ --bg:#272332;--panel:#342d42;--text:#f4eaff;--muted:#c3b3d6;
+ --line:#524461;--accent:#a88bce;
 }
-body.dark #desktop{
- background:linear-gradient(135deg,#30283b,#49384f,#353a55);
+body.dark #desktop{background:linear-gradient(135deg,#272332,#352d43)}
+body.dark #topbar,body.dark .widget,body.dark .dock,body.dark .appicon{background:#362d44}
+body.dark .winhead{background:#42354f}
+body.dark .card,body.dark .listitem,body.dark input,body.dark textarea,body.dark select{background:#40364e;color:var(--text)}
+body.dark #notificationPanel,body.dark #contextMenu{background:#352d43}
+@media(max-width:700px){
+ #apps{grid-template-columns:repeat(3,1fr)}
+ .window{left:10px!important;width:calc(100% - 20px)!important;top:120px!important}
+ .dock{bottom:8px}
 }
-body.dark #topbar,body.dark #widget,body.dark #dock{
- background:#40334eeb;color:#eee;
-}
-body.dark input,body.dark textarea,body.dark select{
- background:#463954;color:#fff;
-}
-body.dark .card,body.dark .note{background:#574564;color:#fff}
-body.dark .dicon{color:white}
 </style>
 </head>
 <body>
 
 <div id="lock">
- <div class="lockcard">
+ <div class="lockbox">
   <div style="font-size:65px">🌷</div>
-  <p>YOUR PERSONAL STUDY SPACE</p>
   <h1>Students Hub ♡</h1>
-  <p id="lockdate"></p>
-  <p>dream • study • grow</p>
-  <button onclick="enter()">Enter my desktop ✨</button>
-  <p class="small">a little space for your big dreams</p>
+  <p>Your little corner of productivity, dreams & growth.</p>
+  <p id="lockDate"></p>
+  <button onclick="enterDesktop()" style="padding:14px 30px;font-size:17px">Enter my desktop ✨</button>
  </div>
 </div>
 
 <div id="desktop">
  <div id="topbar">
-  <div class="brand">☁ Students Hub</div>
+  <div class="brand">🌷 Students Hub ♡</div>
+  <div class="row" style="flex:0;gap:6px">
+   <button onclick="toggleNotifications()">🔔</button>
+   <button onclick="openApp('Settings')">⚙️</button>
+   <button onclick="lockDesktop()">🔒</button>
+  </div>
   <div id="clock"></div>
-  <button class="secondary mini" onclick="openWin('settings')">⚙</button>
  </div>
 
- <div id="icons">
-  <div class="dicon" onclick="openWin('tasks')"><span class="emoji">📝</span><span>Tasks</span></div>
-  <div class="dicon" onclick="openWin('planner')"><span class="emoji">📅</span><span>Planner</span></div>
-  <div class="dicon" onclick="openWin('flash')"><span class="emoji">🧠</span><span>Flashcards</span></div>
-  <div class="dicon" onclick="openWin('exam')"><span class="emoji">🎓</span><span>Exam Center</span></div>
-  <div class="dicon" onclick="openWin('chapters')"><span class="emoji">📚</span><span>Chapters</span></div>
-  <div class="dicon" onclick="openWin('notes')"><span class="emoji">📓</span><span>Notes</span></div>
-  <div class="dicon" onclick="openWin('dreams')"><span class="emoji">🌠</span><span>Dream Board</span></div>
-  <div class="dicon" onclick="openWin('journal')"><span class="emoji">📔</span><span>Journal</span></div>
-  <div class="dicon" onclick="openWin('coach')"><span class="emoji">🪄</span><span>Study Coach</span></div>
-  <div class="dicon" onclick="openWin('sticky')"><span class="emoji">📌</span><span>Sticky Notes</span></div>
-  <div class="dicon" onclick="openWin('analytics')"><span class="emoji">📊</span><span>Analytics</span></div>
-  <div class="dicon" onclick="openWin('vault')"><span class="emoji">🗂️</span><span>Vault</span></div>
-    <div class="dicon" onclick="openWin('calc')"><span class="emoji">🔢</span><span>Calculator</span></div>
-  <div class="dicon" onclick="openWin('focus')"><span class="emoji">🌙</span><span>Focus Room</span></div>
-  <div class="dicon" onclick="openWin('formulas')"><span class="emoji">🧾</span><span>Formula Vault</span></div>
-  <div class="dicon" onclick="openWin('doubts')"><span class="emoji">❓</span><span>Doubt Tracker</span></div>
-  <div class="dicon" onclick="openWin('revision')"><span class="emoji">🔁</span><span>Revision Scheduler</span></div>
-  <div class="dicon" onclick="openWin('mistakes')"><span class="emoji">❌</span><span>Mistake Notebook</span></div>
-  <div class="dicon" onclick="openWin('papers')"><span class="emoji">📝</span><span>Practice Papers</span></div>
- </div>
-
- <div id="widget">
-  <h3>☁️ Today's mood</h3>
-  <p id="quote">One small step at a time.</p>
-  <hr>
-  <p>✨ Level <b id="level">1</b></p>
-  <div class="bar"><div id="xpbar" style="width:0%"></div></div>
-  <p class="small"><span id="xptext">0 XP</span></p>
-  <p>🌷 <span id="taskwidget">0</span> tasks completed</p>
- </div>
-
- <div id="petfloat" onclick="petTalk()" title="Click your pet">🐰</div>
-
- <!-- Windows -->
-
- <div class="window" id="tasks" style="left:240px;top:100px">
-  <div class="whead"><strong>📝 My Tasks</strong><div class="wcontrols"><button onclick="minWin('tasks')">−</button><button onclick="closeWin('tasks')">×</button></div></div>
-  <div class="wbody">
-   <div class="row"><input id="taskinput" placeholder="Add a task..."><button onclick="addTask()">Add +</button></div>
-   <p id="taskprogress"></p><div class="bar"><div id="taskbar"></div></div>
-   <div id="tasklist"></div>
+ <div id="desktopArea" oncontextmenu="showContext(event)">
+  <div id="widgets">
+   <div class="widget">🌸 Today<br><strong id="dateWidget"></strong></div>
+   <div class="widget">📚 Tasks done<br><strong id="taskWidget">0</strong></div>
+   <div class="widget">✨ XP points<br><strong id="xpWidget">0</strong></div>
+   <div class="widget">💭 Quote<br><small id="quote">Small steps matter.</small></div>
   </div>
- </div>
 
- <div class="window" id="planner" style="left:300px;top:110px">
-  <div class="whead"><strong>📅 Weekly Planner</strong><div class="wcontrols"><button onclick="minWin('planner')">−</button><button onclick="closeWin('planner')">×</button></div></div>
-  <div class="wbody">
-   <input type="date" id="plandate">
-   <input id="planinput" placeholder="Study block / activity" style="margin-top:10px">
-   <div class="row" style="margin-top:10px"><input id="plantime" placeholder="Time e.g. 4 PM"><button onclick="addPlan()">Add</button></div>
-   <div id="planlist"></div>
-  </div>
- </div>
-
- <div class="window" id="flash" style="left:350px;top:130px">
-  <div class="whead"><strong>🧠 Flashcards</strong><div class="wcontrols"><button onclick="minWin('flash')">−</button><button onclick="closeWin('flash')">×</button></div></div>
-  <div class="wbody">
-   <input id="fq" placeholder="Question / front of card">
-   <textarea id="fa" placeholder="Answer / back of card"></textarea>
-   <button onclick="addFlash()">Add Flashcard</button>
-   <hr>
-   <div id="flasharea"></div>
-   <div class="row"><button class="secondary" onclick="prevFlash()">← Previous</button><button onclick="nextFlash()">Next →</button></div>
-   <p id="flashcount" style="text-align:center"></p>
-  </div>
- </div>
-
- <div class="window" id="exam" style="left:390px;top:80px">
-  <div class="whead"><strong>🎓 Exam Command Center</strong><div class="wcontrols"><button onclick="minWin('exam')">−</button><button onclick="closeWin('exam')">×</button></div></div>
-  <div class="wbody">
-   <input id="examname" placeholder="Exam name">
-   <div class="row" style="margin-top:10px"><input id="examdate" type="date"><button onclick="addExam()">Add exam</button></div>
-   <div id="examlist"></div>
-  </div>
- </div>
-
- <div class="window" id="chapters" style="left:180px;top:120px">
-  <div class="whead"><strong>📚 Chapter Tracker</strong><div class="wcontrols"><button onclick="minWin('chapters')">−</button><button onclick="closeWin('chapters')">×</button></div></div>
-  <div class="wbody">
-   <div class="row"><select id="subject"><option>Physics</option><option>Chemistry</option><option>Maths</option><option>English</option><option>Computer Science</option></select><input id="chapterinput" placeholder="Chapter name"></div>
-   <button onclick="addChapter()" style="margin-top:10px">Add Chapter</button>
-   <div id="chapterlist"></div>
-  </div>
- </div>
-
- <div class="window" id="notes" style="left:240px;top:150px">
-  <div class="whead"><strong>📓 Notes Studio</strong><div class="wcontrols"><button onclick="minWin('notes')">−</button><button onclick="closeWin('notes')">×</button></div></div>
-  <div class="wbody">
-   <input id="notetitle" placeholder="Note title">
-   <textarea id="notecontent" placeholder="Write your notes here..." style="height:200px;margin-top:10px"></textarea>
-   <button onclick="saveNote()">Save Note</button>
-   <div id="noteslist"></div>
-  </div>
- </div>
-
- <div class="window" id="dreams" style="left:330px;top:150px">
-  <div class="whead"><strong>🌠 Dream Board</strong><div class="wcontrols"><button onclick="minWin('dreams')">−</button><button onclick="closeWin('dreams')">×</button></div></div>
-  <div class="wbody">
-   <input id="dreamtitle" placeholder="Your dream">
-   <textarea id="dreamdesc" placeholder="Why does it matter?"></textarea>
-   <button onclick="addDream()">Add Dream</button>
-   <hr>
-   <div id="dreamlist"></div>
-   <hr><h3>💌 Letter to future me</h3>
-   <textarea id="letter" placeholder="Write a letter to your future self..."></textarea>
-   <button onclick="saveLetter()">Save letter</button>
-  </div>
- </div>
-
- <div class="window" id="journal" style="left:300px;top:100px">
-  <div class="whead"><strong>📔 Study Journal</strong><div class="wcontrols"><button onclick="minWin('journal')">−</button><button onclick="closeWin('journal')">×</button></div></div>
-  <div class="wbody">
-   <input type="date" id="jdate">
-   <textarea id="jentry" placeholder="What did I learn today?"></textarea>
-   <button onclick="saveJournal()">Save Entry</button>
-   <div id="journallist"></div>
-  </div>
- </div>
-
- <div class="window" id="coach" style="left:450px;top:120px">
-  <div class="whead"><strong>🪄 Study Coach</strong><div class="wcontrols"><button onclick="minWin('coach')">−</button><button onclick="closeWin('coach')">×</button></div></div>
-  <div class="wbody">
-   <div class="card"><h3>✨ Your study report</h3><div id="coachreport"></div></div>
-   <button onclick="coachRefresh()">Refresh advice</button>
-   <div class="card"><h3>🎯 Suggested session</h3><div id="coachsuggest"></div></div>
-  </div>
- </div>
-
- <div class="window" id="sticky" style="left:500px;top:180px">
-  <div class="whead"><strong>📌 Sticky Notes</strong><div class="wcontrols"><button onclick="minWin('sticky')">−</button><button onclick="closeWin('sticky')">×</button></div></div>
-  <div class="wbody">
-   <textarea id="sticktext" placeholder="Write a quick reminder..."></textarea>
-   <select id="stickcolor"><option value="note">Yellow</option><option value="pink">Pink</option><option value="blue">Blue</option><option value="green">Green</option></select>
-   <button onclick="addSticky()" style="margin-top:10px">Pin note</button>
-   <div id="stickylist"></div>
-  </div>
- </div>
-  <div class="window" id="formulas" style="left:430px;top:120px">
-  <div class="whead"><strong>🧾 Formula Vault</strong><div class="wcontrols"><button onclick="minWin('formulas')">−</button><button onclick="closeWin('formulas')">×</button></div></div>
-  <div class="wbody">
-   <select id="fs"><option>Physics</option><option>Chemistry</option><option>Maths</option></select>
-   <input id="ft" placeholder="Formula name" style="margin-top:10px">
-   <textarea id="fc" placeholder="Formula / explanation" style="margin-top:10px"></textarea>
-   <button onclick="addFormula()">Save Formula</button>
-   <div id="formulalist"></div>
-  </div>
- </div>
-
- <div class="window" id="doubts" style="left:350px;top:140px">
-  <div class="whead"><strong>❓ Doubt Tracker</strong><div class="wcontrols"><button onclick="minWin('doubts')">−</button><button onclick="closeWin('doubts')">×</button></div></div>
-  <div class="wbody">
-   <select id="ds"><option>Physics</option><option>Chemistry</option><option>Maths</option></select>
-   <input id="dt" placeholder="Topic / question" style="margin-top:10px">
-   <textarea id="dc" placeholder="Describe your doubt"></textarea>
-   <button onclick="addDoubt()">Save Doubt</button>
-   <div id="doubtlist"></div>
-  </div>
- </div>
-
- <div class="window" id="revision" style="left:250px;top:100px">
-  <div class="whead"><strong>🔁 Revision Scheduler</strong><div class="wcontrols"><button onclick="minWin('revision')">−</button><button onclick="closeWin('revision')">×</button></div></div>
-  <div class="wbody">
-   <select id="rs"><option>Physics</option><option>Chemistry</option><option>Maths</option></select>
-   <input id="rt" placeholder="Chapter / topic" style="margin-top:10px">
-   <input type="date" id="rd" style="margin-top:10px">
-   <button onclick="addRevision()" style="margin-top:10px">Schedule Revision</button>
-   <div id="revisionlist"></div>
-  </div>
- </div>
-
- <div class="window" id="mistakes" style="left:350px;top:100px">
-  <div class="whead"><strong>❌ Mistake Notebook</strong><div class="wcontrols"><button onclick="minWin('mistakes')">−</button><button onclick="closeWin('mistakes')">×</button></div></div>
-  <div class="wbody">
-   <select id="ms"><option>Physics</option><option>Chemistry</option><option>Maths</option></select>
-   <input id="mt" placeholder="Question / topic" style="margin-top:10px">
-   <textarea id="me" placeholder="What went wrong?"></textarea>
-   <textarea id="mc" placeholder="Correct method"></textarea>
-   <button onclick="addMistake()">Save Mistake</button>
-   <div id="mistakelist"></div>
-  </div>
- </div>
-
- <div class="window" id="papers" style="left:400px;top:100px">
-  <div class="whead"><strong>📝 Practice Paper Tracker</strong><div class="wcontrols"><button onclick="minWin('papers')">−</button><button onclick="closeWin('papers')">×</button></div></div>
-  <div class="wbody">
-   <input id="pt" placeholder="Paper name">
-   <div class="row" style="margin-top:10px"><input id="ps" placeholder="Score"><input id="ptime" placeholder="Time taken"></div>
-   <textarea id="pr" placeholder="Paper review / mistakes" style="margin-top:10px"></textarea>
-   <button onclick="addPaper()">Save Paper</button>
-   <div id="paperlist"></div>
-  </div>
- </div>
-  <div class="window" id="analytics" style="left:400px;top:100px">
-  <div class="whead"><strong>📊 Progress Analytics</strong><div class="wcontrols"><button onclick="minWin('analytics')">−</button><button onclick="closeWin('analytics')">×</button></div></div>
-  <div class="wbody"><div id="stats"></div><div id="badges"></div></div>
- </div>
-
- <div class="window" id="vault" style="left:200px;top:160px">
-  <div class="whead"><strong>🗂️ Study Vault</strong><div class="wcontrols"><button onclick="minWin('vault')">−</button><button onclick="closeWin('vault')">×</button></div></div>
-  <div class="wbody">
-   <input id="vtitle" placeholder="Resource name">
-   <input id="vurl" placeholder="Link (https://...)" style="margin-top:10px">
-   <select id="vsubject" style="margin-top:10px"><option>Physics</option><option>Chemistry</option><option>Maths</option><option>English</option><option>Computer Science</option><option>Other</option></select>
-   <button onclick="addVault()" style="margin-top:10px">Save Resource</button>
-   <div id="vaultlist"></div>
-  </div>
- </div>
-
- <div class="window" id="calc" style="left:550px;top:120px;width:310px;height:380px">
-  <div class="whead"><strong>🔢 Calculator</strong><div class="wcontrols"><button onclick="minWin('calc')">−</button><button onclick="closeWin('calc')">×</button></div></div>
-  <div class="wbody">
-   <input id="calcinput" placeholder="Enter arithmetic expression">
-   <button onclick="calculate()" style="margin-top:10px">Calculate =</button>
-   <div class="card" id="calcresult">Result appears here</div>
-  </div>
- </div>
-
- <div class="window" id="focus" style="left:400px;top:140px;width:330px;height:390px">
-  <div class="whead"><strong>🌙 Focus Room</strong><div class="wcontrols"><button onclick="minWin('focus')">−</button><button onclick="closeWin('focus')">×</button></div></div>
-  <div class="wbody" style="text-align:center">
-   <h3>Time to focus ♡</h3>
-   <select id="fmins" onchange="setTimer()" style="margin:10px 0"><option value="25">25 minutes</option><option value="45">45 minutes</option><option value="60">60 minutes</option></select>
-   <div style="font-size:55px;font-weight:800" id="ftimer">25:00</div>
-   <div class="row"><button onclick="startTimer()">Start</button><button class="secondary" onclick="pauseTimer()">Pause</button><button class="secondary" onclick="resetTimer()">Reset</button></div>
-   <button class="secondary" style="margin-top:15px" onclick="fullFocus()">Full Focus Screen</button>
-   <p class="small">One thing at a time. ♡</p>
-  </div>
- </div>
-
- <div class="window" id="settings" style="left:300px;top:120px;width:360px;height:430px">
-  <div class="whead"><strong>⚙️ Desktop Studio</strong><div class="wcontrols"><button onclick="minWin('settings')">−</button><button onclick="closeWin('settings')">×</button></div></div>
-  <div class="wbody">
-   <h3>🎨 Theme</h3>
-   <div class="row"><button class="secondary" onclick="theme('#b18adf','#f5effb')">Lavender</button><button class="secondary" onclick="theme('#d88ca9','#fff0f4')">Pink</button></div>
-   <div class="row" style="margin-top:8px"><button class="secondary" onclick="theme('#91a8d5','#eef3ff')">Blue</button><button class="secondary" onclick="theme('#8bb7a2','#eff8f1')">Mint</button></div>
-   <input type="color" id="customcolor" onchange="customTheme()" style="margin-top:10px">
-   <button class="secondary" onclick="toggleDark()" style="margin-top:10px">🌙 Toggle dark mode</button>
-   <hr>
-   <h3>🖼️ Wallpapers</h3>
-   <button class="secondary" onclick="wallpaper(1)">Clouds</button>
-   <button class="secondary" onclick="wallpaper(2)">Stars</button>
-   <button class="secondary" onclick="wallpaper(3)">Garden</button>
-   <button class="secondary" onclick="wallpaper(4)">Plain</button>
-   <hr>
-   <button class="secondary" onclick="layoutReset()">Reset window positions</button>
-   <button class="secondary" onclick="exportData()">Backup data</button>
-   <label style="display:block;margin-top:10px">Restore backup<input type="file" id="restorefile" accept=".json" onchange="restoreData(event)"></label>
-   <button class="danger" style="margin-top:10px" onclick="resetAll()">Reset all data</button>
-  </div>
- </div>
-
- <div id="dock">
-  <button title="Tasks" onclick="openWin('tasks')">📝</button>
-  <button title="Planner" onclick="openWin('planner')">📅</button>
-  <button title="Flashcards" onclick="openWin('flash')">🧠</button>
-  <button title="Exam" onclick="openWin('exam')">🎓</button>
-  <button title="Notes" onclick="openWin('notes')">📓</button>
-  <button title="Focus" onclick="openWin('focus')">🌙</button>
-  <button title="Settings" onclick="openWin('settings')">⚙️</button>
+  <div id="apps"></div>
  </div>
 </div>
 
-<div id="focusOverlay">
- <button class="closefocus" onclick="exitFullFocus()">Exit ✕</button>
- <div><p>🌙 DEEP FOCUS</p><h1>Stay with it ♡</h1><div class="timer" id="fulltimer">25:00</div><p>One step closer to your dream.</p></div>
+<div class="dock" id="dock"></div>
+<div id="pet" onclick="toast('You got this! 🐰💗')" title="Your desktop buddy">🐰</div>
+<div id="contextMenu"></div>
+<div id="notificationPanel">
+ <h3>🔔 Notifications</h3>
+ <div id="notificationContent">Welcome to your study desktop!</div>
+ <button onclick="toggleNotifications()">Close</button>
 </div>
 <div id="toast"></div>
 
 <script>
-const $=id=>document.getElementById(id);
-const get=(k,d=[])=>{try{return JSON.parse(localStorage.getItem("sh_"+k))??d}catch{return d}};
-const save=(k,v)=>localStorage.setItem("sh_"+k,JSON.stringify(v));
-let xp=get("xp",0),tasks=get("tasks"),plans=get("plans"),flashes=get("flashes"),
- exams=get("exams"),chapters=get("chapters"),notes=get("notes"),dreams=get("dreams"),
- journal=get("journal"),stickies=get("stickies"),vault=get("vault"),formulas=get("formulas"),doubts=get("doubts"),revisions=get("revisions"),mistakes=get("mistakes"),papers=get("papers"),flashIndex=0;
-let timerSeconds=1500,timerInterval=null,timerRunning=false;
-let z=20;
+const appList=[
+ ["Tasks","📝"],["Planner","📅"],["Chapter Tracker","📚"],
+ ["Notes Studio","🗒️"],["Flashcards","🃏"],["Focus Room","⏳"],
+ ["Dream Board","🌷"],["Study Journal","📔"],["Sticky Notes","📌"],
+ ["Analytics","📊"],["Calculator","🧮"],["Formula Vault","📐"],
+ ["Doubt Tracker","❓"],["Revision Scheduler","🔁"],
+ ["Mistake Notebook","📝"],["Practice Papers","📄"],
+ ["Exam Center","🎓"],["Study Coach","✨"],["Trash Bin","🗑️"],
+ ["Settings","⚙️"]
+];
+let data=JSON.parse(localStorage.getItem("studentsHubData")||"{}");
+data.tasks ||= [];
+data.chapters ||= [];
+data.notes ||= "";
+data.sticky ||= "";
+data.dream ||= "";
+data.journal ||= "";
+data.flash ||= [];
+data.doubts ||= [];
+data.mistakes ||= [];
+data.papers ||= [];
+data.formulas ||= [];
+data.trash ||= [];
+data.xp ||= 0;
+data.completed ||= 0;
+data.theme ||= "lavender";
+data.dark ||= false;
+data.notifications ||= [];
+let z=10;
+let flashIndex=0;
 
-function toast(t){$("toast").textContent=t;$("toast").style.display="block";setTimeout(()=>{$("toast").style.display="none"},2200)}
-function enter(){$("lock").style.display="none";renderAll();openWin("tasks")}
-$("lockdate").textContent=new Date().toLocaleDateString(undefined,{weekday:"long",day:"numeric",month:"long",year:"numeric"});
-function clock(){ $("clock").textContent=new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"})}
-setInterval(clock,1000);clock();
-
-const quotes=["One small step at a time. 🌷","You are building your future. ✨","Progress, not perfection. ☁️","Your dreams deserve effort. ♡","Be proud of how far you have come. 🌸","Keep showing up for yourself. 💜"];
-$("quote").textContent=quotes[new Date().getDate()%quotes.length];
-
-function openWin(id){
- const w=$(id);w.classList.add("open");w.style.zIndex=++z;
- if(id==="analytics")renderStats();
- if(id==="coach")coachRefresh();
- if(id==="focus")updateTimer();
+function save(){
+ localStorage.setItem("studentsHubData",JSON.stringify(data));
+ updateWidgets();
 }
-function closeWin(id){$(id).classList.remove("open")}
-function minWin(id){closeWin(id)}
-function layoutReset(){
- document.querySelectorAll(".window").forEach((w,i)=>{
- w.style.left=(150+(i%4)*40)+"px";w.style.top=(80+(i%5)*30)+"px";
- });
- toast("Window positions reset ♡");
+function updateWidgets(){
+ document.getElementById("taskWidget").textContent=data.completed||0;
+ document.getElementById("xpWidget").textContent=data.xp||0;
 }
-document.querySelectorAll(".window").forEach(w=>{
- const h=w.querySelector(".whead");
- let dragging=false,ox=0,oy=0;
- h.addEventListener("pointerdown",e=>{
- if(e.target.closest("button"))return;
- dragging=true;ox=e.clientX-w.offsetLeft;oy=e.clientY-w.offsetTop;h.setPointerCapture(e.pointerId);
+function enterDesktop(){
+ document.getElementById("lock").style.display="none";
+ document.getElementById("desktop").style.display="block";
+}
+function lockDesktop(){
+ document.getElementById("desktop").style.display="none";
+ document.getElementById("lock").style.display="flex";
+}
+function toast(msg){
+ const t=document.getElementById("toast");
+ t.textContent=msg;t.style.display="block";
+ setTimeout(()=>t.style.display="none",2200);
+}
+function addNotification(msg){
+ data.notifications.unshift(msg);
+ data.notifications=data.notifications.slice(0,20);
+ save();
+}
+function toggleNotifications(){
+ let n=document.getElementById("notificationPanel");
+ n.style.display=n.style.display==="block"?"none":"block";
+ document.getElementById("notificationContent").innerHTML=
+ data.notifications.length?data.notifications.map(x=>`<div class="card">${esc(x)}</div>`).join(""):"No notifications yet.";
+}
+function esc(s){
+ return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+}
+function renderApps(){
+ let a=document.getElementById("apps");
+ a.innerHTML=appList.map(x=>`<div class="appicon" onclick="openApp('${x[0]}')"><span class="emoji">${x[1]}</span><small>${x[0]}</small></div>`).join("");
+ let d=document.getElementById("dock");
+ d.innerHTML=["Tasks","Planner","Focus Room","Notes Studio","Settings"].map(n=>{
+ let e=appList.find(x=>x[0]===n);
+ return `<button title="${n}" onclick="openApp('${n}')">${e[1]}</button>`;
+ }).join("");
+}
+function openApp(name){
+ let old=document.querySelector(`[data-app="${name}"]`);
+ if(old){old.style.display="flex";old.style.zIndex=++z;return;}
+ let w=document.createElement("div");
+ w.className="window";
+ w.dataset.app=name;
  w.style.zIndex=++z;
- });
- h.addEventListener("pointermove",e=>{
- if(!dragging)return;
- w.style.left=Math.max(0,e.clientX-ox)+"px";
- w.style.top=Math.max(0,e.clientY-oy)+"px";
- });
- h.addEventListener("pointerup",()=>dragging=false);
- h.addEventListener("pointercancel",()=>dragging=false);
-});
-
-function addXP(n){
- xp+=n;save("xp",xp);updateXP();
+ w.style.left=(150+Math.random()*150)+"px";
+ w.style.top=(110+Math.random()*100)+"px";
+ w.innerHTML=`<div class="winhead"><strong>${appList.find(x=>x[0]===name)?.[1]||"✨"} ${name}</strong>
+ <div class="controls"><button onclick="minWin(this)">—</button><button onclick="maxWin(this)">□</button><button class="close" onclick="this.closest('.window').remove()">×</button></div></div>
+ <div class="winbody">${appContent(name)}</div>`;
+ document.getElementById("desktopArea").appendChild(w);
+ makeDrag(w);
+ refreshAll();
 }
-function updateXP(){
- $("level").textContent=Math.floor(xp/100)+1;
- $("xptext").textContent=xp+" XP • "+(xp%100)+" / 100 to next level";
- $("xpbar").style.width=(xp%100)+"%";
+function minWin(b){b.closest(".window").style.display="none";}
+function maxWin(b){b.closest(".window").classList.toggle("maximized");}
+function makeDrag(w){
+ const h=w.querySelector(".winhead");
+ let sx,sy,ox,oy;
+ h.onpointerdown=e=>{
+ if(e.target.tagName==="BUTTON")return;
+ if(w.classList.contains("maximized"))return;
+ sx=e.clientX;sy=e.clientY;
+ ox=w.offsetLeft;oy=w.offsetTop;
+ w.style.zIndex=++z;
+ h.setPointerCapture(e.pointerId);
+ };
+ h.onpointermove=e=>{
+ if(!h.hasPointerCapture(e.pointerId))return;
+ w.style.left=(ox+e.clientX-sx)+"px";
+ w.style.top=(oy+e.clientY-sy)+"px";
+ };
+ h.onpointerup=e=>{try{h.releasePointerCapture(e.pointerId)}catch{}};
+ w.onpointerdown=()=>w.style.zIndex=++z;
+}
+function appContent(n){
+ switch(n){
+ case "Tasks":return tasksHTML();
+ case "Planner":return plannerHTML();
+ case "Chapter Tracker":return chapterHTML();
+ case "Notes Studio":return notesHTML();
+ case "Flashcards":return flashHTML();
+ case "Focus Room":return focusHTML();
+ case "Dream Board":return dreamHTML();
+ case "Study Journal":return journalHTML();
+ case "Sticky Notes":return stickyHTML();
+ case "Analytics":return analyticsHTML();
+ case "Calculator":return calcHTML();
+ case "Formula Vault":return formulaHTML();
+ case "Doubt Tracker":return doubtHTML();
+ case "Revision Scheduler":return revisionHTML();
+ case "Mistake Notebook":return mistakeHTML();
+ case "Practice Papers":return paperHTML();
+ case "Exam Center":return examHTML();
+ case "Study Coach":return coachHTML();
+ case "Trash Bin":return trashHTML();
+ case "Settings":return settingsHTML();
+ default:return "<p>Coming soon ♡</p>";
+ }
+}
+function tasksHTML(){
+ return `<h2>📝 My Tasks</h2><div class="row"><input id="taskInput" placeholder="Add a task..."><button onclick="addTask()">Add</button></div><div id="taskList"></div><script></script>`;
 }
 function addTask(){
- let t=$("taskinput").value.trim();if(!t)return;
- tasks.push({text:t,done:false,id:Date.now()});
- $("taskinput").value="";save("tasks",tasks);renderTasks();
+ let input=document.querySelector('[data-app="Tasks"] #taskInput');
+ if(!input||!input.value.trim())return;
+ data.tasks.push({text:input.value.trim(),done:false});
+ input.value="";save();refresh("Tasks");toast("Task added ♡");
 }
-function toggleTask(id){
- let t=tasks.find(x=>x.id===id);if(!t)return;
- t.done=!t.done;if(t.done)addXP(10);
- save("tasks",tasks);renderTasks();
+function tasksRefresh(){
+ let w=document.querySelector('[data-app="Tasks"]');
+ if(!w)return;
+ let list=w.querySelector("#taskList");
+ if(!list)return;
+ list.innerHTML=data.tasks.map((t,i)=>`<div class="listitem ${t.done?"done":""}">
+ <input type="checkbox" style="width:auto" ${t.done?"checked":""} onchange="toggleTask(${i},this.checked)">
+ <div class="content">${esc(t.text)}</div><button class="close" onclick="deleteTask(${i})">×</button></div>`).join("");
 }
-function deleteTask(id){tasks=tasks.filter(x=>x.id!==id);save("tasks",tasks);renderTasks()}
-function renderTasks(){
- $("tasklist").innerHTML=tasks.map(t=>`<div class="card task ${t.done?"done":""}">
- <input type="checkbox" ${t.done?"checked":""} onchange="toggleTask(${t.id})">
- <span style="flex:1">${esc(t.text)}</span><button class="danger mini" onclick="deleteTask(${t.id})">×</button></div>`).join("");
- let done=tasks.filter(t=>t.done).length,p=tasks.length?done/tasks.length*100:0;
- $("taskprogress").textContent=done+" / "+tasks.length+" tasks completed";
- $("taskbar").style.width=p+"%";$("taskwidget").textContent=done;
+function toggleTask(i,v){
+ data.tasks[i].done=v;
+ if(v){data.completed++;data.xp+=10;addNotification("Task completed! +10 XP ✨");}
+ save();tasksRefresh();
 }
-
-function addPlan(){
- let d=$("plandate").value,t=$("planinput").value.trim(),time=$("plantime").value;
- if(!d||!t){toast("Enter a date and activity");return}
- plans.push({d,t,time,id:Date.now()});save("plans",plans);
- $("planinput").value="";renderPlans();
+function deleteTask(i){
+ data.trash.push({type:"Task",text:data.tasks[i].text});
+ data.tasks.splice(i,1);save();tasksRefresh();
 }
-function deletePlan(id){plans=plans.filter(x=>x.id!==id);save("plans",plans);renderPlans()}
-function renderPlans(){
- let d=$("plandate").value;
- $("planlist").innerHTML=plans.filter(x=>!d||x.d===d).sort((a,b)=>(a.time||"").localeCompare(b.time||"")).map(x=>`<div class="card"><b>${esc(x.time||"Any time")}</b> · ${esc(x.t)}<button class="danger mini" style="float:right" onclick="deletePlan(${x.id})">×</button></div>`).join("")||"<p class='small'>No plans for this date.</p>";
+function plannerHTML(){
+ return `<h2>📅 Study Planner</h2><label>Date</label><input type="date" id="planDate"><label>Subject</label><input id="planSubject" placeholder="Subject"><label>Study plan</label><textarea id="planText" placeholder="What are you studying?"></textarea><button onclick="savePlan()">Save Plan</button><div id="planList"></div>`;
 }
-$("plandate").value=new Date().toISOString().slice(0,10);$("plandate").onchange=renderPlans;
-
-function addFlash(){
- let q=$("fq").value.trim(),a=$("fa").value.trim();if(!q||!a)return;
- flashes.push({q,a});save("flashes",flashes);$("fq").value="";$("fa").value="";renderFlash();toast("Flashcard saved ♡");
+function savePlan(){
+ let d=document.querySelector('[data-app="Planner"] #planDate').value;
+ let s=document.querySelector('[data-app="Planner"] #planSubject').value;
+ let t=document.querySelector('[data-app="Planner"] #planText').value;
+ if(!d||!s||!t)return toast("Fill all details!");
+ data.plans ||= [];
+ data.plans.push({d,s,t});
+ save();refresh("Planner");toast("Plan saved!");
 }
-function showFlash(answer=false){
- if(!flashes.length){$("flasharea").innerHTML="<p>Add your first flashcard above!</p>";$("flashcount").textContent="0 cards";return}
- flashIndex=(flashIndex+flashes.length)%flashes.length;
- let f=flashes[flashIndex];
- $("flasharea").innerHTML=`<div class="flash" onclick="flipFlash()">${answer?esc(f.a):esc(f.q)}<div class="small" style="position:absolute"></div></div><p class="small" style="text-align:center">Click card to flip</p>`;
- $("flashcount").textContent=(flashIndex+1)+" / "+flashes.length;
+function plannerRefresh(){
+ let w=document.querySelector('[data-app="Planner"] #planList');
+ if(w)w.innerHTML=(data.plans||[]).map((p,i)=>`<div class="card"><strong>${esc(p.d)} · ${esc(p.s)}</strong><p>${esc(p.t)}</p><button onclick="removePlan(${i})">Delete</button></div>`).join("");
 }
-let flipped=false;
-function flipFlash(){flipped=!flipped;showFlash(flipped)}
-function nextFlash(){flashIndex++;flipped=false;showFlash()}
-function prevFlash(){flashIndex--;flipped=false;showFlash()}
-function renderFlash(){showFlash(false)}
-function deleteFlash(i){flashes.splice(i,1);flashIndex=0;save("flashes",flashes);renderFlash()}
- function addExam(){
- let n=$("examname").value.trim(),d=$("examdate").value;
- if(!n||!d)return;
- exams.push({n,d,id:Date.now()});save("exams",exams);
- $("examname").value="";renderExams();
+function removePlan(i){data.plans.splice(i,1);save();plannerRefresh();}
+function chapterHTML(){
+ return `<h2>📚 Chapter Tracker</h2><div class="row"><select id="chSub"><option>Physics</option><option>Chemistry</option><option>Maths</option><option>Computer Science</option></select><input id="chName" placeholder="Chapter name"></div><button onclick="addChapter()">Add Chapter</button><div id="chList"></div>`;
 }
-function deleteExam(id){exams=exams.filter(x=>x.id!==id);save("exams",exams);renderExams()}
-function renderExams(){
- $("examlist").innerHTML=exams.sort((a,b)=>a.d.localeCompare(b.d)).map(x=>`<div class="card"><b>${esc(x.n)}</b><p>${esc(x.d)}</p><button class="danger mini" onclick="deleteExam(${x.id})">Remove</button></div>`).join("");
-}
-
 function addChapter(){
- let s=$("subject").value,c=$("chapterinput").value.trim();if(!c)return;
- chapters.push({s,c,status:"Not Started",id:Date.now()});
- save("chapters",chapters);$("chapterinput").value="";renderChapters();
+ let s=document.querySelector('[data-app="Chapter Tracker"] #chSub').value;
+ let n=document.querySelector('[data-app="Chapter Tracker"] #chName').value.trim();
+ if(!n)return;
+ data.chapters.push({s,n,status:"Not Started"});
+ save();refresh("Chapter Tracker");
 }
-function changeChapter(id){
- let c=chapters.find(x=>x.id===id);if(!c)return;
- c.status=c.status==="Not Started"?"In Progress":c.status==="In Progress"?"Completed":"Not Started";
- if(c.status==="Completed")addXP(15);
- save("chapters",chapters);renderChapters();
+function chapterRefresh(){
+ let w=document.querySelector('[data-app="Chapter Tracker"] #chList');
+ if(!w)return;
+ let grouped={};
+ data.chapters.forEach((c,i)=>{(grouped[c.s]||=[]).push({...c,i})});
+ w.innerHTML=Object.entries(grouped).map(([s,arr])=>`<h3>${esc(s)}</h3>${arr.map(c=>`<div class="card"><strong>${esc(c.n)}</strong><select onchange="setChapter(${c.i},this.value)"><option ${c.status==="Not Started"?"selected":""}>Not Started</option><option ${c.status==="In Progress"?"selected":""}>In Progress</option><option ${c.status==="Completed"?"selected":""}>Completed</option></select><button class="close" onclick="delChapter(${c.i})">Delete</button></div>`).join("")}`).join("");
 }
-function deleteChapter(id){chapters=chapters.filter(x=>x.id!==id);save("chapters",chapters);renderChapters()}
-function renderChapters(){
- $("chapterlist").innerHTML=chapters.map(c=>`<div class="card"><b>${esc(c.s)}</b> · ${esc(c.c)}<p><button class="secondary mini" onclick="changeChapter(${c.id})">${esc(c.status)}</button><button class="danger mini" onclick="deleteChapter(${c.id})">×</button></p></div>`).join("");
+function setChapter(i,v){data.chapters[i].status=v;save();chapterRefresh();}
+function delChapter(i){data.trash.push({type:"Chapter",text:data.chapters[i].n});data.chapters.splice(i,1);save();chapterRefresh();}
+function notesHTML(){
+ return `<h2>🗒️ Notes Studio</h2><textarea id="notesArea" style="min-height:300px" placeholder="Your notes...">${esc(data.notes)}</textarea><button onclick="saveNotes()">Save Notes</button>`;
 }
-
-function saveNote(){
- let t=$("notetitle").value.trim(),c=$("notecontent").value.trim();if(!t||!c)return;
- notes.push({t,c,id:Date.now()});save("notes",notes);
- $("notetitle").value="";$("notecontent").value="";renderNotes();
+function saveNotes(){
+ data.notes=document.querySelector('[data-app="Notes Studio"] #notesArea').value;save();toast("Notes saved ♡");
 }
-function deleteNote(id){notes=notes.filter(x=>x.id!==id);save("notes",notes);renderNotes()}
-function renderNotes(){
- $("noteslist").innerHTML=notes.map(n=>`<div class="card"><b>${esc(n.t)}</b><p>${esc(n.c)}</p><button class="danger mini" onclick="deleteNote(${n.id})">Delete</button></div>`).join("");
+function flashHTML(){
+ return `<h2>🃏 Flashcards</h2><div class="row"><input id="flashQ" placeholder="Question"><input id="flashA" placeholder="Answer"></div><button onclick="addFlash()">Add Card</button><hr><div id="flashView"></div>`;
 }
-
-function addDream(){
- let t=$("dreamtitle").value.trim(),d=$("dreamdesc").value.trim();if(!t)return;
- dreams.push({t,d,id:Date.now()});save("dreams",dreams);
- $("dreamtitle").value="";$("dreamdesc").value="";renderDreams();
+function addFlash(){
+ let q=document.querySelector('[data-app="Flashcards"] #flashQ').value;
+ let a=document.querySelector('[data-app="Flashcards"] #flashA').value;
+ if(!q||!a)return;
+ data.flash.push({q,a});save();refresh("Flashcards");
 }
-function deleteDream(id){dreams=dreams.filter(x=>x.id!==id);save("dreams",dreams);renderDreams()}
-function renderDreams(){
- $("dreamlist").innerHTML=dreams.map(x=>`<div class="card"><h3>🌠 ${esc(x.t)}</h3><p>${esc(x.d)}</p><button class="danger mini" onclick="deleteDream(${x.id})">Remove</button></div>`).join("");
+function flashRefresh(){
+ let w=document.querySelector('[data-app="Flashcards"] #flashView');
+ if(!w)return;
+ if(!data.flash.length){w.innerHTML="No flashcards yet.";return;}
+ flashIndex=Math.min(flashIndex,data.flash.length-1);
+ let f=data.flash[flashIndex];
+ w.innerHTML=`<div class="card center"><h3>${esc(f.q)}</h3><div id="flashAnswer" class="hidden"><hr>${esc(f.a)}</div><button onclick="document.getElementById('flashAnswer').classList.toggle('hidden')">Reveal Answer</button><p>Card ${flashIndex+1}/${data.flash.length}</p><button onclick="flashPrev()">←</button><button onclick="flashNext()">→</button><button class="close" onclick="delFlash(${flashIndex})">Delete</button></div>`;
 }
-function saveLetter(){save("letter",$("letter").value);toast("Letter saved ♡")}
-$("letter").value=get("letter","");
-
-function saveJournal(){
- let d=$("jdate").value,t=$("jentry").value.trim();if(!t)return;
- journal.push({d,t,id:Date.now()});save("journal",journal);
- $("jentry").value="";renderJournal();
+function flashNext(){flashIndex=(flashIndex+1)%data.flash.length;flashRefresh();}
+function flashPrev(){flashIndex=(flashIndex-1+data.flash.length)%data.flash.length;flashRefresh();}
+function delFlash(i){data.flash.splice(i,1);save();flashRefresh();}
+function focusHTML(){
+ return `<h2>⏳ Focus Room</h2><div class="center"><div class="big" id="timerDisplay">25:00</div><div class="row"><button onclick="startTimer()">Start</button><button onclick="pauseTimer()">Pause</button><button onclick="resetTimer()">Reset</button></div><p>Focus time for your goals ♡</p><div class="row"><button onclick="setTimer(25)">25 min</button><button onclick="setTimer(45)">45 min</button><button onclick="setTimer(60)">60 min</button></div></div>`;
 }
-function deleteJournal(id){journal=journal.filter(x=>x.id!==id);save("journal",journal);renderJournal()}
-function renderJournal(){
- $("journallist").innerHTML=journal.slice().reverse().map(x=>`<div class="card"><b>${esc(x.d)}</b><p>${esc(x.t)}</p><button class="danger mini" onclick="deleteJournal(${x.id})">Delete</button></div>`).join("");
-}
-$("jdate").value=new Date().toISOString().slice(0,10);
-
-function addSticky(){
- let t=$("sticktext").value.trim(),c=$("stickcolor").value;if(!t)return;
- stickies.push({t,c,id:Date.now()});save("stickies",stickies);
- $("sticktext").value="";renderStickies();
-}
-function deleteSticky(id){stickies=stickies.filter(x=>x.id!==id);save("stickies",stickies);renderStickies()}
-function renderStickies(){
- $("stickylist").innerHTML=stickies.map(x=>`<div class="note ${x.c}">${esc(x.t)}<button class="danger mini" style="float:right" onclick="deleteSticky(${x.id})">×</button></div>`).join("");
-}
-
-function addVault(){
- let t=$("vtitle").value.trim(),u=$("vurl").value.trim(),s=$("vsubject").value;if(!t||!u)return;
- if(!/^https?:\/\//i.test(u)){toast("Please enter a valid link");return}
- vault.push({t,u,s,id:Date.now()});save("vault",vault);
- $("vtitle").value="";$("vurl").value="";renderVault();
-}
-function deleteVault(id){vault=vault.filter(x=>x.id!==id);save("vault",vault);renderVault()}
-function renderVault(){
- $("vaultlist").innerHTML=vault.map(x=>`<div class="card"><b>${esc(x.t)}</b><p class="tag">${esc(x.s)}</p><p><a href="${esc(x.u)}" target="_blank" rel="noopener">Open resource ↗</a></p><button class="danger mini" onclick="deleteVault(${x.id})">Delete</button></div>`).join("");
-}
-
-function calculate(){
- try{
-  let e=$("calcinput").value;
-  if(!/^[\d+\-*/().%\s]+$/.test(e)){throw Error("Invalid")}
-  let result=Function('"use strict";return ('+e+')')();
-  if(!Number.isFinite(result))throw Error("Invalid");
-  $("calcresult").textContent="Result: "+result;
- }catch{$("calcresult").textContent="Invalid expression"}
-}
-
-function setTimer(){timerSeconds=Number($("fmins").value)*60;updateTimer()}
-function updateTimer(){
- let m=Math.floor(timerSeconds/60),s=timerSeconds%60;
- let t=String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
- $("ftimer").textContent=t;$("fulltimer").textContent=t;
+let timerSec=1500,timerInt=null;
+function drawTimer(){
+ let el=document.querySelector('[data-app="Focus Room"] #timerDisplay');
+ if(el)el.textContent=Math.floor(timerSec/60).toString().padStart(2,"0")+":"+ (timerSec%60).toString().padStart(2,"0");
 }
 function startTimer(){
- if(timerRunning)return;
- timerRunning=true;
- timerInterval=setInterval(()=>{
-  if(timerSeconds>0){timerSeconds--;updateTimer()}
-  else{
-   pauseTimer();toast("Focus session complete! 🎉");addXP(25);
-  }
+ if(timerInt)return;
+ timerInt=setInterval(()=>{
+ timerSec--;
+ drawTimer();
+ if(timerSec<=0){
+ pauseTimer();toast("Focus session complete! ✨");
+ data.xp+=25;addNotification("Focus session completed +25 XP");save();
+ }
  },1000);
 }
-function pauseTimer(){clearInterval(timerInterval);timerRunning=false}
-function resetTimer(){pauseTimer();setTimer()}
-function fullFocus(){$("focusOverlay").classList.add("active");updateTimer()}
-function exitFullFocus(){$("focusOverlay").classList.remove("active")}
-
-function theme(a,b){
- document.documentElement.style.setProperty("--accent",a);
- document.documentElement.style.setProperty("--bg",b);
- $("desktop").style.background="linear-gradient(135deg,"+b+","+a+"33,"+b+")";
- save("theme",{a,b});
+function pauseTimer(){clearInterval(timerInt);timerInt=null;}
+function resetTimer(){pauseTimer();timerSec=1500;drawTimer();}
+function setTimer(m){pauseTimer();timerSec=m*60;drawTimer();}
+function dreamHTML(){
+ return `<h2>🌷 Dream Board</h2><textarea id="dreamArea" style="min-height:250px" placeholder="Your goals, dreams, ideas, future vision...">${esc(data.dream)}</textarea><button onclick="saveDream()">Save My Dreams</button>`;
 }
-function customTheme(){theme($("customcolor").value,"#f5effb")}
-function toggleDark(){document.body.classList.toggle("dark");save("dark",document.body.classList.contains("dark"))}
-function wallpaper(n){
- const w=[
- "linear-gradient(135deg,#e9defa,#f8f0f4,#e5eaf9)",
- "linear-gradient(135deg,#1e2749,#464b75,#343a59)",
- "linear-gradient(135deg,#e5f3e7,#d2e9dc,#f5e5d5)",
- "linear-gradient(135deg,#f7f2ed,#eee4df,#e9e5f1)"
- ];
- $("desktop").style.background=w[n-1];save("wallpaper",n);
+function saveDream(){data.dream=document.querySelector('[data-app="Dream Board"] #dreamArea').value;save();toast("Dream board saved ♡");}
+function journalHTML(){
+ return `<h2>📔 Study Journal</h2><textarea id="journalArea" placeholder="How was today's study session?">${esc(data.journal)}</textarea><button onclick="saveJournal()">Save Journal</button>`;
 }
-function petTalk(){
- let a=["You've got this! 🐰","Take it one step at a time. 🌷","Your effort counts! ✨","Welcome back to your study space! 💜","Little progress is still progress! ☁️"];
- toast(a[Math.floor(Math.random()*a.length)]);
+function saveJournal(){data.journal=document.querySelector('[data-app="Study Journal"] #journalArea').value;save();toast("Journal saved ♡");}
+function stickyHTML(){
+ return `<h2>📌 Sticky Notes</h2><textarea id="stickyArea" placeholder="Quick reminders...">${esc(data.sticky)}</textarea><button onclick="saveSticky()">Save</button>`;
 }
-
-function coachRefresh(){
- let done=tasks.filter(x=>x.done).length;
- $("coachreport").innerHTML=`<p>📌 Tasks: ${done}/${tasks.length} completed</p><p>📚 Chapters tracked: ${chapters.length}</p><p>🎓 Upcoming exams: ${exams.length}</p><p>✨ XP earned: ${xp}</p>`;
- let incomplete=chapters.filter(x=>x.status!=="Completed");
- $("coachsuggest").textContent=incomplete.length?"Revise: "+incomplete[0].s+" — "+incomplete[0].c:"Add chapters to get suggestions!";
+function saveSticky(){data.sticky=document.querySelector('[data-app="Sticky Notes"] #stickyArea').value;save();toast("Saved!");}
+function analyticsHTML(){
+ let total=data.chapters.length,done=data.chapters.filter(c=>c.status==="Completed").length;
+ return `<h2>📊 My Progress</h2><div class="grid2"><div class="card center"><h3>Tasks completed</h3><div class="big">${data.completed}</div></div><div class="card center"><h3>XP points</h3><div class="big">${data.xp}</div></div></div><h3>Chapter progress</h3><p>${done}/${total} chapters completed</p><div class="progress"><div style="width:${total?done/total*100:0}%"></div></div><p>Tasks in list: ${data.tasks.length}</p><p>Flashcards: ${data.flash.length}</p><p>Tracked chapters: ${total}</p>`;
 }
-function renderStats(){
- let td=tasks.filter(x=>x.done).length;
- let cd=chapters.filter(x=>x.status==="Completed").length;
- $("stats").innerHTML=`<div class="card"><h3>📝 Tasks</h3><p>${td} completed of ${tasks.length}</p></div><div class="card"><h3>📚 Chapters</h3><p>${cd} completed of ${chapters.length}</p></div><div class="card"><h3>✨ XP</h3><p>${xp}</p></div><div class="card"><h3>🧠 Flashcards</h3><p>${flashes.length} cards saved</p></div>`;
- let b=[];
- if(td>=1)b.push("🌱 Task Starter");
- if(td>=10)b.push("🌟 Task Master");
- if(cd>=1)b.push("📚 Chapter Explorer");
- if(cd>=5)b.push("🎓 Chapter Champion");
- if(xp>=100)b.push("✨ Level Up");
- $("badges").innerHTML="<h3>🏆 Badges</h3>"+(b.map(x=>`<span class="badgecard">${x}</span>`).join("")||"Complete tasks to unlock badges!");
+function calcHTML(){
+ return `<h2>🧮 Calculator</h2><input id="calcInput" placeholder="Example: (12+5)*2"><button onclick="calculate()">Calculate</button><div class="card" id="calcResult">Result appears here</div><p><small>Basic arithmetic only.</small></p>`;
 }
-
+function calculate(){
+ let w=document.querySelector('[data-app="Calculator"] #calcInput');
+ let res=document.querySelector('[data-app="Calculator"] #calcResult');
+ try{res.textContent=basicMath(w.value);}
+ catch{res.textContent="Invalid expression";}
+}
+function basicMath(expr){
+ expr=expr.replace(/\s/g,"");
+ if(!/^[0-9+\-*/().%]+$/.test(expr))throw Error();
+ let tokens=expr.match(/\d+(?:\.\d+)?|[()+\-*/%]/g)||[];
+ if(tokens.join("")!==expr)throw Error();
+ let p=0;
+ function factor(){
+  let t=tokens[p++];
+  if(t==="("){let v=sum();if(tokens[p++]!==")")throw Error();return v;}
+  if(t==="-")return -factor();
+  if(t==="+")return factor();
+  if(!t||isNaN(Number(t)))throw Error();
+  return Number(t);
+ }
+ function term(){let v=factor();while(tokens[p]==="*"||tokens[p]==="/"||tokens[p]==="%"){let op=tokens[p++],b=factor();v=op==="*"?v*b:op==="/"?v/b:v%b;}return v;}
+ function sum(){let v=term();while(tokens[p]==="+"||tokens[p]==="-"){let op=tokens[p++],b=term();v=op==="+"?v+b:v-b;}return v;}
+ let result=sum();if(p!==tokens.length||!isFinite(result))throw Error();return result;
+}
+function formulaHTML(){
+ return `<h2>📐 Formula Vault</h2><input id="formulaSub" placeholder="Subject"><input id="formulaName" placeholder="Formula name"><textarea id="formulaText" placeholder="Write formula"></textarea><button onclick="addFormula()">Save formula</button><div id="formulaList"></div>`;
+}
 function addFormula(){
- let s=$("fs").value,t=$("ft").value.trim(),c=$("fc").value.trim();if(!t||!c)return;
- formulas.push({s,t,c,id:Date.now()});save("formulas",formulas);
- $("ft").value="";$("fc").value="";renderFormulas();
+ let s=document.querySelector('[data-app="Formula Vault"] #formulaSub').value;
+ let n=document.querySelector('[data-app="Formula Vault"] #formulaName').value;
+ let t=document.querySelector('[data-app="Formula Vault"] #formulaText').value;
+ if(!s||!n||!t)return;
+ data.formulas.push({s,n,t});save();refresh("Formula Vault");
 }
-function deleteFormula(id){formulas=formulas.filter(x=>x.id!==id);save("formulas",formulas);renderFormulas()}
-function renderFormulas(){
- $("formulalist").innerHTML=formulas.map(x=>`<div class="card"><span class="tag">${esc(x.s)}</span><b>${esc(x.t)}</b><p>${esc(x.c)}</p><button class="danger mini" onclick="deleteFormula(${x.id})">Delete</button></div>`).join("");
+function formulaRefresh(){
+ let w=document.querySelector('[data-app="Formula Vault"] #formulaList');
+ if(w)w.innerHTML=data.formulas.map((f,i)=>`<div class="card"><strong>${esc(f.s)} · ${esc(f.n)}</strong><p>${esc(f.t)}</p><button onclick="delFormula(${i})">Delete</button></div>`).join("");
 }
-
+function delFormula(i){data.formulas.splice(i,1);save();formulaRefresh();}
+function doubtHTML(){
+ return `<h2>❓ Doubt Tracker</h2><input id="doubtSubject" placeholder="Subject"><textarea id="doubtText" placeholder="Your doubt"></textarea><button onclick="addDoubt()">Add doubt</button><div id="doubtList"></div>`;
+}
 function addDoubt(){
- let s=$("ds").value,t=$("dt").value.trim(),c=$("dc").value.trim();if(!t)return;
- doubts.push({s,t,c,solved:false,id:Date.now()});save("doubts",doubts);
- $("dt").value="";$("dc").value="";renderDoubts();
+ let s=document.querySelector('[data-app="Doubt Tracker"] #doubtSubject').value;
+ let t=document.querySelector('[data-app="Doubt Tracker"] #doubtText').value;
+ if(!s||!t)return;
+ data.doubts.push({s,t,done:false});save();refresh("Doubt Tracker");
 }
-function toggleDoubt(id){let x=doubts.find(a=>a.id===id);if(x){x.solved=!x.solved;save("doubts",doubts);renderDoubts()}}
-function deleteDoubt(id){doubts=doubts.filter(x=>x.id!==id);save("doubts",doubts);renderDoubts()}
-function renderDoubts(){
- $("doubtlist").innerHTML=doubts.map(x=>`<div class="card"><b>${esc(x.s)}</b> · ${esc(x.t)}<p>${esc(x.c)}</p><button class="secondary mini" onclick="toggleDoubt(${x.id})">${x.solved?"Solved ✓":"Mark solved"}</button><button class="danger mini" onclick="deleteDoubt(${x.id})">×</button></div>`).join("");
+function doubtRefresh(){
+ let w=document.querySelector('[data-app="Doubt Tracker"] #doubtList');
+ if(w)w.innerHTML=data.doubts.map((d,i)=>`<div class="card"><strong>${esc(d.s)}</strong><p>${esc(d.t)}</p><label><input type="checkbox" style="width:auto" ${d.done?"checked":""} onchange="data.doubts[${i}].done=this.checked;save();doubtRefresh()"> Solved</label><button onclick="delDoubt(${i})">Delete</button></div>`).join("");
 }
-
+function delDoubt(i){data.doubts.splice(i,1);save();doubtRefresh();}
+function revisionHTML(){
+ return `<h2>🔁 Revision Scheduler</h2><input id="revSubject" placeholder="Subject / chapter"><input type="date" id="revDate"><button onclick="addRevision()">Schedule Revision</button><div id="revList"></div>`;
+}
 function addRevision(){
- let s=$("rs").value,t=$("rt").value.trim(),d=$("rd").value;if(!t||!d)return;
- revisions.push({s,t,d,done:false,id:Date.now()});save("revisions",revisions);
- $("rt").value="";$("rd").value="";renderRevisions();
+ let s=document.querySelector('[data-app="Revision Scheduler"] #revSubject').value;
+ let d=document.querySelector('[data-app="Revision Scheduler"] #revDate').value;
+ if(!s||!d)return;
+ data.revisions ||= [];data.revisions.push({s,d});save();refresh("Revision Scheduler");
 }
-function toggleRevision(id){let x=revisions.find(a=>a.id===id);if(x){x.done=!x.done;save("revisions",revisions);renderRevisions()}}
-function deleteRevision(id){revisions=revisions.filter(x=>x.id!==id);save("revisions",revisions);renderRevisions()}
-function renderRevisions(){
- $("revisionlist").innerHTML=revisions.slice().sort((a,b)=>a.d.localeCompare(b.d)).map(x=>`<div class="card"><b>${esc(x.s)}</b> · ${esc(x.t)}<p>📅 ${esc(x.d)}</p><button class="secondary mini" onclick="toggleRevision(${x.id})">${x.done?"Done ✓":"Mark revised"}</button><button class="danger mini" onclick="deleteRevision(${x.id})">×</button></div>`).join("");
+function revisionRefresh(){
+ let w=document.querySelector('[data-app="Revision Scheduler"] #revList');
+ if(w)w.innerHTML=(data.revisions||[]).map((r,i)=>`<div class="card">${esc(r.d)} · ${esc(r.s)} <button onclick="delRevision(${i})">Delete</button></div>`).join("");
 }
-
+function delRevision(i){data.revisions.splice(i,1);save();revisionRefresh();}
+function mistakeHTML(){
+ return `<h2>📝 Mistake Notebook</h2><input id="mistakeSubject" placeholder="Subject"><textarea id="mistakeText" placeholder="Mistake / correct approach"></textarea><button onclick="addMistake()">Save mistake</button><div id="mistakeList"></div>`;
+}
 function addMistake(){
- let s=$("ms").value,t=$("mt").value.trim(),e=$("me").value.trim(),c=$("mc").value.trim();if(!t)return;
- mistakes.push({s,t,e,c,done:false,id:Date.now()});save("mistakes",mistakes);
- $("mt").value="";$("me").value="";$("mc").value="";renderMistakes();
+ let s=document.querySelector('[data-app="Mistake Notebook"] #mistakeSubject').value;
+ let t=document.querySelector('[data-app="Mistake Notebook"] #mistakeText').value;
+ if(!s||!t)return;
+ data.mistakes.push({s,t});save();refresh("Mistake Notebook");
 }
-function toggleMistake(id){let x=mistakes.find(a=>a.id===id);if(x){x.done=!x.done;save("mistakes",mistakes);renderMistakes()}}
-function deleteMistake(id){mistakes=mistakes.filter(x=>x.id!==id);save("mistakes",mistakes);renderMistakes()}
-function renderMistakes(){
- $("mistakelist").innerHTML=mistakes.map(x=>`<div class="card"><b>${esc(x.s)} · ${esc(x.t)}</b><p><b>Mistake:</b> ${esc(x.e)}</p><p><b>Correct approach:</b> ${esc(x.c)}</p><button class="secondary mini" onclick="toggleMistake(${x.id})">${x.done?"Reattempted ✓":"Mark reattempted"}</button><button class="danger mini" onclick="deleteMistake(${x.id})">×</button></div>`).join("");
+function mistakeRefresh(){
+ let w=document.querySelector('[data-app="Mistake Notebook"] #mistakeList');
+ if(w)w.innerHTML=data.mistakes.map((m,i)=>`<div class="card"><strong>${esc(m.s)}</strong><p>${esc(m.t)}</p><button onclick="delMistake(${i})">Delete</button></div>`).join("");
 }
-
+function delMistake(i){data.mistakes.splice(i,1);save();mistakeRefresh();}
+function paperHTML(){
+ return `<h2>📄 Practice Papers</h2><input id="paperName" placeholder="Paper name / source"><input id="paperSubject" placeholder="Subject"><input type="date" id="paperDate"><button onclick="addPaper()">Add Paper</button><div id="paperList"></div>`;
+}
 function addPaper(){
- let t=$("pt").value.trim(),s=$("ps").value.trim(),time=$("ptime").value.trim(),r=$("pr").value.trim();if(!t)return;
- papers.push({t,s,time,r,id:Date.now()});save("papers",papers);
- $("pt").value="";$("ps").value="";$("ptime").value="";$("pr").value="";renderPapers();
+ let n=document.querySelector('[data-app="Practice Papers"] #paperName').value;
+ let s=document.querySelector('[data-app="Practice Papers"] #paperSubject').value;
+ let d=document.querySelector('[data-app="Practice Papers"] #paperDate').value;
+ if(!n||!s)return;
+ data.papers.push({n,s,d});save();refresh("Practice Papers");
 }
-function deletePaper(id){papers=papers.filter(x=>x.id!==id);save("papers",papers);renderPapers()}
-function renderPapers(){
- $("paperlist").innerHTML=papers.map(x=>`<div class="card"><b>${esc(x.t)}</b><p>Score: ${esc(x.s||"—")} · Time: ${esc(x.time||"—")}</p><p>${esc(x.r)}</p><button class="danger mini" onclick="deletePaper(${x.id})">Delete</button></div>`).join("");
+function paperRefresh(){
+ let w=document.querySelector('[data-app="Practice Papers"] #paperList');
+ if(w)w.innerHTML=data.papers.map((p,i)=>`<div class="card"><strong>${esc(p.s)}</strong><p>${esc(p.n)} ${esc(p.d||"")}</p><button onclick="delPaper(${i})">Delete</button></div>`).join("");
 }
-
-function esc(s){
- return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function delPaper(i){data.papers.splice(i,1);save();paperRefresh();}
+function examHTML(){
+ return `<h2>🎓 Exam Center</h2><p>Keep your exam dates and goals here.</p><input id="examName" placeholder="Exam name"><input type="date" id="examDate"><textarea id="examTarget" placeholder="Target / syllabus"></textarea><button onclick="addExam()">Add Exam</button><div id="examList"></div>`;
 }
-
-function renderAll(){
- renderTasks();renderPlans();renderFlash();renderExams();renderChapters();renderNotes();renderDreams();renderJournal();renderStickies();renderVault();renderFormulas();renderDoubts();renderRevisions();renderMistakes();renderPapers();updateXP();coachRefresh();renderStats();
+function addExam(){
+ let n=document.querySelector('[data-app="Exam Center"] #examName').value;
+ let d=document.querySelector('[data-app="Exam Center"] #examDate').value;
+ let t=document.querySelector('[data-app="Exam Center"] #examTarget').value;
+ if(!n||!d)return;
+ data.exams ||= [];data.exams.push({n,d,t});save();refresh("Exam Center");
+}
+function examRefresh(){
+ let w=document.querySelector('[data-app="Exam Center"] #examList');
+ if(w)w.innerHTML=(data.exams||[]).map((e,i)=>`<div class="card"><strong>${esc(e.n)} · ${esc(e.d)}</strong><p>${esc(e.t)}</p><button onclick="delExam(${i})">Delete</button></div>`).join("");
+}
+function delExam(i){data.exams.splice(i,1);save();examRefresh();}
+function coachHTML(){
+ let count=data.tasks.filter(t=>!t.done).length;
+ return `<h2>✨ Study Coach</h2><div class="card">🌷 ${count===0?"Add a task to begin your study day!":`You have ${count} tasks remaining. Start with the smallest one.`}</div><div class="card">💗 Tip: Try one focus session, then check your progress.</div><button onclick="openApp('Tasks')">Open Tasks</button><button onclick="openApp('Focus Room')">Start Focus</button>`;
+}
+function trashHTML(){
+ return `<h2>🗑️ Trash Bin</h2><p>Deleted entries can be permanently cleared.</p><div id="trashList"></div><button class="close" onclick="emptyTrash()">Empty Trash</button>`;
+}
+function trashRefresh(){
+ let w=document.querySelector('[data-app="Trash Bin"] #trashList');
+ if(w)w.innerHTML=data.trash.length?data.trash.map((t,i)=>`<div class="card"><strong>${esc(t.type)}</strong><p>${esc(t.text)}</p></div>`).join(""):"Trash is empty ♡";
+}
+function emptyTrash(){data.trash=[];save();trashRefresh();toast("Trash emptied");}
+function settingsHTML(){
+ return `<h2>⚙️ Settings</h2><h3>Theme</h3><select id="themeSelect" onchange="setTheme(this.value)"><option value="lavender">Lavender</option><option value="pink">Pink</option><option value="mint">Mint</option><option value="blue">Blue</option></select><button onclick="toggleDark()">🌙 Toggle dark mode</button><hr><button onclick="resetWindows()">Reset window positions</button><button onclick="exportData()">📦 Export Backup</button><button onclick="document.getElementById('importFile').click()">📥 Import Backup</button><input id="importFile" type="file" accept=".json" class="hidden" onchange="importData(event)"><hr><button class="close" onclick="resetAll()">Reset entire site data</button>`;
+}
+function setTheme(v){
+ data.theme=v;
+ let themes={lavender:["#f5efff","#b89be8"],pink:["#fff0f5","#e7a6c5"],mint:["#edfff7","#91cbb4"],blue:["#eff7ff","#92b9e5"]};
+ document.documentElement.style.setProperty("--bg",themes[v][0]);
+ document.documentElement.style.setProperty("--accent",themes[v][1]);
+ save();
+}
+function toggleDark(){
+ data.dark=!data.dark;document.body.classList.toggle("dark",data.dark);save();
+}
+function resetWindows(){
+ document.querySelectorAll(".window").forEach(w=>{w.style.left="270px";w.style.top="160px";w.classList.remove("maximized")});
+ toast("Window positions reset");
 }
 function exportData(){
- let data={tasks,plans,flashes,exams,chapters,notes,dreams,journal,stickies,vault,formulas,doubts,revisions,mistakes,papers,xp,letter:get("letter","")};
- let blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
- let url=URL.createObjectURL(blob),a=document.createElement("a");
- a.href=url;a.download="students-hub-backup.json";a.click();URL.revokeObjectURL(url);
- toast("Backup downloaded ♡");
+ let b=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+ let a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="students-hub-backup.json";a.click();URL.revokeObjectURL(a.href);
 }
-function restoreData(e){
+function importData(e){
  let f=e.target.files[0];if(!f)return;
- let reader=new FileReader();
- reader.onload=()=>{
- try{
- let d=JSON.parse(reader.result);
- Object.keys(d).forEach(k=>save(k,d[k]));
- toast("Backup restored! Refreshing...");
- setTimeout(()=>location.reload(),800);
- }catch{toast("Invalid backup file")}
+ let r=new FileReader();
+ r.onload=()=>{
+ try{data=JSON.parse(r.result);save();location.reload();}
+ catch{toast("Invalid backup file");}
  };
- reader.readAsText(f);
+ r.readAsText(f);
 }
 function resetAll(){
- if(!confirm("Reset ALL Students Hub data? This cannot be undone."))return;
- Object.keys(localStorage).filter(k=>k.startsWith("sh_")).forEach(k=>localStorage.removeItem(k));
- location.reload();
+ if(confirm("Delete all Students Hub data? This cannot be undone.")){
+ localStorage.removeItem("studentsHubData");location.reload();
+ }
 }
-
-let oldTheme=get("theme",null);if(oldTheme)theme(oldTheme.a,oldTheme.b);
-if(get("dark",false))document.body.classList.add("dark");
-let oldWallpaper=get("wallpaper",0);if(oldWallpaper)wallpaper(oldWallpaper);
-updateXP();
-
+function refresh(name){
+ let w=document.querySelector(`[data-app="${name}"]`);
+ if(!w)return;
+ let body=w.querySelector(".winbody");
+ body.innerHTML=appContent(name);
+}
+function refreshAll(){
+ tasksRefresh();plannerRefresh();chapterRefresh();flashRefresh();formulaRefresh();
+ doubtRefresh();revisionRefresh();mistakeRefresh();paperRefresh();examRefresh();trashRefresh();
+}
+function showContext(e){
+ e.preventDefault();
+ let m=document.getElementById("contextMenu");
+ m.style.display="block";m.style.left=e.clientX+"px";m.style.top=e.clientY+"px";
+ m.innerHTML=`<button onclick="openApp('Tasks');hideContext()">📝 Tasks</button><button onclick="openApp('Planner');hideContext()">📅 Planner</button><button onclick="openApp('Notes Studio');hideContext()">🗒️ Notes</button><button onclick="openApp('Settings');hideContext()">⚙️ Settings</button><button onclick="hideContext()">Close</button>`;
+}
+function hideContext(){document.getElementById("contextMenu").style.display="none";}
+document.addEventListener("click",e=>{
+ if(!e.target.closest("#contextMenu"))hideContext();
+});
+function updateClock(){
+ let d=new Date();
+ document.getElementById("clock").textContent=d.toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});
+ document.getElementById("dateWidget").textContent=d.toLocaleDateString([],{day:"numeric",month:"short"});
+}
+const quotes=["Small steps matter ♡","You are growing every day 🌷","Focus on progress, not perfection ✨","You can do hard things 💗","One chapter at a time 📚"];
+document.getElementById("quote").textContent=quotes[Math.floor(Math.random()*quotes.length)];
+document.getElementById("lockDate").textContent=new Date().toLocaleDateString([],{weekday:"long",day:"numeric",month:"long"});
+renderApps();updateClock();setInterval(updateClock,1000);
+document.body.classList.toggle("dark",data.dark);
+setTheme(data.theme);
+updateWidgets();
 </script>
 </body>
 </html>
